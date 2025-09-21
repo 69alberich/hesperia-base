@@ -1,0 +1,76 @@
+name: 'Menu Principal'
+items:
+    -
+        title: Inicio
+        nesting: '0'
+        type: static-page
+        url: ''
+        code: ''
+        reference: prueba
+        cmsPage: ''
+        replace: '0'
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: Hoteles
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: hoteles
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: Blog
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: blog/blog
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: Reservar
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: hotel/reservacion_habitacion
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Web check-in'
+        nesting: null
+        type: cms-page
+        url: null
+        code: ''
+        reference: mi-reserva
+        cmsPage: null
+        replace: null
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: CONTACTO
+        type: url
+        url: 'https://wa.link/4f270y'
+        code: 'https://wa.link/4f270y'
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '1'

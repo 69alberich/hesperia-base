@@ -1,0 +1,11 @@
+scopes:
+  categorias:
+      label: Categoria
+      modelClass: Hesperiaplugins\Empleos\Models\CategoriaOferta
+      conditions: id in (select oferta_id from hesperiaplugins_empleos_oferta_categoria where categoria_id in (:filtered))
+      nameFrom: nombre
+  hotel:
+      label: Hotel
+      modelClass: Hesperiaplugins\Hoteles\Models\Hotel
+      nameFrom: nombre
+      scope: hotel

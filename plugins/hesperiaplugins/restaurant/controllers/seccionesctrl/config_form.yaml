@@ -1,0 +1,10 @@
+name: SeccionesCtrl
+form: $/hesperiaplugins/restaurant/models/seccion/fields.yaml
+modelClass: HesperiaPlugins\Restaurant\Models\Seccion
+defaultRedirect: hesperiaplugins/restaurant/seccionesctrl
+create:
+    redirect: 'hesperiaplugins/restaurant/seccionesctrl/update/:id'
+    redirectClose: hesperiaplugins/restaurant/seccionesctrl
+update:
+    redirect: hesperiaplugins/restaurant/seccionesctrl
+    redirectClose: hesperiaplugins/restaurant/seccionesctrl

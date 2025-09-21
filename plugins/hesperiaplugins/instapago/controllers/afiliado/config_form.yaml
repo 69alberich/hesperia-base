@@ -1,0 +1,10 @@
+name: Afiliado
+form: $/hesperiaplugins/instapago/models/afiliado/fields.yaml
+modelClass: hesperiaplugins\Instapago\Models\Afiliado
+defaultRedirect: hesperiaplugins/instapago/afiliado
+create:
+    redirect: 'hesperiaplugins/instapago/afiliado/update/:id'
+    redirectClose: hesperiaplugins/instapago/afiliado
+update:
+    redirect: hesperiaplugins/instapago/afiliado
+    redirectClose: hesperiaplugins/instapago/afiliado

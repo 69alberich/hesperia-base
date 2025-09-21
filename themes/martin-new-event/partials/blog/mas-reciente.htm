@@ -1,0 +1,59 @@
+description = "Más reciente"
+
+[viewBag]
+snippetCode = "mas-reciente"
+snippetName = "Post más reciente"
+snippetProperties[linkblog][title] = "link al blog"
+snippetProperties[linkblog][type] = "checkbox"
+snippetProperties[linkblog][default] = 0
+snippetProperties[linkblog][options][] = ""
+==
+<?php
+function onStart()
+{
+  use Rainlab\Blog\Models\Post;
+    $this['post'] = Post::isPublished()->orderBy('id', 'desc')->first();
+}
+?>
+==
+<section class="section-narrow">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="wow fadeInUp col-md-6 col-sm-10" data-wow-delay="1.3s">
+				<h2>Te interesa...</h2>
+				<a href="{{'blog/post/'~ post.slug}}"><h3>{{ post.title }}</h3></a>
+				<p class="lead">{{ str_words(post.summary, 25) }}</p>
+				<p>
+				 {% if linkblog == 1 %}
+           <p class="text-center">
+      		   <a href="{{ 'blog/blog'|page }}"
+                class="btn btn-default smoothScroll wow
+                fadeInUp hidden-xs" data-wow-delay="2.3s">
+                Visitar Blog
+            </a>
+            <a href="{{'blog/post/'~ post.slug}}"
+             class="btn btn-primary smoothScroll wow
+             fadeInUp hidden-xs " data-wow-delay="2.3s">
+             Leer noticia
+           </a>
+          </p>
+          {% endif %}
+
+				</p>
+			</div>
+			<div class="wow fadeInUp col-md-6 col-sm-6" data-wow-delay="0.9s">
+				<img src="{{post.featured_images[0].path}}" class="img-responsive" alt="{{ post.title }}">
+        {% if linkblog == 1 %}
+        <br>
+          <a href="{{ 'blog/blog'|page }}"
+             class="btn btn-lg btn-default smoothScroll wow
+             fadeInUp visible-xs visible-xs" data-wow-delay="2.3s">
+             Visitar Blog
+         </a>
+         {% endif %}
+      </div>
+
+
+		</div>
+	</div>
+</section>

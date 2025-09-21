@@ -1,0 +1,38 @@
+[viewBag]
+==
+<div id="galeria-restaurant">
+  <div class="container-fluid">
+    <h2 class="section-header">Galeria</h2>
+    <div class="col-md-12">
+      <div id="owl-galeria-hotel" class="owl-carousel carousel-con-modal">
+      {% for imagen in hotel.galeria %}
+      <div class="item" data-index='{{loop.index}}'><img class="lazyOwl img-responsive"
+         data-src="{{imagen.path}}">
+      </div>
+      {% endfor %}
+    </div>
+   </div>
+ </div>
+
+   <div class="modal fade" role="dialog" id="modal-owl-galeria">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div id="owl-galeria-hotel-modal" class="owl-carousel">
+        {% for imagen2 in hotel.galeria %}
+        <div class="item"><img class="lazyOwl img-responsive"
+           data-src="{{imagen2.path}}">
+        </div>
+
+        {% endfor %}
+
+        </div>
+        <a class="left carousel-control" href="#" role="button" data-slide="prev">
+          <span class="fa glyphicon glyphicon-chevron-left fa-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#" role="button" data-slide="next">
+          <span class="fa glyphicon glyphicon-chevron-right fa-chevron-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

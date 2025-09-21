@@ -1,0 +1,27 @@
+columns:
+    usuario:
+        label: Usuario
+        type: text
+        searchable: true
+        select: name
+        relation: usuario
+    hotel:
+        label: Hotel
+        type: text
+        select: nombre
+        relation: hotel
+    descuento:
+        label: Descuento
+        type: number
+    over:
+        label: Over
+        type: number
+    cupomensual:
+        label: 'Cupo Mensual'
+        type: number
+    cupoobjetivo:
+        label: 'Cupo Objetivo'
+        type: number
+    vence:
+        label: Vence
+        type: date

@@ -1,0 +1,4 @@
+title: Platos
+modelClass: HesperiaPlugins\Restaurant\Models\Plato
+toolbar:
+    buttons: reorder_toolbar

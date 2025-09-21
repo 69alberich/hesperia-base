@@ -1,0 +1,4 @@
+title: Afiliado
+modelClass: hesperiaplugins\Instapago\Models\Afiliado
+toolbar:
+    buttons: reorder_toolbar

@@ -1,0 +1,4 @@
+title: CategoriaOferta
+modelClass: Hesperiaplugins\Empleos\Models\CategoriaOferta
+toolbar:
+    buttons: reorder_toolbar

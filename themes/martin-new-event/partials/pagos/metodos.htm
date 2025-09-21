@@ -1,0 +1,306 @@
+[viewBag]
+==
+{% if tipo == 'reserva'%}
+    
+    {% set hotel = item.hotel %}
+
+{% elseif tipo == 'compra' %}
+
+    {% set hotel = hotel %}
+
+{% endif %}
+
+{% set metodos_disp = hotel.tipo_pagos|sort %}
+
+{% set status = hotel.status %}
+
+<!-- primer if, si la moneda es dolar  -->
+
+<div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="0.9s">
+    <ul class="nav nav-tabs" role="tablist">
+    {% set active = "active" %}
+      {% for metodo in metodos_disp %}
+    
+        {% if item.moneda_id == 2 %}
+        
+            {% if metodo.id == 3 %}
+
+                <li class="{{active}}">
+                    <a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">Tarj. de Crédito</a>
+                </li>
+                {% set active = "" %}
+            {% endif %}
+
+            {% if metodo.id == 4 or metodo.id == 6 %}
+                <li class="{{active}}">
+                    <a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">Transferencias</a>
+                </li>
+                {% set active = "" %}
+            {% endif %}
+
+            {% if metodo.id == 5 and item.permitePagoEnHotel() %}
+                <li class="{{active}}">
+                    <a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">Pago en Recepción</a>
+                </li>
+                {% set active = "" %}
+            {% endif %}
+
+        {% elseif (item.moneda_id == 1 or item.moneda_id == 3)  %}
+            {% if metodo.id == 1 %}
+                <li class="{{active}}"><a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">Tarj. de Crédito</a></li>
+            {% elseif metodo.id == 2 and item.permiteTransferencias() %}
+                <li><a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">Trans. Bancaria</a></li>
+            {% endif %}
+
+        {% endif %}
+
+      {% endfor %}
+    </ul>
+    <!-- tab paneles -->
+    <div class="tab-content">
+        {% set active = "active" %}
+        {% for metodo in metodos_disp %}
+
+            {% if item.moneda_id == 2 %} 
+                {% if metodo.id == 3 %}
+                <div role="tabpanel" class="tab-pane {{active}}" id="tab{{metodo.id}}">
+                    <div class="col-md-12 text-center">
+                        <h4>¿Por qué es seguro pagar con TDC en Hesperia?</h4>
+                        <div class="col-md-12">
+                            <div class="row">
+                            <div class="col-md-12 col-lg-6 col-sm-6">
+                                <h5> 
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-square-o fa-stack-2x"></i>
+                                <i class="fa fa-rocket fa-stack-1x"></i>
+                                </span>
+                                Rapidez y Efectividad<br>
+                                <small>¡Una vez rellenes tus datos correctamente recibiras respuesta en pocos segundos!</small>
+                            </h5>
+                                
+                            </div>
+                            <div class="col-md-12 col-lg-6 col-sm-6">
+                                <h5>
+                                <span class="fa-stack fa-lg">
+                                <i class="fa fa-square-o fa-stack-2x"></i>
+                                <i class="fa fa-lock fa-stack-1x"></i>
+                                </span>
+                                Privacidad y Seguridad<br>
+                                <small>¡Nos preocupamos por tu seguridad! por eso no guardamos en nuestra base de
+                                    datos ninguna información sensible de tu TDC. </small>
+                                </h5>
+                                
+                            </div>
+                            </div>
+                        </div>
+                        {% component 'form' mount = item.total description = hotel.nombre type = tipo ref = item.id %}
+                        <p class="alert alert-warning">
+                            <i class="fa fa-expeditedssl fa-lg" aria-hidden="true"></i> Certificado <strong>SSL</strong> en todas nuestras transacciones
+                        </p>
+                    </div>
+                </div>
+                {% set active = "" %}
+                {% endif %}
+                {% if metodo.id == 4 or metodo.id == 6 %}
+                
+                <div role="tabpanel" class="tab-pane {{active}}" id="tab{{metodo.id}}">
+                    <div class="col-md-12">
+                        {% if hotel.id == 3 %} 
+                            {% if hotel.id == 1 %}
+                                {% set hotelcode = "$HESPERIAVALENCIA" %}
+                            {% else %}
+
+                                {% set hotelcode = "$HESPERIAMARACAY" %}
+                            
+                            {% endif %}
+                            
+                            <div class="well">
+                                 <p>
+                                    ¡Saludos! Al realizar su transferencia obligatoriamente debe ingresar el siguiente
+                                     texto en el campo de referencia de su banco (reference, code, description,
+                                    comment, note): <strong>{{hotelcode}}</strong>
+                                </p>
+                                
+                            </div>
+                        {% else %}
+                        <div class="well">
+                             <strong>¡Saludos!</strong>
+                             Una vez hayas realizado tu transferencia introduce el número de referencia de la misma y
+                             adjunta el comprobante.
+                        </div>
+                        {% endif %}
+                        {% set cuentas = item.hotel.datosBancarios  %}
+                        <div class="col-md-12">
+                            <ul class="list-group">
+                            
+                                {% for cuenta in cuentas if cuenta.nacional != 1 %}
+                                <li class="list-group-item">
+                                <p><strong>{{cuenta.banco}}</strong> </p>
+                                <p><Strong>Beneficiario:</strong> {{cuenta.beneficiario}}</p>
+                                <p><strong>Cuenta:</strong> {{cuenta.cuenta}}</p>
+                                {% if cuenta.email !="" %}
+                                    <p><strong>Email:</strong> {{cuenta.email}}</p>
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                        
+                            </ul>
+                        </div>
+                        <form class="form col-md-12 text-center" id="form-transferencia"
+                        method="post" enctype="multipart/form-data"
+                        data-request-files data-request-validate 
+                             data-request-flash data-request="ResumenReserva::onAddComprobante">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                <label for="localizador">Número de transferencia</label>
+                                <input type="text" class="form-control"
+                                    name="localizador" id="localizador" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                <label for="exampleInputEmail2">Comprobante</label>
+                                <input type="file" class="form-control"
+                                    name="archivo2" id="archivo">
+                                </div>
+                            </div>
+                            <input type="hidden" name="reserva_id" value="{{reservacion.id}}">
+                            
+                            <button type="submit" class="btn btn-default" data-attach-loading >¡Enviar!</button>
+                            <p class="help-block">Sólo se permiten archivos de imagen o PDF, ambos con un peso no mayor a 2MB</p>
+                        </form>
+                    </div>
+                </div>
+                {% set active = "" %}
+                {% endif %}
+
+                {% if metodo.id == 5 and item.permitePagoEnHotel() %}                
+                <div role="tabpanel" class="tab-pane {{active}}" id="tab{{metodo.id}}">
+                    {% if tipo == 'reserva'%}
+                    {% set resumen = item.getResumen() %}
+                    <p class="">Al utilizar este método nos comprometemos a mantener tu reserva
+                        activa hasta las 6:00pm del dia <strong>{{resumen.checkin}}</strong>
+                    </p>
+                    <p class="text-center">
+                        Acepto realizar el pago total el día estipulado <br>
+                        <button class="btn btn-primary payInSite" data-code="{{item.id}}" id="payInSite">Formalizar pre-reserva</button>
+                    </p>
+                    
+                    {% elseif tipo == 'compra' %}
+                    
+                    <p class="">Al utilizar este método nos comprometemos a mantener compra
+                        activa hasta el día del evento o la fecha de disfrute del servicio
+                        </p>
+                        <p class="text-center">
+                            Acepto realizar el pago total el día estipulado <br>
+                            <button class="btn btn-primary payInSite" data-code="{{item.id}}" data-hotel="{{hotel.id}}" id="payInSite">Formalizar pre-compra</button>
+                        </p>
+                    
+                    {% endif %}
+                    
+                </div>
+                {% set active = "" %}
+                {% endif %}
+
+            {% elseif (item.moneda_id == 1 or item.moneda_id == 3)  %}
+                <div role="tabpanel" class="tab-pane {{active}}" id="tab{{metodo.id}}">
+                {% if metodo.id == 1 and hotel.id != 3 %}
+                    {% component 'pasarela' %}
+                
+                    {% set active = "" %}
+                {% elseif metodo.id == 2 and item.permiteTransferencias() %}
+                <div role="tabpanel" class="tab-pane {{active}}" id="tab{{metodo.id}}">
+                        <div class="col-md-12">
+                            <div class="well">
+                            <strong>¡Saludos!</strong>
+                            Una vez hayas realizado tu transferencia introduce el número de referencia de la misma y
+                            adjunta el comprobante.
+                            </div>
+                            {% set cuentas = hotel.datosBancarios  %}
+                            <div class="col-md-12">
+                                <ul class="list-group">
+                                
+                                    {% for cuenta in cuentas if cuenta.nacional == 1 %}
+                                    <li class="list-group-item">
+                                    <p><strong>Banco:</strong> {{cuenta.banco}}</p>
+                                    <p><Strong>Beneficiario:</strong> {{cuenta.beneficiario}}</p>
+                                    <p><strong>Cuenta:</strong> {{cuenta.cuenta}}</p>
+                                    
+                                    </li>
+                                    {% endfor %}
+                            
+                                </ul>
+                            </div>
+                            {% if tipo == 'reserva' %}
+                            <form class="form col-md-12 text-center" id="form-transferencia"
+                            method="POST" action="{{ url ('pago-de-reserva/' ~ item.getIdEncriptado())}}" accept-charset="UTF8"
+                            enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                    <label for="localizador">Número de Transferencia</label>
+                                    <input type="text" class="form-control"
+                                        name="localizador" id="localizador" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                    <label for="comprobante">Comprobante</label>
+                                    <input type="file" class="form-control"
+                                        name="archivo2" id="archivo">
+                                    </div>
+                                </div>
+                                <input type="hidden" name="_handler" value="onAddComprobante">
+                                <input type="hidden" name="reserva_id" value="{{item.id}}">
+                                {{ form_token() }}
+                                {{ form_sessionKey() }}
+                                <button type="submit" class="btn btn-default">¡Enviar!</button>
+                                <p class="help-block">Sólo se permiten archivos de imagen o PDF, ambos con un peso no mayor a 2MB</p>
+                            </form>
+                            {% else %}
+                            <form class="form col-md-12 text-center" id="form-transferencia"
+                                data-request-files data-request-validate
+                                data-request-flash data-request="Compra::onAddComprobante">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                    <label for="localizador">Número de Transferencia</label>
+                                    <input type="text" class="form-control"
+                                        name="localizador" id="localizador">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                    <label for="comprobante">Comprobante</label>
+                                    <input type="file" class="form-control"
+                                        name="archivo2" id="archivo">
+                                    </div>
+                                </div>
+                                <!-- <input type="hidden" name="_handler" value="onAddComprobante">-->
+                                <input type="hidden" name="compra_id" value="{{item.id}}">
+                                <button type="submit" class="btn btn-default" data-attach-loading>¡Enviar!</button>
+                                <p class="help-block">Sólo se permiten archivos de imagen o PDF, ambos con un peso no mayor a 2MB</p>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% set active = "" %}
+                {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+           
+      
+{#  {% if (hotel.datosBancarios.count and reservacion.moneda_id == 1) or (hotel.datosBancarios.count and reservacion.moneda_id == 3) %}
+      {% if reservacion.permiteTransferencias == true %} <!-- SI PERMITE TRANSFERENCIAS -->
+        
+      {% else %}
+        <div role="tabpanel" class="tab-pane" id="tab2">
+          <div class="col-md-12">
+            <div class="well text-center">
+              <strong>¡Saludos!</strong><br>
+              Este método de pago no se encuentra disponible, para activarlo tu fecha de check-in
+              debe ser al menos 3 dias después de la fecha actual <br>
+              <strong>Para más información comuníquese con nosotros</strong><br>
+              {% for telf in reserva.hotel.telefonos %}
+                    <p><strong>{{telf.nombre_tlf}}:</strong> {{telf.numero_tlf}}</p>
+              {%endfor%}
+            </div>
+          </div>
+        </div><!--FIN PANEL 2 -->
+      {% endif %} <!-- FIN SI PERMITE TRANSFERENCIA -->
+    {% endif %} #}
+    </div>
+  </div>

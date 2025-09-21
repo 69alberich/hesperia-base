@@ -1,0 +1,51 @@
+<div class="container">
+  <h2 class="section-header text-center">Menú</h2>
+</div>
+
+{%for seccion in restaurant.secciones %}
+
+<div class="container seccion-restaurant">
+  <section class="seccion-menu intro-parallax" id="banner-lista-hoteles" style="background-image:url('{{seccion.banner.thumb(1200, 600, {'mode':'crop'})}}')">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <h3 class="text-center">{{seccion.nombre}}</h3>
+        <h5 class="text-center">{{seccion.descripcion}}</h5>
+      </div>
+  </section>
+
+  {%for plato in seccion.platos %}
+    <div class="col-md-6 plato-container">
+      <div class="media plato-body">
+        <div class="media-left">
+          <a class="modal-img-mini"  data-toggle="modal" data-target="#modal-plato-{{plato.id}}" rel="ligthbox">
+            <img class="media-object" src="{{ plato.foto.thumb(150,110, {'mode':'crop'}) }}" alt="...">
+          </a>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{plato.nombre}}</h4>
+          <p>{{plato.descripcion}}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="modal-plato-{{plato.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="item ">
+              <img class="center-block img-responsive"  src="{{ plato.foto.path }}">
+              <div class="caption" id="plato-descripcion">
+                  <h4 class="media-heading text-center">{{plato.nombre}}</h4>
+                  <p class="text-center">{{plato.descripcion}}</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+  {%endfor%}
+</div>
+{%endfor%}
+
+

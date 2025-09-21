@@ -1,0 +1,44 @@
+title = "inicio"
+url = "/inicio"
+layout = "test"
+is_hidden = 0
+robot_index = "noindex"
+robot_follow = "follow"
+
+[CajaReservas]
+mostrar_moneda = 0
+moneda = 1
+redirect = "reservar-habitacion"
+==
+<?php
+function onStart(){
+
+  //$this->addJs('assets/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.js');
+  //$this->addJs('assets/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.es.js');
+  //$this->addJs('assets/jQuery.countdown-master/dist/jquery.countdown.js');
+  //$this->addCss('assets/css/hello.css');
+}
+?>
+==
+<br>
+
+<div class='container-fuild' id="caja-reserva">
+  <h2 class="text-center">Reserva Online</h2>
+  <h4 class="text-center">Mejor precio garantizado <i class="fa fa-check-circle-o" aria-hidden="true"></i></h4>
+  {% component 'CajaReservas' %}
+</div>
+<br>
+
+{# {%content 'home/foto-hoteles-index' %} #}
+
+{% content 'home/detail-index'   %}
+
+{%content 'home/paquetes-index' %}
+
+{#{%content 'home/atramape' %}#}
+
+{#{%partial 'generales/ultimo-post-blog' %}#}
+
+{%content 'home/restaurantes-index' %}
+
+{%content 'home/eventos-index' %}

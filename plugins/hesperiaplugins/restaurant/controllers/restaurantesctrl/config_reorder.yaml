@@ -1,0 +1,4 @@
+title: RestaurantesCtrl
+modelClass: HesperiaPlugins\Restaurant\Models\Restaurant
+toolbar:
+    buttons: reorder_toolbar

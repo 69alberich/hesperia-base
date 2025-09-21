@@ -1,0 +1,10 @@
+name: RestaurantesCtrl
+form: $/hesperiaplugins/restaurant/models/restaurant/fields.yaml
+modelClass: HesperiaPlugins\Restaurant\Models\Restaurant
+defaultRedirect: hesperiaplugins/restaurant/restaurantesctrl
+create:
+    redirect: 'hesperiaplugins/restaurant/restaurantesctrl/update/:id'
+    redirectClose: hesperiaplugins/restaurant/restaurantesctrl
+update:
+    redirect: hesperiaplugins/restaurant/restaurantesctrl
+    redirectClose: hesperiaplugins/restaurant/restaurantesctrl

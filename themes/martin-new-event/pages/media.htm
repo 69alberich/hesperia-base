@@ -1,0 +1,129 @@
+title = "Media Center"
+url = "/mediacenter"
+layout = "test"
+meta_title = "Media Center"
+meta_description = "Encuentra todo tipo de archivos multimedia sobre nosotros"
+is_hidden = 0
+seo_keywords = "https://hoteleshesperia.com.ve/mediacenter"
+robot_index = "index"
+robot_follow = "follow"
+
+[SeoCmsPage]
+==
+<?php
+use HesperiaPlugins\MediaCenter\Models\Album;
+use HesperiaPlugins\MediaCenter\Models\Categoria;
+use HesperiaPlugins\Hoteles\Models\Hotel;
+
+function onStart(){
+	$this->addJs('assets\js\media-center-plugin.js');
+	$this->addCss('assets\css\styles-mediacenter-plugin.css');
+
+    $this['categorias'] = Categoria::select("id","nombre")->get();
+    $this['hoteles'] = Hotel::all();
+    $this['img_selected'] = false;
+}
+
+function onFiltrar(){
+
+  //-------- Valida que halla una Categoria seleccionada-----	
+  $input = array('categoria' => Input::get('categoria'));
+  $rules =['categoria'=>'required'];	
+  $messages = [
+      'required' => 'Seleccione una :attribute'
+  ];
+
+  $validator = Validator::make($input, $rules, $messages);
+
+  if ($validator->fails()) {
+   throw new ValidationException($validator);
+  }
+  //-------- Fin Validacion-------------------------------------
+
+	$hotel = Input::get('hotel');
+	$categoria = Input::get('categoria');
+	
+	if (Input::get('pagina')) {
+		$pagina = Input::get('pagina');
+	}else{
+		$pagina = 1;
+	}
+
+	$h = Hotel::find($hotel);
+
+    $albumes = Album::whereHas('categorias', function($query) use($categoria, $hotel){
+    	$query->where('hotel_id', '=', $hotel)->whereIn('categoria_id', $categoria);
+
+    })->orderBy('titulo', 'asc')->paginate(2, $pagina);
+
+    if ($categoria) {
+    	if (in_array("1", $categoria)) {
+
+    	$this['img_selected'] = true;
+    	}else{
+    	$this['img_selected'] = false;
+    	}
+    }
+    
+	$this['albumes'] = $albumes;
+	$this['currentPage'] = $albumes->currentPage();
+	$this['registrosPorPagina'] = $albumes->perPage();
+	$this['h1'] = $h;
+}
+?>
+==
+<section class="full-width intro-parallax" id="banner-reserva-hab">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<h1 class="wow fadeInUp" data-wow-delay="1.6s">Media Center</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="container">
+	<div class="row">
+	    <div class="col-sm-12 col-md-12">
+		    <h3 class="text-center" style="margin-bottom: 5rem;">
+		        ¡Encuentra y descarga el material multimedia de nuestros hoteles!
+		    </h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+		    <form data-request="onFiltrar" class="well " id="form-buscar" data-request-update="mediacenter_result: '#result'">
+			    <div class="row">
+			        <div class=" form-group col-md-8">
+					    <label for="hotel">Elije un hotel</label>
+						<select class="form-control" id="selector-media" name="hotel">
+						    {% for hotel in hoteles %}
+						        <option value="{{hotel.id}}">{{ hotel.nombre }}</option>
+						    {% endfor %}
+						</select>
+					</div>
+					<div class="form-group col-md-4">
+						<label for="hotel">Categorias</label>	
+						{% for categoria in categorias %}
+						    <div class="checkbox">
+								<label>
+									<input type="checkbox" value="{{ categoria.id }}" name="categoria[]"> 
+									{{ categoria.nombre }}
+								</label>
+							</div>
+						{% endfor %}
+					</div>
+			    </div>
+		        <div class="row text-center">
+					<div class="form-group">
+			            <button id="buscar" type="submit" class="btn btn btn-primary">Buscar</button>
+			        </div>
+		        </div>
+			</form>
+		</div>
+    </div>
+    <div class="container-fluid" id="result">
+    	{% partial "mediacenter_result"  %}
+    </div>
+</section>
+<hr>

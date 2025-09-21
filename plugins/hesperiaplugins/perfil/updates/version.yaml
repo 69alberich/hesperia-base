@@ -1,0 +1,9 @@
+1.0.1:
+    - 'Agregando a tabla usuario los campos:'
+    - agregar_campos_basicos.php
+1.0.2:
+    - 'Created table hesperiaplugins_perfil_roles'
+    - builder_table_create_hesperiaplugins_perfil_roles.php
+1.0.3:
+    - 'Created table hesperiaplugins_perfil_contrato'
+    - builder_table_create_hesperiaplugins_perfil_contrato.php

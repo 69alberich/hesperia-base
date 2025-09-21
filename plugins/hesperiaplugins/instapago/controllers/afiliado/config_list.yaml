@@ -1,0 +1,11 @@
+list: $/hesperiaplugins/instapago/models/afiliado/columns.yaml
+modelClass: hesperiaplugins\Instapago\Models\Afiliado
+title: Afiliado
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'hesperiaplugins/instapago/afiliado/update/:id'

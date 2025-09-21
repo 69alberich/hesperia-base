@@ -1,0 +1,10 @@
+name: Album
+form: $/hesperiaplugins/mediacenter/models/album/fields.yaml
+modelClass: hesperiaplugins\Mediacenter\Models\Album
+defaultRedirect: hesperiaplugins/mediacenter/album
+create:
+    redirect: 'hesperiaplugins/mediacenter/album/update/:id'
+    redirectClose: hesperiaplugins/mediacenter/album
+update:
+    redirect: hesperiaplugins/mediacenter/album
+    redirectClose: hesperiaplugins/mediacenter/album

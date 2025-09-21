@@ -1,0 +1,11 @@
+name: Oferta
+modelClass: Hesperiaplugins\Empleos\Models\Oferta
+form: $/hesperiaplugins/empleos/models/oferta/fields.yaml
+defaultRedirect: hesperiaplugins/empleos/oferta
+create:
+    redirect: 'hesperiaplugins/empleos/oferta/update/:id'
+    redirectClose: hesperiaplugins/empleos/oferta
+update:
+    redirect: hesperiaplugins/empleos/oferta
+    redirectClose: hesperiaplugins/empleos/oferta
+preview: {  }

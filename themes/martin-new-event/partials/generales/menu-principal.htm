@@ -1,0 +1,30 @@
+[viewBag]
+
+[staticMenu]
+code = "menu-principal"
+==
+<div class="navbar navbar-fixed-top custom-navbar" role="navigation">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon icon-bar"></span>
+                <span class="icon icon-bar"></span>
+                <span class="icon icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand"><img src="{{'logos/hesperia-hhr-v2.png'|media}}" class="img-responsive" width="150px" alt="Hesperia Venezuela"></a>
+        </div>
+
+        <div class="collapse navbar-collapse">
+            {% if staticMenu.menuItems %}
+                <ul class="nav navbar-nav navbar-right">
+                    {% partial staticMenu ~ "::items" items=staticMenu.menuItems %}
+                    <li role="presentation">
+                      {% component 'localePicker' %}
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,47 @@
+title = "Reserva de Habitaciones"
+url = "/reservar-habitacion/:hotel?/:checkin?/:checkout?"
+layout = "test"
+description = "pagina donde se cargan las habitaciones disponibles"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[CajaReservas CajaReservasPage]
+checkIn = "{{ :checkin }}"
+checkOut = "{{ :checkout }}"
+hotel_default = "{{ :hotel }}"
+mostrar_moneda = 1
+moneda = 3
+==
+<?php
+function onStart(){
+    use HesperiaPlugins\Hoteles\Models\Hotel;
+    if($this->param("hotel")){
+      $id = $this->param("hotel");
+      if($h = Hotel::find($id)){
+        $this["hotel"]=$h->id;
+      }
+    }
+}
+?>
+==
+
+<div id="wrapper1" class="active">
+  <div id="sidebar1-wrapper" >
+      
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+    
+      <!-- Sidebar -->
+      {% content 'banner-paginas/reserva-hab-banner'%}
+     
+      <div id="reservas-container">
+        
+        {% component 'CajaReservasPage' %}
+      </div>
+    
+     
+      </div>
+  </div>
+</div>

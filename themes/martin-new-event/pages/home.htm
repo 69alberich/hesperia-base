@@ -1,0 +1,18 @@
+title = "New Event theme"
+url = "/preview"
+layout = "default"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+==
+<?php
+function onStart(){
+    use Carbon\Carbon;
+    $fecha_actual = Carbon::now();
+    echo "carbon: $fecha_actual";
+    $begin = new \DateTime();
+    echo "<br>php: ".$begin->format("d-m-y:h:m:s");    
+}
+?>
+==
+<!-- single page template, this file is not used -->

@@ -1,0 +1,23 @@
+[viewBag]
+==
+{% if hotel.servicios is not empty %}
+<div class="container-fluid wow fadeInUp" data-wow-delay="1.5s" id="novedades-container">
+    <h2>Servicios</h2>
+  <div class="slider-3-items">
+    {% for servicio in hotel.servicios %}
+        <div class="col-xs-12 col-sm-12 col-md-12 thumb-container item">
+          <div class="thumbnail">
+            <img src="{{servicio.banner.path}}" alt="">
+              <div class="caption">
+                <h4 class="text-center">{{servicio.titulo}}</h4>
+                <p class="text-center">{{html_strip(str_words(servicio.informacion|raw, 20)) }}</p>
+                <p class="text-center">
+                  <a href="{{ 'servicio'|page({ slug: servicio.slug }) }}" class="btn btn-primary" role="button">Leer Más</a>
+                </p>
+            </div>
+          </div>
+        </div>
+   {% endfor %}
+  </div>
+</div>
+{% endif %}

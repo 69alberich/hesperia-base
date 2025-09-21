@@ -1,0 +1,6 @@
+columns:
+    descripcion:
+        label: Descripcion
+        type: text
+        searchable: true
+        sortable: true

@@ -1,0 +1,4 @@
+title: Album
+modelClass: hesperiaplugins\Mediacenter\Models\Album
+toolbar:
+    buttons: reorder_toolbar

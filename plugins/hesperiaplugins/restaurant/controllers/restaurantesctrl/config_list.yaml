@@ -1,0 +1,11 @@
+list: $/hesperiaplugins/restaurant/models/restaurant/columns.yaml
+modelClass: HesperiaPlugins\Restaurant\Models\Restaurant
+title: RestaurantesCtrl
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'hesperiaplugins/restaurant/restaurantesctrl/update/:id'

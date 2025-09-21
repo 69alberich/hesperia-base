@@ -1,0 +1,11 @@
+name: Pais
+modelClass: Hesperiaplugins\Empleos\Models\Pais
+form: $/hesperiaplugins/empleos/models/pais/fields.yaml
+defaultRedirect: hesperiaplugins/empleos/pais
+create:
+    redirect: 'hesperiaplugins/empleos/pais/update/:id'
+    redirectClose: hesperiaplugins/empleos/pais
+update:
+    redirect: hesperiaplugins/empleos/pais
+    redirectClose: hesperiaplugins/empleos/pais
+preview: {  }

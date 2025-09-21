@@ -1,0 +1,48 @@
+[viewBag]
+snippetCode = "galeria-instagram"
+snippetName = "Galeria Instagram"
+
+[userFeed]
+user_name = "hesperiave"
+limit = 10
+cache = 5000
+==
+<section class="parallax-section" id="seccion-instagram">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2><i class="fa fa-instagram fa-4" aria-hidden="true"></i> @HesperiaVE</h2>
+			</div>
+			<div class="owl-carousel slider-5-items" id="instagram">
+				{% for m in userFeed.media %}
+			  		{% if m.getType() == 'image' %}
+						<div class="col-sm-12 col-md-12 col-xs-12">
+						    <div>
+							    <a class="modal-img-mini" data-toggle="modal" data-target="#mymodal" data-src="{{ m.getStandardResImage().url }}" data-caption="{{ m.getCaption() }}" rel="ligthbox">
+							      <img src="{{ m.getThumbnail().url }}" class="img-rounded">
+							  	</a>
+						    </div>
+					  	</div>
+			  		{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		      <div class="modal-content">
+				    <div style="position: relative;">
+				    	<div style="position: absolute; right: 15px; top: 10px;">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times fa-2"></i></button>
+						</div>	
+				      	<img class="img-responsive center-block mdialTamanio" id="img-modal-instagram">
+				  	</div>
+		          <div class="caption-instagram">
+		              <p class="text-center" id="instagram-caption"></p>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+	</div>
+</section>

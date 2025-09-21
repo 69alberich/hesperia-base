@@ -1,0 +1,26 @@
+plugin:
+    name: 'hesperiaplugins.restaurant::lang.plugin.name'
+    description: 'hesperiaplugins.restaurant::lang.plugin.description'
+    author: 'Jesús Castillo'
+    icon: oc-icon-coffee
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: Restaurantes
+        url: hesperiaplugins/restaurant/restaurantesctrl
+        icon: icon-coffee
+        permissions:
+            - gestion_restaurantes
+        sideMenu:
+            side-menu-item:
+                label: Secciones
+                url: hesperiaplugins/restaurant/seccionesctrl
+                icon: icon-columns
+            side-menu-item2:
+                label: Platos
+                url: hesperiaplugins/restaurant/platos
+                icon: icon-cutlery
+permissions:
+    gestion_restaurantes:
+        tab: Restaurantes
+        label: 'Agregar, Modificar y Eliminar información de los restaurantes'

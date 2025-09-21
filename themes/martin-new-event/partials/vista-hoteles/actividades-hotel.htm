@@ -1,0 +1,48 @@
+description = "Posts del Hotel"
+
+[viewBag]
+==
+{% if actividades is not empty %}
+<section class="section-narrow gradient-section gradient-section-dark" style="min-height: 400px; background: #051c2d">
+    <div class="container-fluid">
+        <div class="wow bounceInLeft col-md-6 gradient-text presentation " data-wow-delay="1.3s">
+          <h2>Actividades</h2>
+          <p class="lead">
+            NO TE PIERDAS LAS ACTIVIDADES QUE TENEMOS PREPARADAS COMO
+            CENAS TEMÁTICAS, KARAOKE, SHOWS EN VIVO, COMPETENCIAS,
+            EVENTOS CORPORATIVOS, OBRAS TEATRALES ENTRE MUCHAS OTRAS.
+          </p>
+          <p>
+            GARANTIZAMOS POTENCIAR AL MÁXIMO TU ESTADÍA CON NOSOTROS
+          </p>
+          <h4 class="text-center">
+            ENTÉRATE DE TODO LO QUE SUCEDE A DIARIO EN NUESTROS HOTELES.
+          </h4>
+          <p class="text-center"><a href="{{ 'blog/categoria'|page({ slug: 'actividades' }) }}" class="btn btn-default">AQUÍ</a></p>
+        </div>
+        <div class="wow bounceInRight col-md-6" data-wow-delay="1.3s">
+          <div class="slider-default">
+            {% for post in actividades %}
+        		<div class="item">
+              <div class="thumbnail">
+        				<div class="container-img"><img src="{{post.featured_images[0].path}}" alt="" class="img-responsive">
+        				</div>
+        				<div class="caption">
+        					<br>
+                  <h4 class="text-center">{{ post.title }}</h4>
+        					<!--<p class="text-center">{{str_words(post.excerpt, 20)}}</p>-->
+                  <p class="text-center"> <a href="{{ 'blog/post'|page({ slug: post.slug }) }}"
+                     class="btn btn-primary">Leer Más</a> </p>
+        				</div>
+        			</div>
+
+        		</div>
+
+            {% endfor %}
+        	</div>
+        </div>
+
+    </div>
+
+</section>
+{% endif %}

@@ -1,0 +1,59 @@
+{% if empleos|length > 0 %}
+  {% for empleo in empleos %}
+     <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+           <h2>{{empleo.titulo}}</h2>
+            <p class="text-justify">{{ html_strip(str_words(empleo.descripcion, 30)) }}</p>
+            <p class = "text-left">
+              <strong>Localidad:</strong>
+
+              <a href="{{ 'empleo/localidad'|page({ slug: empleo.localidad.slug }) }}">
+                {{empleo.localidad.localidad}}
+              </a>
+
+            </p>
+            {% if empleo.ofertable_type != null %}
+              <p>
+                <strong>Empresa:</strong>
+                <a href="{{ 'empleo/empresa'|page({ id: empleo.id }) }}">
+                  {{ empleo.ofertable.nombre }}
+                </a>
+              </p>
+            {% endif %}
+           <p class = "text-left">
+              <strong>Categorias:</strong>
+              {% for categoria in empleo.categorias %}
+
+                {% if loop.last %}
+
+                  <a href="{{'empleo/categoria'|page({slug: categoria.slug})}}">{{categoria.nombre}}</a>
+                {% else %}
+
+                  <br><a href="{{'empleo/categoria'|page({slug: categoria.slug})}}">{{categoria.nombre}}</a>
+                {% endif %}
+
+              {% endfor %}
+             </p>
+           <p class="text-right">
+             
+             <a href="{{'empleo/empleo'|page({slug: empleo.slug})}}" class="btn btn-primary">{{"Ver Más"}}</a>
+             
+           </p>
+          </div>
+        </div>
+     </div>
+  {% endfor %}
+{% else %}
+  <div class="container-fluid">
+  <div class="col-md-10 col-md-offset-1">
+
+    <h1 class="text-center">
+      <br>Whoops!</h1>
+
+    <p class="lead">De momento no tenemos ninguna oferta de empleo, puedes volver a consultar en los proximos dias. </p>
+
+    <p class="text-center"><a href="https://hoteleshesperia.com.ve/">Volver a la página principal</a></p>
+  </div>
+</div>
+{% endif %}

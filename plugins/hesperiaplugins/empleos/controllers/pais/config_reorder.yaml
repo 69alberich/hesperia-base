@@ -1,0 +1,4 @@
+title: Pais
+modelClass: Hesperiaplugins\Empleos\Models\Pais
+toolbar:
+    buttons: reorder_toolbar

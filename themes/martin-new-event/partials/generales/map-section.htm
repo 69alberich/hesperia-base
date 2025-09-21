@@ -1,0 +1,107 @@
+
+==
+<div class="container-fluid" id="map-section">
+    <div class="col-md-12">
+      <p class="text-center">
+        <h2 class="text-center">Dirección</h2>
+      </p>
+      <p class="text-center"><i class="fa fa-map-marker" aria-hidden="true"></i>
+         {{item.direccion}}
+      </p>
+      <div class="col-md-12">
+        <div class="form-inline text-center">
+          <div class="form-group">
+            <label for="exampleInputName2">Cómo llegar </label>
+            <input type="text" class="form-control" id="autocomplete">
+          </div>
+          <hr>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-12" id="map" style="height:300px;">
+
+      <script>
+        var itemCoord = {lat:{{item.latitud}}, lng:{{item.longitud}}};
+        var directionsDisplay;
+
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: itemCoord,
+          scrollwheel: false,
+        });
+        var marker = new google.maps.Marker({
+          position: itemCoord,
+          map: map,
+          title: '{{item.nombre}}'
+        });
+      //}
+      /*var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: {{item.latitud}}, lng: {{item.longitud}}},
+        zoom: 13
+      });*/
+
+      var marker_autocomplete = new google.maps.Marker({
+        map: map,
+        anchorPoint: new google.maps.Point(0, -29)
+      });
+
+      var input = (document.getElementById('autocomplete'));
+      var autocomplete = new google.maps.places.Autocomplete(input);
+      //autocomplete.bindTo('bounds', map);
+      autocomplete.addListener("place_changed", function(){
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+          window.alert("Autocomplete's returned place contains no geometry");
+          return;
+        }
+        marker_autocomplete.setVisible(false);
+        if (place.geometry.viewport) {
+          map.fitBounds(place.geometry.viewport);
+        }else {
+          map.setCenter(place.geometry.location);
+          map.setZoom(17);  // Why 17? Because it looks good.
+        }
+        marker_autocomplete.setIcon(/** @type {google.maps.Icon} */({
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(35, 35)
+        }));
+        marker_autocomplete.setPosition(place.geometry.location);
+        marker_autocomplete.setVisible(true);
+        var start = new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng());
+        calcRoute(start, itemCoord);
+        //console.log();
+      });
+      var directionsService = new google.maps.DirectionsService();
+      var directionsDisplay;
+      directionsDisplay = new google.maps.DirectionsRenderer();
+      function calcRoute(start, end) {
+        //var start = new google.maps.LatLng(37.334818, -121.884886);
+        //var end = new google.maps.LatLng(38.334818, -181.884886);
+        //var end = new google.maps.LatLng(37.441883, -122.143019);
+
+
+        var request = {
+          origin: start,
+          destination: end,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+        directionsService.route(request, function(response, status) {
+          console.log(response);
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+            directionsDisplay.setMap(map);
+          } else {
+            alert("No hemos podido crear la ruta desde " + start.toUrlValue(6) + " a " + end.toUrlValue(6));
+          }
+        });
+      }
+
+    //alert(distance);
+    </script>
+    </div>
+</div>

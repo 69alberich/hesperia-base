@@ -1,0 +1,41 @@
+<div id="overview-hotel">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-6 wow bounceInLeft" data-wow-delay="1.3s">
+        <div class="col-md-12">
+          <h2 class='section-header text-theme-1'>Bienvenido</h2>
+        <p>{{hotel.descripcion}}</p>
+        </div>
+        <div class="col-md-12">
+          {% for atributo in hotel.atributos %}
+          <div class="media">
+              <div class="pull-left">
+                  <span class="fa-stack fa-2x">
+                      <i class="fa fa-circle fa-stack-2x text-theme-1"></i>
+                      <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                  </span>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">{{atributo.titulo}}</h4>
+                <p>{{atributo.descripcion}}</p>
+              </div>
+          </div>
+          {% endfor %}
+        </div>
+
+      </div>
+      <div class="col-md-6 bounceInRight" data-wow-delay="1.3s">
+        <!--<img src="{{hotel.foto_inicio.path}}" class="img-responsive"></a>-->
+        <div class='embed-responsive embed-responsive-16by9'>
+		        <iframe class='embed-responsive-item'
+		          src="{{hotel.url_video}}">
+		        </iframe>
+		    </div>
+        <br>
+        <br>
+        <!--<h3 class="text-center"><a class="btn btn-danger" href="#">Ver Ficha Técnica</a></h3>-->
+      </div>
+    </div>
+  </div> <!-- CONTAINER -->
+</div> <!-- WELCOME -->

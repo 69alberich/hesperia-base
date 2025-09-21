@@ -1,0 +1,47 @@
+name: 'Footer - Hoteles'
+items:
+    -
+        title: 'Hesperia Maracay'
+        type: url
+        url: 'https://hoteleshesperia.com.ve/hotel/hesperia-maracay'
+        code: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Hesperia Edén Club'
+        type: url
+        url: 'https://hoteleshesperia.com.ve/hotel/hesperia-eden-club'
+        code: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Hesperia WTC Valencia'
+        type: url
+        url: /hotel/hesperia-wtc-valencia
+        code: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Hesperia Playa el Agua'
+        type: url
+        url: 'https://hoteleshesperia.com.ve/hotel/hesperia-playa-el-agua'
+        code: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Hesperia Isla Margarita'
+        type: url
+        url: 'https://hoteleshesperia.com.ve/hotel/hesperia-isla-margarita'
+        code: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'

@@ -1,0 +1,8 @@
+Transaccion:
+    label: Transaccion
+    view:
+        list: $/hesperiaplugins/instapago/models/transaccion/columns.yaml
+        toolbarButtons: false
+    manage:
+        form: $/hesperiaplugins/instapago/models/transaccion/fields.yaml
+        recordsPerPage: 10

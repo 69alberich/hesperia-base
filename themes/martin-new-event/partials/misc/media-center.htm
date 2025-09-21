@@ -1,0 +1,120 @@
+description = "complemento para el media center"
+
+[viewBag]
+snippetCode = "media-center"
+snippetName = "Media Center"
+==
+<?php
+function onStart(){
+    $this["files"] = "hola";
+    $arrays = Storage::directories("media/media-center");
+    $directorios = array();
+    $archivos = array();
+    for ($i = 0; $i<count($arrays); $i++){
+        $aux = explode("/", $arrays[$i]);
+        //echo end($aux);
+        array_push($directorios, end($aux));
+            
+        $files = Storage::files("media/media-center/".end($aux));
+        for($j=0; $j<count($files);$j++ ){
+            if(isset($files[$j])){
+                $temp = substr($files[$j], 6);
+                //echo $temp."<br>";
+                $files[$j] = $temp;   
+            }
+                        
+        }
+        $archivos[end($aux)] = $files;
+            //var_dump($files);
+    }
+        
+    $this["options"] = $directorios;
+    $this["files"] = $archivos;
+    
+    $this->addJs('assets/js/media-center.js');
+}
+?>
+==
+<div class="col-md-12">
+    <div class="container">
+        <h3 class="text-center">
+           En nuestro Media Center puedes encontrar todo nuestro material multimedia
+        </h3>
+        <div class="col-md-4 col-md-offset-4 text-center">
+            <label class="form-label">Elije una categoria</label>
+            <select class="form-control" id="selector-media">
+             {% for option in options %}
+                    <option value="{{option}}">{{option}}</option>
+                {% endfor %}
+            </select>
+        </div>
+       
+    </div>
+     <hr>
+    {% for option2 in options %}
+      {% if loop.index == 1 %}
+          {% set visible = "show" %}
+          
+      {% else %}
+          {% set visible = "hidden" %}
+      {% endif %}
+     <div class="row {{visible}} media-section {{option2}}">
+        {% set archivos = files[option2] %}
+            
+        {%if option2 != "brochures"%}
+            
+            {% for archivo in archivos %}
+              
+                {% set ruta = archivo|mediathumb_resize('height', 300, 96) %}
+                  
+                <a href="#" data-toggle="modal" data-target=".modal-container" 
+                  class="thumbnail col-xs-6 col-md-3 image-media-center"
+                  data-src="/storage/app/media/{{archivo}}">
+                    <div class="col-md-12"
+                        style="background-image:url('{{ruta}}');
+                            background-size:cover;
+                            background-repeat: no-repeat;
+                            background-position:center;
+                            height:300px;">
+                       
+                     </div>
+                       
+                 </a>
+            {% endfor %} {# for de las galerias #}
+            
+        {% else %}
+            {% for archivo in archivos %}
+                <div class="col-md-3 col-xs-6">
+                    <p class="text-center">
+                     <img src="{{'tests/pdf-file-format-symbol.png'|media}}" class="img-responsive"
+                     style="margin:0 auto">
+                      <a href="{{'/storage/app/media/'~archivo}}" target="_blank">
+                         {{str_substr(archivo, "23")}}
+                     </a>
+                    </p>
+                    
+                </div>
+                {% endfor %} {# for de las galerias #}
+            {% endif %}
+            
+      </div>        
+    {% endfor %} {# for de los options #}
+                  
+  <!--MODAL -->
+  
+    
+
+    <div class="modal fade modal-container" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <img src="#" id="img-modal" class="img-responsive"> 
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <a href="#" id="link-descarga" class="btn btn-primary" download>Descargar</a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+</div>

@@ -1,0 +1,34 @@
+<section class="parallax-section">
+	<div class="container-fluid">
+		<div class="row">
+		    <div class="wow fadeInUp col-md-7 col-sm-6" data-wow-delay="1.3s">
+		        <a href="{{'restaurante'|page({ slug: restaurante.slug })  }}"><h2>{{restaurante.nombre}}</h2></a>
+		        <p class="lead text-justify">{{restaurante.descripcion}}</p>
+		        <div class="col-md-12">
+		                
+		            {% for telf in restaurante.telefonos %}
+		              <p><strong>{{telf.titulo}}:</strong> {{telf.telefono}}</p>
+		            {%endfor%}
+		                  
+		            {% for em in restaurante.emails %}
+		              <p><strong>{{em.titulo}}:</strong> {{em.email}}</p>
+		            {%endfor%}
+		                  
+		        </div>
+		        <p class="text-center"><strong>{{restaurante.direccion}}</strong></p>
+		        <br>
+		        <p class="text-center">
+		            <a class="btn btn-primary hidden-sm hidden-xs" href="{{ 'restaurante'|page({slug: restaurante.slug }) }}">
+		                  	Visitar</a>
+		        </p>
+		    </div>
+		    <div class="wow fadeInUp col-md-5 col-sm-6" data-wow-delay="0.9s">
+		        <a href="{{ 'restaurante'|page({slug: restaurante.slug }) }}">
+		            <img src="{{ restaurante.foto_portada.path }}" class="img-responsive" alt="{{restaurante.nombre}}">
+		        </a>
+		        <br>
+		    </div>
+		</div>
+		<hr>
+	</div>
+</section>

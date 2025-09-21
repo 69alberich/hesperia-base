@@ -1,0 +1,71 @@
+[viewBag]
+==
+<div class="container-fluid">
+  <br>
+  <div class="col-md-12">
+    <div class="col-md-9">
+      <img class="img-responsive" src="{{servicio.banner.path}}">
+      <h2>{{servicio.titulo}}</h2>
+      <p>{{servicio.informacion|raw}}</p>
+      <hr>
+      <h2>Galeria</h2>
+        <div class="col-md-12">
+          <div id="owl-galeria-servicio" class="owl-carousel carousel-con-modal">
+          {% for imagen in servicio.galeria %}
+            <div class="item" data-index='{{loop.index}}'><img class="lazyOwl img-responsive"
+               data-src="{{imagen.thumb(300, 200, {'mode':'crop'})}}" alt="Lazy Owl Image">
+            </div>
+          {% endfor %}
+          </div>
+       </div>
+       <div class="col-md-12">
+           <p class="text-center"><a class="btn btn-primary" href="{{ 'hotel/hotel'|page({ slug: servicio.hotel.slug }) }}">Volver al Hotel</a></p>
+       </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <h3 class="text-center">Otros Servicios</h3>
+      {%for recomendado in servicio.getRecomendados()%}
+        <div class="col-md-12 col-xs-6 pull-right">
+          <img src="{{recomendado.banner.thumb(350, 150, {'mode':'crop'})}}" class="img-responsive" alt="{{recomendado.titulo}}">
+          <div class="speakers-thumb">
+            <a href="{{ 'servicio'|page({ slug: recomendado.slug }) }}"><h4>{{recomendado.titulo}}</h4></a>
+            <p>{{recomendado.hotel.nombre}}</p>
+            
+            <!--<h6>UI Designer</h6>-->
+
+          </div>
+          <hr>
+        </div>
+
+      {%endfor%}
+      <!--<p class="text-center col-md-12">
+        <a href="#" class="btn btn-primary">Más Servicios</a>
+      </p>-->
+    </div>
+  </div>
+
+  <div class="modal fade" role="dialog" id="modal-owl-galeria">
+     <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div id="owl-galeria-servicio-modal" class="owl-carousel">
+        {% for imagen2 in servicio.galeria %}
+        <div class="item"><img class="lazyOwl img-responsive"
+           src="{{imagen2.path}}" alt="Lazy Owl Image">
+        </div>
+
+        {% endfor %}
+
+        </div>
+        <a class="left carousel-control" href="#" role="button" data-slide="prev">
+          <span class="fa glyphicon glyphicon-chevron-left fa-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#" role="button" data-slide="next">
+          <span class="fa glyphicon glyphicon-chevron-right fa-chevron-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+</div>

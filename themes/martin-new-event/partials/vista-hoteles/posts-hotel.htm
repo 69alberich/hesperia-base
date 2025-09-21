@@ -1,0 +1,39 @@
+description = "Posts del Hotel"
+
+[viewBag]
+==
+{% if posts is not empty %}
+<section class="section-narrow wow fadeInUp " data-wow-delay="1.3s">
+
+    <div class="container-fluid">
+        <h2>Te interesa...</h2>
+        <div class="owl-carousel owl-theme slider-default" >
+        {% for post in posts %}
+    		<div class="item">
+    			<div class="col-md-6 col-sm-10" >
+                  <a href="{{ 'blog/post'|page({ slug: post.slug }) }}"><h3>{{ post.title }}</h3></a>
+                  <p class="lead">{{post.excerpt}}</p>
+                  <p class="text-center">
+              	    <a href="{{ 'blog/post'|page({ slug: post.slug }) }}"
+                     class="btn btn-primary smoothScroll wow
+                     fadeInUp hidden-xs " data-wow-delay="2.3s">
+                     Dime más
+                   </a>
+                  </p>
+    			</div>
+    			<div class="wow fadeInUp col-md-6 col-sm-6" data-wow-delay="0.9s">
+    				<img src="{{post.featured_images[0].path}}" class="img-responsive" alt="Overview">
+    				<br>
+                      <a href="{{ 'blog/post'|page({ slug: post.slug }) }}"
+                         class="btn btn-lg btn-primary smoothScroll wow
+                         fadeInUp visible-xs" data-wow-delay="2.3s">
+                         Dime más
+                     </a>
+                </div>
+    		</div>
+        {% endfor %}
+    	</div>
+    </div>
+
+</section>
+{% endif %}

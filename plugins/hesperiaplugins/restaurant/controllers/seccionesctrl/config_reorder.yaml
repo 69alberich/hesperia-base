@@ -1,0 +1,4 @@
+title: SeccionesCtrl
+modelClass: HesperiaPlugins\Restaurant\Models\Seccion
+toolbar:
+    buttons: reorder_toolbar

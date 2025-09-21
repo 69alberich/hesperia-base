@@ -1,0 +1,21 @@
+title = "Empleo"
+url = "/empleo/:slug"
+layout = "layout-blank"
+description = "Pagina donde se muestra una oferta de empleo especifica"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[empleo]
+slug = "{{ :slug }}"
+==
+{% content 'banner-paginas/empleos-banner' %}
+
+<div class="container">
+   <div class="row">
+   	<br>
+	 <div class="col-md-12">
+		{% component 'empleo' %}
+	  </div>
+   </div>
+</div>

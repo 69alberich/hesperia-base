@@ -1,0 +1,4 @@
+title: Contrato
+modelClass: hesperiaplugins\Perfil\Models\Contrato
+toolbar:
+    buttons: reorder_toolbar

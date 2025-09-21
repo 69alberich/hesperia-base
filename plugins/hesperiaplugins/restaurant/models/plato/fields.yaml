@@ -1,0 +1,31 @@
+fields:
+    nombre:
+        label: Nombre
+        oc.commentPosition: ''
+        span: left
+        type: text
+    seccion:
+        label: Relation
+        oc.commentPosition: ''
+        nameFrom: nombre
+        descriptionFrom: description
+        span: right
+        type: relation
+    descripcion:
+        label: Descripcion
+        size: small
+        oc.commentPosition: ''
+        span: full
+        type: textarea
+    foto:
+        label: Foto
+        oc.commentPosition: ''
+        mode: image
+        imageWidth: '200'
+        imageHeight: '200'
+        useCaption: true
+        thumbOptions:
+            mode: crop
+            extension: auto
+        span: left
+        type: fileupload

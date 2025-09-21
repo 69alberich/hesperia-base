@@ -1,0 +1,77 @@
+#caja-reserva{
+    background-color: #051c2d;
+    color: #eee;
+}
+
+.btn-primary, section.text-center .add{
+    background-color: #cc5945 !important;
+    border-color: unset;
+}
+
+.btn-primary:hover, section.text-center .add:hover {
+    color: #fff !important;
+    background-color:  #B14932 !important;
+    border-color: none !important;
+
+}
+
+.btn-primary:focus, section.text-center .add:focus{
+    background-color: #B14932 !important;
+    border-color: 0px !important;
+}
+/*
+.custom-navbar .nav li.active > a {
+    color: #B14932;
+}
+pendiente
+*/
+#myFooter{
+    background-color: #051c2d;
+}
+
+#myFooter .social-networks a {
+    color: #dcaaa1;
+}
+
+.navbar-brand{
+    margin-top: -5px;
+}
+/*#detail {
+    color: #dcaaa1;
+}*/
+#detail i{
+    color: #dcaaa1;
+}
+
+#banner-reserva-hab, #banner-lista-hoteles, #banner-servicios, .banner-half{
+    background-color: #051c2d;
+}
+
+.gradient-section-dark .owl-theme .owl-controls .owl-page.active span, 
+.gradient-section-dark .owl-theme .owl-controls.clickable .owl-page:hover span {
+    background: #fff;
+}
+
+.gradient-section-dark .owl-theme .owl-controls .owl-page span {
+    background: #eee;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color:  #B14932 !important;
+}
+
+@media (min-width: 370px){
+    .custom-navbar.top-nav-collapse {
+        background: #25303D;
+        padding: 0;
+    }
+}
+@media only screen and (max-width : 600px){
+    
+    .navbar-brand img{
+        width: 50%;
+    }
+}
+
+
+

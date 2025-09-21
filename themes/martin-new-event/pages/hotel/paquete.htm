@@ -1,0 +1,51 @@
+title = "Paquetes"
+url = "/paquete/:slug"
+layout = "test"
+description = "vista de pagina de paquetes"
+is_hidden = 1
+robot_index = "index"
+robot_follow = "follow"
+
+[Paquete]
+slug = "{{ :slug }}"
+moneda = 2
+==
+<?php
+function onEnd(){
+
+  if($this["record"]){
+      
+      
+      $seo_props =  array(
+        "titulo" => $this["record"]->titulo,
+        "descripcion" => Html::strip($this["record"]->descripcion),
+        "type" => "article",
+        "imagen" => $this["record"]->banner->getPath(),
+        "url" => "https://hoteleshesperia.com.ve/paquete/".$this["record"]->slug,
+        "robots" => "index,follow"
+    );
+    
+      $this["seo_props"] = $seo_props;
+  }
+  //$this->page->description = $this["record"]->descripcion;
+ //$this->page->meta_description = $this["record"]->descripcion;
+ //$this->addJs('assets/js/principal.js');
+}
+?>
+==
+{#<section class="full-width intro-parallax" id="banner-reserva-hab" style="background-image:url('https://hoteleshesperia.com.ve/storage/app/media/Banner%20Varios%201200x500/Hesperia%20banner%20Servicios.jpg')">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<!--<h3 class="wow bounceIn" data-wow-delay="0.9s">vive en grande en los mejores Hoteles del País</h3>-->
+
+				<h1 class="wow fadeInUp" data-wow-delay="1.6s">Paquetes</h1>
+				<!--  <a href="#overview" class="btn btn-lg btn-default smoothScroll wow fadeInUp hidden-xs" data-wow-delay="2.3s">LEARN MORE</a>-->
+				<!--  <a href="#register" class="btn btn-lg btn-danger smoothScroll wow fadeInUp" data-wow-delay="2.3s">REGISTER NOW</a>--></div>
+		</div>
+	</div>
+</section>
+{% partial 'misc/anuncio-reconversion' %}
+#}
+
+{% component 'Paquete' %}

@@ -1,0 +1,4 @@
+title: Transaccion
+modelClass: hesperiaplugins\Instapago\Models\Transaccion
+toolbar:
+    buttons: reorder_toolbar

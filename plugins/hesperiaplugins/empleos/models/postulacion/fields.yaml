@@ -1,0 +1,43 @@
+fields:
+    nombre:
+        label: Nombre
+        span: auto
+        type: text
+    email:
+        label: Email
+        span: auto
+        type: text
+    created_at:
+        label: Fecha
+        mode: datetime
+        span: auto
+        type: datepicker
+    archivo:
+        label: 'Curriculum Vitae'
+        mode: file
+        useCaption: 0
+        thumbOptions:
+            mode: crop
+            extension: auto
+        span: right
+        type: fileupload
+    mensaje:
+        label: Mensaje
+        size: small
+        span: full
+        type: textarea
+    contactos:
+        label: Contacto
+        prompt: 'Add new item'
+        span: full
+        type: repeater
+        form:
+            fields:
+                red:
+                    label: Red
+                    span: auto
+                    type: text
+                cuenta:
+                    label: Cuenta
+                    span: auto
+                    type: text

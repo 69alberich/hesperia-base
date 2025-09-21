@@ -1,0 +1,104 @@
+description = "para la mostrar la web de mantenimiento"
+
+[googleTracker]
+
+[TawkTo]
+apikey = "5fa1dedd520b4b7986a10f2a"
+widgetname = "default"
+==
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ this.page.title }}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="facebook-domain-verification" content="4jhgnyx8334m2x14qv2dwu1k7c4vxh" />
+    
+    <link rel="shortcut icon" type="image/png" href="{{ 'favicon.ico'|media }}"/>
+<!--
+New Event
+http://www.templatemo.com/tm-486-new-event
+-->
+    <link href='https://fonts.googleapis.com/css?family=Poppins:400,500,600' rel='stylesheet' type='text/css'>
+    <link href="{{ [
+        'assets/css/bootstrap.min.css',
+        'assets/css/animate.css',
+        'assets/css/fontawesome.min.css',
+        'assets/css/owl.theme.css',
+        'assets/css/owl.carousel.css',
+        'assets/css/style.css',
+        'assets/css/principal.css',
+        'assets/css/sweetalert2.min.css',
+    ]|theme }}" rel="stylesheet">
+    {% styles %}
+    <script src="{{ [
+        'assets/js/jquery.js',
+        'assets/js/bootstrap.min.js',
+        'assets/js/jquery.parallax.js',
+        'assets/js/owl.carousel.min.js',
+        'assets/js/smoothscroll.js',
+        'assets/js/wow.min.js',
+        'assets/js/custom.js',
+        'assets/js/principal.js',
+        'assets/jQuery.countdown-master/dist/jquery.countdown.js',
+        'assets/js/sweetalert2.min.js',
+        ]|theme }}"></script>
+        {% scripts %}
+        
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-PD2S8P2');</script>
+        <!-- End Google Tag Manager -->
+        
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11019962787"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-11019962787');
+</script>
+</head>
+
+<body data-spy="scroll" data-offset="50" data-target=".navbar-collapse">
+
+         <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PD2S8P2"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+{% component 'googleTracker' %}
+{% component 'TawkTo' %}
+   <section id="banner-reserva-hab" class="full-width intro-parallax">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                  <!--<h3 class="wow bounceIn" data-wow-delay="0.9s">vive en grande en los mejores Hoteles del País</h3>-->
+                    <h1 class="wow fadeInUp" data-wow-delay="1.6s">Hesperia Venezuela</h1>
+                  <!--  <a href="#overview" class="btn btn-lg btn-default smoothScroll wow fadeInUp hidden-xs" data-wow-delay="2.3s">LEARN MORE</a>-->
+                  <!--  <a href="#register" class="btn btn-lg btn-danger smoothScroll wow fadeInUp" data-wow-delay="2.3s">REGISTER NOW</a>-->
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    {% page %}
+
+    {% partial 'generales/footer-principal' %}
+
+{# {% if this.theme.settings_gotop %}
+    <a href="#back-top" class="go-top"><i class="fa fa-angle-up"></i></a>
+{% endif %} #}
+
+
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+name: Contrato
+form: $/hesperiaplugins/perfil/models/contrato/fields.yaml
+modelClass: hesperiaplugins\Perfil\Models\Contrato
+defaultRedirect: hesperiaplugins/perfil/contrato
+create:
+    redirect: 'hesperiaplugins/perfil/contrato/update/:id'
+    redirectClose: hesperiaplugins/perfil/contrato
+update:
+    redirect: hesperiaplugins/perfil/contrato
+    redirectClose: hesperiaplugins/perfil/contrato

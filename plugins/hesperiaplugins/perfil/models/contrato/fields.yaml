@@ -1,0 +1,70 @@
+fields:
+    usuario@create:
+        label: Usuario
+        oc.commentPosition: ''
+        nameFrom: name
+        descriptionFrom: description
+        span: auto
+        type: relation
+        emptyOption: '--Seleccione:--'
+    usuario@update:
+        label: Usuario
+        oc.commentPosition: ''
+        nameFrom: name
+        descriptionFrom: description
+        span: auto
+        type: relation
+        disabled: true
+    descuento:
+        label: Descuento
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    over:
+        label: Over
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    cupomensual:
+        label: 'Cupo Mensual'
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    cupoobjetivo:
+        label: 'Cupo Objetivo'
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    vence:
+        label: Vencimiento
+        oc.commentPosition: ''
+        mode: date
+        span: auto
+        type: datepicker
+    hotel@update:
+        label: Hotel
+        oc.commentPosition: ''
+        nameFrom: nombre
+        descriptionFrom: nombre
+        span: auto
+        type: relation
+        disabled: true
+    hotel@create:
+        label: Hotel
+        oc.commentPosition: ''
+        nameFrom: nombre
+        descriptionFrom: nombre
+        span: auto
+        type: dropdown
+        dependsOn: usuario
+        emptyOption: '--Seleccione:--'
+    emailcontacto:
+        label: 'Email de contacto'
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    telefonocontacto:
+        label: 'Telefono de contacto'
+        oc.commentPosition: ''
+        span: auto
+        type: text

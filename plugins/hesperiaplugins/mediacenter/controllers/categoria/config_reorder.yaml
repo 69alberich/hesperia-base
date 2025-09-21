@@ -1,0 +1,4 @@
+title: Categoria
+modelClass: hesperiaplugins\Mediacenter\Models\Categoria
+toolbar:
+    buttons: reorder_toolbar

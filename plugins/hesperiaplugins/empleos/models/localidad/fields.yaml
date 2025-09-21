@@ -1,0 +1,18 @@
+fields:
+    localidad:
+        label: Localidad
+        span: left
+        type: text
+    slug:
+        label: Slug
+        span: right
+        preset:
+            field: localidad
+            type: slug
+        type: text
+    pais:
+        label: Pais
+        nameFrom: pais
+        descriptionFrom: pais
+        span: left
+        type: relation

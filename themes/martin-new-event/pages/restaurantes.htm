@@ -1,0 +1,24 @@
+title = "restaurantes"
+url = "/restaurantes"
+layout = "test"
+description = "lista de restaurantes"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+==
+<?php
+function onStart()
+{
+	use HesperiaPlugins\Restaurant\Models\Restaurant;
+
+	$this['restaurantes'] = Restaurant::all();
+}
+?>
+==
+{% content 'banner-paginas/lista-restaurantes-banner'%}
+
+	{% for rest in restaurantes %}
+
+		{% partial 'misc/lista-restaurantes' restaurante=rest %}
+
+	{% endfor %}

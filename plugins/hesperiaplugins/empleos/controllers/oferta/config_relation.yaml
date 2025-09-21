@@ -1,0 +1,9 @@
+postulaciones:
+    label: Postulaciones
+    view:
+        list: $/hesperiaplugins/empleos/models/postulacion/columns.yaml
+        toolbarButtons: false
+        showCheckboxes: false
+    manage:
+        form: $/hesperiaplugins/empleos/models/postulacion/fields.yaml
+        recordsPerPage: 10

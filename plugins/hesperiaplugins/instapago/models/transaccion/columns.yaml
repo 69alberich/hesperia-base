@@ -1,0 +1,25 @@
+columns:
+    id:
+        label: Id
+        type: number
+    tarjetahabiente:
+        label: Tarjetahabiente
+        type: text
+    monto:
+        label: Monto
+        type: number
+    status:
+        label: Status
+        type: text
+    afiliado_id:
+        label: Afiliado
+        type: number
+    identificacion:
+        label: Identificacion
+        type: number
+    mensaje:
+        label: Mensaje
+        type: text
+    referencia:
+        label: Referencia
+        type: text

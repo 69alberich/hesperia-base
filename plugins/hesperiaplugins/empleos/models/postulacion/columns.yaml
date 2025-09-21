@@ -1,0 +1,26 @@
+columns:
+    id:
+        label: ID
+        type: number
+        sortable: true
+    nombre:
+        label: Nombre
+        type: text
+        searchable: true
+        sortable: true
+    email:
+        label: Email
+        type: text
+        searchable: true
+        sortable: true
+    oferta:
+        label: Oferta
+        type: text
+        searchable: true
+        sortable: true
+        select: titulo
+        relation: oferta
+    created_at:
+        label: Fecha
+        type: datetime
+        sortable: true

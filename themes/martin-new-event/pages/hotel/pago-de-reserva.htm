@@ -1,0 +1,165 @@
+title = "Pago de Reservación"
+url = "/pago-de-reserva/:reserva_id?"
+layout = "test"
+description = "donde se muestra la información de pago y de la reservacion"
+meta_title = "Pago de Reservación"
+meta_description = "Pago de reservación es Hesperia Hotels & Resorts"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[ResumenReserva]
+reserva_id = "{{ :reserva_id }}"
+
+[pasarela]
+year = 2017
+
+[form]
+
+[SeoCmsPage]
+==
+<?php
+function onInit(){
+  $this->addJs('assets/js/jquery.validate.min.js');
+  $this->addJs('assets/js/additional-methods.min.js');
+  $this->addJs('assets/js/pago-reserva.js');
+
+  $reservacion = null;
+  $id_decrypt = null;
+
+  if($this->param("reserva_id")){
+
+    $reservacion = Reservacion::where("codigo", $this->param('reserva_id'))->first();
+  }
+
+  if($reservacion == null){
+    try {
+      $id_decrypt = Crypt::decrypt($this->param("reserva_id"));
+      $reservacion = Reservacion::find($id_decrypt);
+    }
+    catch (DecryptException $ex) {
+        //
+    }
+  }
+
+  if($reservacion){
+    $this["reserva"] = $reservacion;
+  }
+
+}
+
+function onEnd(){
+  if($this["reservacion"]){
+    $reservacion = $this["reservacion"];
+    if($reservacion->hotel_id == 1){
+      $this["afiliado"] = 1;
+    }else if($reservacion->hotel_id == 2){
+      $this["afiliado"] = 2;
+    }else if($reservacion->hotel_id == 5){
+      $this["afiliado"] = 3;
+    }else if($reservacion->hotel_id == 4){
+      $this["afiliado"] = 4;
+    }
+    $this["monto"] = $reservacion->getMontoEncriptado();
+  }
+}
+
+public function onAprobarReservacion(){
+    use HesperiaPlugins\instapago\models\Transaccion;
+    use HesperiaPlugins\Hoteles\models\Pago;
+    use Illuminate\Contracts\Encryption\DecryptException;
+    use HesperiaPlugins\Hoteles\Models\Reservacion;
+
+    $data = Input::get();
+    $reservacion = null;
+    $id_decrypt = null;
+
+    if($this->param("reserva_id")){
+
+      $reservacion = Reservacion::where("codigo", $this->param('reserva_id'))->first();
+    }
+
+    if($reservacion == null){
+      try {
+        $id_decrypt = Crypt::decrypt($this->param("reserva_id"));
+        $reservacion = Reservacion::find($id_decrypt);
+      }
+      catch (DecryptException $ex) {
+          //
+      }
+    }
+      if($reservacion){
+      //return json_encode($data);
+      //PASO 1, AÑADIR EL PAGO A LA RESERVACION
+      if ($data["pasarela"]=="instapago") {
+        $transaccion = Transaccion::find($data["transaccion"]);
+        $tipo_pago = 1;
+        $pago = new Pago([
+          "referencia" => $transaccion->id,
+          "pagable_type" => "HesperiaPlugins\Hoteles\Models\Reservacion",
+          "tipo_pago_id" => $tipo_pago,
+          "pagable_id" => $reservacion->id,
+          "comprobante_e" => $transaccion->voucher
+        ]);
+        $pago->save();
+      }elseif($data["pasarela"]=="stripe"){
+        $tipo_pago = 3;
+        $pago = new Pago([
+          "referencia" => $data["transaccion"],
+          "pagable_type" => "HesperiaPlugins\Hoteles\Models\Reservacion",
+          "tipo_pago_id" => $tipo_pago,
+          "pagable_id" => $reservacion->id
+        ]);
+        $pago->save();
+      }
+      //PASO 2, BUSCAR A CUALES HABITACIONES/FECHAS SE VAN A RESTAR
+      $habitaciones = DB::table('hesperiaplugins_hoteles_detalle_reservacion')
+      ->select(DB::raw('count(*) as cantidad, habitacion_id'))
+      ->where("reservacion_id", "=", $reservacion->id)
+      ->groupBy('habitacion_id')->get();
+
+      $begin = new \DateTime($reservacion->checkin);
+      $end = new \DateTime($reservacion->checkout);
+      foreach ($habitaciones as $habitacion) {
+        DB::table('hesperiaplugins_hoteles_fechas')
+        ->where("habitacion_id", "=" , $habitacion->habitacion_id)
+        ->whereBetween('fecha', [$begin->format("Y-m-d"), $end->format("Y-m-d")])
+        ->decrement('disponible', $habitacion->cantidad);
+      }
+
+      $reservacion->aprobar();
+      return "success";
+
+    }else{
+      return "error";
+    }
+     
+    
+  }
+?>
+==
+{% content 'banner-paginas/pago-de-reserva-banner'%}
+
+<!-- Event snippet for Pago de reserva conversion page -->
+<script>
+  gtag('event', 'conversion', {'send_to': 'AW-11019962787/SYiuCO6snLoYEKOT3YYp'});
+</script>
+
+<div class="container-fluid">
+{% component 'ResumenReserva' %}
+
+{% if reservacion.status_id == 2 %}
+<div class="col-md-6">
+  <div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="0.6s">
+    <div class="section-title">
+      <h2 class="text-center">Métodos de Pago</h2>
+    </div>
+  </div>
+
+  {% partial 'pagos/metodos' item = reservacion tipo = 'reserva' hotel = hotel %}
+
+ 
+</div>
+{% endif %}
+</div>
+<hr>

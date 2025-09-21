@@ -1,0 +1,5 @@
+fields:
+    api_key:
+        span: left
+        label: APIkey
+        type: text

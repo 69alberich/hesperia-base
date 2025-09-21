@@ -1,0 +1,26 @@
+description = "Lista de Hoteles en carousel"
+
+[viewBag]
+==
+<?php
+function onStart()
+{
+  use Hesperiaplugins\Hoteles\Models\Hotel;
+    $this['hoteles'] = Hotel::all();
+}
+?>
+==
+<div class='container-fluid' id="hoteles-index">
+  <div class='col-md-12 slider-2-items'>
+    {% for hotel in hoteles %}
+    <div class="item">
+      <div class='col-md-12'>
+        <a href="{{'hotel/'~ hotel.slug}}">
+          <img src="{{hotel.foto_inicio.path}}" class='img-responsive' alt="{{hotel.nombre}}">
+        <h2 class="text-center">{{hotel.nombre}}</h2>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>

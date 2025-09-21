@@ -1,0 +1,5 @@
+fields:
+    pais:
+        label: Pais
+        span: auto
+        type: text

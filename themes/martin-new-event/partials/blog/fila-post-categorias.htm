@@ -1,0 +1,121 @@
+description = "Fila de posts por categoria"
+
+[viewBag]
+snippetCode = "filas-post-categorias"
+snippetName = "Fila de post por categoria"
+snippetProperties[numposts][title] = "post por fila"
+snippetProperties[numposts][type] = "dropdown"
+snippetProperties[numposts][options][1] = "1"
+snippetProperties[numposts][options][2] = "2"
+snippetProperties[numposts][options][3] = "3"
+snippetProperties[numposts][options][5] = "5"
+snippetProperties[categoria][title] = "categoria"
+snippetProperties[categoria][type] = "string"
+snippetProperties[categoria][default] = "uncategorized"
+snippetProperties[categoria][options][] = ""
+snippetProperties[cantidad][title] = "cantidad"
+snippetProperties[cantidad][type] = "dropdown"
+snippetProperties[cantidad][default] = 1
+snippetProperties[cantidad][options][1] = 1
+snippetProperties[cantidad][options][2] = 2
+snippetProperties[cantidad][options][3] = 3
+snippetProperties[cantidad][options][5] = 5
+snippetProperties[mostrarTitulo][title] = "Mostrar titulo"
+snippetProperties[mostrarTitulo][type] = "checkbox"
+snippetProperties[mostrarTitulo][default] = 0
+snippetProperties[mostrarTitulo][options][] = ""
+==
+<?php
+use Rainlab\Blog\Models\Post;
+
+  function onStart(){
+    $this["posts"] = Post::whereHas('categories', function ($query) {
+    $query->where('name', '=', $this['categoria']);
+  })->isPublished()->take($this['cantidad'])->orderByDesc("id")->get();
+  }
+?>
+==
+
+{% if numposts == 1 %}
+
+<section class="section-narrow">
+  <div class="container-fluid">
+      {% if mostrarTitulo == 1 %}
+          <h2 class="text-center">{{categoria}}</h2>
+      {% endif %}
+    <div class="wow fadeInUp owl-carousel owl-theme slider-default" data-wow-delay="1.3s">
+      {% for post in posts %}
+        <div class="item">
+          <div class="col-md-6 col-sm-10">
+            <a href="{{'blog/post/'~ post.slug}}"><h3>{{ post.title }}</h3></a>
+            <p class="lead">{{ str_words(post.summary, 25) }}</p>
+            
+             
+               <p class="text-center">
+                 <a href="{{ 'blog/blog'|page }}"
+                    class="btn btn-default smoothScroll wow
+                    fadeInUp hidden-xs" data-wow-delay="2.3s">
+                    Visitar Blog
+                </a>
+                <a href="{{'blog/post/'~ post.slug}}"
+                 class="btn btn-primary smoothScroll wow
+                 fadeInUp " data-wow-delay="2.3s">
+                 Leer noticia
+               </a>
+              </p>
+             
+         
+          </div>
+          <div class="wow fadeInUp col-md-6 col-sm-6" data-wow-delay="0.9s">
+            <img src="{{post.featured_images[0].path}}" class="img-responsive" alt="{{ post.title }}">
+           
+             <br>
+              <a href="{{ 'blog/blog'|page }}"
+                  class="btn btn-lg btn-default smoothScroll wow
+                  fadeInUp visible-xs visible-xs" data-wow-delay="2.3s">
+                  Visitar Blog
+              </a>
+            
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% else %}
+<div class="container-fluid blog-thumbs-wrapper" id="hoteles-index">
+  <div class="row">
+    <div class="col-md-12">
+      {% if mostrarTitulo == 1 %}
+          <h2 class="text-center">{{categoria}}</h2>
+      {% endif %}
+      <div class="slider-{{numposts}}-items">
+          {% for post in posts %}
+              <div class="item">
+                <div class="col-xs-12 col-sm-12 col-md-12 item thumb-container">
+                  <div class="thumbnail">
+                    <img src="{{ post.featured_images[0].path }}" alt="">
+                      <div class="caption">
+                        <a href="{{'blog/post/'~ post.slug}}"><h4 class="text-center">{{post.title}}</h4></a>
+                        <p class="text-center">{{ html_strip(str_words(post.summary|raw, 15)) }}</p>
+                        <p class="text-center">
+                    
+                         <a href="{{'blog/post/'~ post.slug}}"
+                          class="btn btn-primary smoothScroll wow
+                          fadeInUp " data-wow-delay="2.3s">
+                          Leer noticia
+                        </a>
+                       </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          {% else %}
+              <li class="no-data">{{ noPostsMessage }}</li>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

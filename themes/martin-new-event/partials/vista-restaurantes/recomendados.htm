@@ -1,0 +1,26 @@
+{% set recomendados = restaurant.getRecomendados(restaurant.id) %}
+
+<section id="recomendados" class="parallax-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 wow bounceIn">
+                <div class="section-title">
+                    <h2>Restaurantes Recomendados</h2>
+                    <p>Visita nuestros restaurantes especializados y sorprendete con nuestra variedad</p>
+                </div>
+            </div>
+            <div id="recomendados-carousel" class="owl-carousel">
+                {%for rest in recomendados %}
+                <div class="item wow fadeInUp col-md-3 col-sm-3" data-wow-delay="0.9s">
+                  <a href="/hesperia_oct/restaurantes/{{rest.slug}}">
+                    <img src="{{rest.banner.thumb(300, 200, {'mode':'crop'})}}" class="img-responsive" alt="{{rest.nombre}}">
+                  </a>
+                  <div class="speakers-thumb">
+                    <a href="/hesperia_oct/restaurantes/{{rest.slug}}"><h3>{{rest.nombre}}</h3></a>
+                  </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</section>

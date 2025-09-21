@@ -1,0 +1,21 @@
+title = "Empleos"
+url = "/empleos"
+layout = "layout-blank"
+description = "pagina donde se muestra la lista de empleos"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[listaempleos]
+==
+{% content 'banner-paginas/empleos-banner' %}
+
+<div class="container">
+   <div class="row">
+	 <div class="col-md-12">
+	   <br>
+	    {% content 'generales/empleo-header' %}
+	  </div>
+	 	{% component 'listaempleos' %}
+   </div>
+</div>

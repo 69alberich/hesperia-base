@@ -1,0 +1,11 @@
+name: Localidad
+modelClass: Hesperiaplugins\Empleos\Models\Localidad
+form: $/hesperiaplugins/empleos/models/localidad/fields.yaml
+defaultRedirect: hesperiaplugins/empleos/localidad
+create:
+    redirect: 'hesperiaplugins/empleos/localidad/update/:id'
+    redirectClose: hesperiaplugins/empleos/localidad
+update:
+    redirect: hesperiaplugins/empleos/localidad
+    redirectClose: hesperiaplugins/empleos/localidad
+preview: {  }

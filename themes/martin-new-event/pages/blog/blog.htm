@@ -1,0 +1,45 @@
+title = "Blog"
+url = "/blog/:page?"
+layout = "blog-layout"
+description = "pagina principal del blog"
+meta_title = "Blog"
+meta_description = "Encuentra aquí información relacionada con las actividades que ofrecemos en Hesperia de Venezuela."
+is_hidden = 0
+seo_keywords = "Bodas en la playa. Hesperia Margarita, Hoteles en Margarita, Reservar en Margarita, Blog Hesperia, noticias hesperia"
+canonical_url = "https://hoteleshesperia.com.ve/blog"
+robot_index = "index"
+robot_follow = "follow"
+
+[blogPosts]
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+categoryPage = "blog/blog"
+postPage = "blog/post"
+==
+{% set posts = blogPosts.posts %}
+
+{% content 'banner-paginas/blog-banner' %}
+{% partial 'blog/home-blog' %}
+
+<div class="container">
+
+  {% if posts.lastPage > 1 %}
+      <ul class="pagination">
+          {% if posts.currentPage > 1 %}
+              <li><a href="{{ this.page.baseFileName|page({ (pageParam): (posts.currentPage-1) }) }}">&larr; Prev</a></li>
+          {% endif %}
+
+          {% for page in 1..posts.lastPage %}
+              <li class="{{ posts.currentPage == page ? 'active' : null }}">
+                  <a href="{{ this.page.baseFileName|page({ (pageParam): page }) }}">{{ page }}</a>
+              </li>
+          {% endfor %}
+
+          {% if posts.lastPage > posts.currentPage %}
+              <li><a href="{{ this.page.baseFileName|page({ (pageParam): (posts.currentPage+1) }) }}">Next &rarr;</a></li>
+          {% endif %}
+      </ul>
+  {% endif %}
+</div>

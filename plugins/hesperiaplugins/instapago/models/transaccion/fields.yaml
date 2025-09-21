@@ -1,0 +1,42 @@
+fields:
+    tarjetahabiente:
+        label: Tarjetahabiente
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    monto:
+        label: Monto
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    status:
+        label: Status
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    voucher:
+        label: Voucher
+        span: auto
+        size: ''
+        oc.commentPosition: ''
+        type: textarea
+    afiliado_id:
+        label: Afiliado
+        span: auto
+        oc.commentPosition: ''
+        type: number
+    identificacion:
+        label: Identificacion
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    mensaje:
+        label: Mensaje
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    referencia:
+        label: Referencia
+        oc.commentPosition: ''
+        span: auto
+        type: text

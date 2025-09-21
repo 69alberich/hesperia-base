@@ -1,0 +1,118 @@
+tabs:
+    fields:
+        nombre:
+            label: Nombre
+            oc.commentPosition: ''
+            span: left
+            type: text
+            tab: General
+        slug:
+            label: Slug
+            span: right
+            preset:
+                field: nombre
+                type: slug
+            type: text
+            tab: General
+        descripcion:
+            label: Descripcion
+            size: small
+            span: left
+            type: textarea
+            tab: General
+        emails:
+            label: Emails
+            oc.commentPosition: ''
+            prompt: 'Add new item'
+            span: auto
+            type: repeater
+            tab: General
+            form:
+                fields:
+                    email:
+                        label: Email
+                        oc.commentPosition: ''
+                        span: auto
+                        type: text
+                    titulo:
+                        label: Titulo
+                        oc.commentPosition: ''
+                        span: auto
+                        type: text
+        telefonos:
+            label: Telefonos
+            oc.commentPosition: ''
+            prompt: 'Add new item'
+            span: auto
+            type: repeater
+            tab: General
+            form:
+                fields:
+                    telefono:
+                        label: Telefono
+                        oc.commentPosition: ''
+                        span: auto
+                        type: text
+                    titulo:
+                        label: Titulo
+                        oc.commentPosition: ''
+                        span: auto
+                        type: text
+        latitud:
+            label: Latitud
+            oc.commentPosition: ''
+            span: left
+            type: text
+            tab: General
+        longitud:
+            label: Longitud
+            oc.commentPosition: ''
+            span: auto
+            type: text
+            tab: General
+        direccion:
+            label: Direccion
+            size: small
+            oc.commentPosition: ''
+            span: left
+            type: textarea
+            tab: General
+        banner:
+            label: Banner
+            oc.commentPosition: ''
+            mode: image
+            tab: Galeria
+            imageWidth: '200'
+            imageHeight: '100'
+            useCaption: true
+            thumbOptions:
+                mode: crop
+                extension: auto
+            span: auto
+            type: fileupload
+        foto_portada:
+            label: 'Foto portada'
+            span: auto
+            oc.commentPosition: ''
+            mode: image
+            useCaption: true
+            thumbOptions:
+                mode: crop
+                extension: auto
+            imageWidth: '200'
+            imageHeight: '100'
+            type: fileupload
+            tab: Galeria
+        galeria:
+            label: Galeria
+            span: full
+            oc.commentPosition: ''
+            mode: image
+            tab: Galeria
+            useCaption: true
+            thumbOptions:
+                mode: crop
+                extension: auto
+            imageWidth: '100'
+            imageHeight: '100'
+            type: fileupload

@@ -1,0 +1,11 @@
+list: $/hesperiaplugins/perfil/models/contrato/columns.yaml
+modelClass: hesperiaplugins\Perfil\Models\Contrato
+title: Contrato
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'hesperiaplugins/perfil/contrato/update/:id'

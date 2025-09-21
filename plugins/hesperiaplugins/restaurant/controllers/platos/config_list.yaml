@@ -1,0 +1,11 @@
+list: $/hesperiaplugins/restaurant/models/plato/columns.yaml
+modelClass: HesperiaPlugins\Restaurant\Models\Plato
+title: Platos
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'hesperiaplugins/restaurant/platos/update/:id'

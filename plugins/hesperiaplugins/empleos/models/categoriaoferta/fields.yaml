@@ -1,0 +1,17 @@
+fields:
+    nombre:
+        label: Nombre
+        span: auto
+        type: text
+    slug:
+        label: Slug
+        span: auto
+        preset:
+            field: nombre
+            type: slug
+        type: text
+    descripcion:
+        label: Descripcion
+        span: full
+        size: small
+        type: textarea

@@ -1,0 +1,53 @@
+title = "tienda"
+url = "/tienda/:slug"
+layout = "test"
+is_hidden = 1
+robot_index = "index"
+robot_follow = "follow"
+
+[Upselling]
+slug = "{{ :slug }}"
+destino = "pagos"
+==
+<?php
+function onEnd(){
+  if($this["upselling"]){
+      $path = "";
+      if($this["upselling"]->imagen != null){
+        $path = $this["upselling"]->imagen->getPath();
+      }
+      $seo_props =  array(
+        "titulo" => $this["upselling"]->titulo,
+        "descripcion" => $this["upselling"]->descripcion,
+        "type" => "article",
+        "imagen" => $path,
+        "url" => "https://hoteleshesperia.com.ve/tienda/".$this["upselling"]->slug,
+        "robots" => "index,follow"
+    );
+
+      $this["seo_props"] = $seo_props;
+  }
+  //$this->page->description = $this["record"]->descripcion;
+ //$this->page->meta_description = $this["record"]->descripcion;
+ //$this->addJs('assets/js/principal.js');
+ $this->addJs('assets/js/hoteles.js');
+}
+?>
+==
+<section class="full-width intro-parallax banner-half" >
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<!--<h3 class="wow bounceIn" data-wow-delay="0.9s">vive en grande en los mejores Hoteles del País</h3>-->
+
+				<h1 class="wow fadeInUp" data-wow-delay="1.6s">Tienda Hesperia</h1>
+				<!--  <a href="#overview" class="btn btn-lg btn-default smoothScroll wow fadeInUp hidden-xs" data-wow-delay="2.3s">LEARN MORE</a>-->
+				<!--  <a href="#register" class="btn btn-lg btn-danger smoothScroll wow fadeInUp" data-wow-delay="2.3s">REGISTER NOW</a>--></div>
+		</div>
+	</div>
+</section>
+
+<div class="container">
+<br>
+{% component 'Upselling' %}
+</div>

@@ -1,0 +1,23 @@
+title = "Localidad"
+url = "/empleo/localidad/:slug"
+layout = "layout-blank"
+description = "listado de empleos por localidades"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[listaempleos]
+slug = "{{ :slug }}"
+filter = 2
+==
+{% content 'banner-paginas/empleos-banner' %}
+
+<div class="container">
+   <div class="row">
+	 <div class="col-md-12">
+	   <br>
+	    {% content 'generales/empleo-header' %}
+	  </div>
+	 	{% component 'listaempleos' %}
+   </div>
+</div>

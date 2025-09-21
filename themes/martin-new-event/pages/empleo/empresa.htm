@@ -1,0 +1,21 @@
+title = "Empresa"
+url = "/empleo/empresa/:id"
+layout = "layout-blank"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[listaempleos]
+filter = 3
+==
+{% content 'banner-paginas/empleos-banner' %}
+
+<div class="container">
+   <div class="row">
+	 <div class="col-md-12">
+	   <br>
+	    {% content 'generales/empleo-header' %}
+	  </div>
+	 	{% component 'listaempleos' %}
+   </div>
+</div>

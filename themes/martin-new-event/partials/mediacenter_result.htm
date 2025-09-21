@@ -1,0 +1,164 @@
+[viewBag]
+==
+{% if img_selected %}
+	<div class="row destacadas">
+		<h2>Destacadas</h2>
+		<hr>
+	</div>
+	<div class="post-list">
+		{% for imagen in h1.galeria %}
+		    		
+			{% if loop.index <= 8 %}
+				    
+				<div class="post-item">
+					<p class="text-center"><strong>{{ imagen.title }}</strong> </p>
+					<div class="image-media-center" id="galeria-media">
+						<a href="#" class="post modal-img-mini" data-src="{{ imagen.thumb(900,auto, {'mode':'crop'}) }}" data-toggle="modal" data-target="#myModal" rel="ligthbox" >
+							<img class="img-responsive" src="{{ imagen.thumb(300,300,{ 'quality': 50, 'mode':'crop' }) }}"> 
+						</a>
+						<div class="caption">
+							<p class="text-center">
+								<a download="{{ imagen.file_name }}" href="{{ imagen.path() }}">
+									<i class="fa fa-cloud-download"></i> <span>HD</span>
+								</a>
+												|
+								<a download="{{ imagen.file_name }}" href="{{ imagen.thumb(900,auto, {'mode':'crop'})}}">
+									<i class="fa fa-cloud-download"></i> <span>SD</span>
+								</a>
+							</p>
+						</div>
+					</div>
+				</div>
+					{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}
+
+{% for album in albumes %}
+		
+	{% if album.archivo.count > 0 %}
+		<div class="row">
+			<h2>{{ album.titulo }}</h2>
+			<hr>
+		</div>
+	{% endif %}
+
+	<div class="post-list">
+
+	{% for file in album.archivo  %}
+		<!-- for variable-interna in variable-externa -->
+		{% if album.isImagen(file) %}
+
+			{% for cat in album.categorias %}
+				
+				<div class="post-item">
+					<p class="text-center"><strong>{{ file.title }}</strong> </p>
+					<div class="image-media-center" id="galeria-media">
+						<a href="#" class="post modal-img-mini" data-src="{{ file.thumb(900,auto, {'mode':'crop'})}}" data-toggle="modal" data-target="#myModal" rel="ligthbox" >
+						{% if cat.id == 5 %}
+							<img class="img-responsive" src="{{ file.thumb(300,300,{ 'quality': 90, 'mode':'auto' }) }}">
+						{% else %}
+							<img class="img-responsive" src="{{ file.thumb(300,300,{ 'quality': 50, 'mode':'crop' }) }}">
+						{% endif %}	
+						</a>
+						<div class="caption">
+							<p class="text-center">
+								<a download="{{ file.file_name }}" href="{{ file.path() }}">
+									<i class="fa fa-cloud-download"></i> <span>HD</span>
+								</a>
+										|
+								<a download="{{ file.file_name }}" href="{{ file.thumb(900,auto, {'mode':'crop'})}}">
+									<i class="fa fa-cloud-download"></i>  <span>SD</span>
+								</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				
+			{% endfor %}
+
+		{% elseif album.isAudio(file) %}
+
+			<div>
+				<div id="galeria-media">
+					<div>
+						<audio src="{{ file.path() }}" width="250px" controls></audio>
+					</div>
+					<div class="caption">
+						<p><strong>Titulo: </strong> {{ file.title }} </p>
+						<p><strong>Descripción: </strong> {{ file.description }}</p>
+					</div>
+				</div>
+			</div>
+
+		{% elseif album.isVideo(file) %}
+
+			<div>
+				<div id="galeria-media">
+					<div>
+						<video src="{{ file.path() }}" width="100%" controls preload></video>
+					</div>
+					<div class="caption">
+						<p class="text-center"><strong>{{ file.title }}</strong></p>
+						<p class="text-center">{{ file.description }}</p>
+					</div>
+				</div>
+			</div>
+			
+		{% elseif album.isPDF(file) %}
+
+			<div>
+                <p class="text-center">
+                	<a href="{{ file.path() }}" target="_blank">
+                		<i class="fa fa-file-pdf-o fa-5x text-danger"></i>
+                		<br>{{ file.title }} <br><small>{{ file.description }}</small>
+                	</a>
+                </p> 
+            </div>
+
+		{% endif %}
+	{% endfor %}
+
+	{% if album.item %}
+		{% for obj in album.item %}
+			<div class="col-md-6">
+				<div class='embed-responsive embed-responsive-16by9'>
+			        <iframe class='embed-responsive-item' src="{{ obj.url }}"></iframe>
+			    </div>
+			</div>
+		{% endfor %}
+	{% endif %}
+	</div>
+	
+{% endfor %}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="item ">
+				<img class="center-block img-responsive"  id="img-modal"> 
+			</div>
+			<div class="modal-footer">
+			    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<nav aria-label="...">
+	<ul class="pager">
+		{% if albumes.currentPage() > 1 %}
+			<li class="previous">
+				<a href="#"  class="btn btn-default paginadores" value="{{albumes.currentPage() - 1}}">Anterior<span aria-hidden="true">&larr;</span>
+				</a>
+			</li>
+
+		{% endif %}
+
+		{% if albumes.hasMorePages() %}
+
+			<li class="next">
+				<a href="#" class="btn btn-default paginadores" value="{{albumes.currentPage() + 1}}">Siguiente<span aria-hidden="true">&rarr;</span>
+				</a>
+			</li>
+		{% endif %}
+	</ul>
+</nav>

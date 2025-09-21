@@ -1,0 +1,14 @@
+columns:
+    id:
+        label: Id
+        type: number
+        sortable: true
+    status:
+        label: Status
+        type: switch
+        sortable: true
+    nombre:
+        label: Nombre
+        type: text
+        searchable: true
+        sortable: true

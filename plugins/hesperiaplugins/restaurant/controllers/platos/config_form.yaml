@@ -1,0 +1,10 @@
+name: Platos
+form: $/hesperiaplugins/restaurant/models/plato/fields.yaml
+modelClass: HesperiaPlugins\Restaurant\Models\Plato
+defaultRedirect: hesperiaplugins/restaurant/platos
+create:
+    redirect: 'hesperiaplugins/restaurant/platos/update/:id'
+    redirectClose: hesperiaplugins/restaurant/platos
+update:
+    redirect: hesperiaplugins/restaurant/platos
+    redirectClose: hesperiaplugins/restaurant/platos

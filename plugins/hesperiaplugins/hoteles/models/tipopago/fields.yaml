@@ -1,0 +1,12 @@
+fields:
+    nombre:
+        label: Nombre
+        oc.commentPosition: ''
+        span: auto
+        required: 1
+        type: text
+    descripcion:
+        label: Descripcion
+        span: auto
+        oc.commentPosition: ''
+        type: text

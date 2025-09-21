@@ -1,0 +1,69 @@
+title = "teststripe"
+url = "/teststripe"
+layout = "layout-basico"
+is_hidden = 1
+robot_index = "index"
+robot_follow = "follow"
+
+[form]
+==
+<div class="container-fluid">
+  <h4>¿Por qué es seguro pagar con TDC en Hesperia?</h4>
+  <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-6 col-sm-6">
+          <h4> 
+             <span class="fa-stack fa-lg">
+             <i class="fa fa-square-o fa-stack-2x"></i>
+             <i class="fa fa-rocket fa-stack-1x"></i>
+             </span>
+           Rapidez y Efectividad
+        </h4>
+          ¡Una vez rellenes tus datos correctamente recibiras respuesta en pocos segundos!
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <h4>
+          <span class="fa-stack fa-lg">
+             <i class="fa fa-square-o fa-stack-2x"></i>
+             <i class="fa fa-lock fa-stack-1x"></i>
+             </span>
+          Privacidad y Seguridad</h4>
+          ¡Nos preocupamos por tu seguridad! por eso no guardamos en nuestra base de
+          datos ninguna información sensible de tu TDC. 
+        </div>
+      </div>
+  </div>
+  <div class="col-md-6">
+    
+<form id="payment-form" data-request-validate data-request-flash>
+  <div class="form-row">
+    <h4 class="text-center"> Tarjeta de crédito/débito</h4>
+    <div class="form-group">
+      <input type="text" name="tarjetahabiente" class="form-control" placeholder="Nombre y Apellido"> 
+    </div>
+    
+    <div id="card-element" style="border: 1px solid #ccc;
+    border-radius: 4px; padding:2px 4px;">
+      <!-- a Stripe Element will be inserted here. -->
+    </div>
+
+    <!-- Used to display form errors -->
+    <div id="card-errors" role="alert"></div>
+  </div>
+  <input type="hidden" name="mt" id="mt" value="{{monto}}">
+  <input type="hidden" name="dsc" id="dsc" value="{{form.property('description')}}">
+  <br>
+  <p class="text-center">
+    
+    <button class="btn btn-primary" data-attach-loading>¡Pagar!</button>
+  </p>
+  
+  <!--<p class="text-center">
+      <a href="https://stripe.com/" target="_blank"><img class="image-responsive" src="{{ 'powered_by_stripe.png'|media }}"></a>
+  </p>-->
+
+</form>
+<script src='https://js.stripe.com/v3/'></script>
+
+  </div>
+</div>

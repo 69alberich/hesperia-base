@@ -1,0 +1,513 @@
+#owl-demo .item img{
+    display: block;
+    width: 100%;
+}
+
+#slider-index .item{
+  height: 94vh;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+   display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+   -webkit-align-items: center;
+    -ms-flex-align: center;
+        align-items: center;
+  text-align: center;
+}
+
+#restaurantes-index {
+    color: white;
+    background: url('http://localhost/hesp/storage/app/media/parallax-restaurantes-home.jpg') 100% 0 repeat-y fixed;
+    background-size: contain;
+    background-position: center center;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+    margin-bottom: 7rem;
+}
+#restaurantes-index p{
+    color: white;
+}
+
+#paquetes-index{
+  padding-top: 7rem;
+  padding-bottom: 3rem;
+}
+
+#hoteles-index{
+  padding-top: 0;
+  padding-bottom: 3.5rem;
+}
+
+#complementos-index{
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+  display: table;
+}
+
+#caja-reserva{
+  background: #25AAE1;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  color: white;
+  margin-top: 15px;
+}
+
+
+
+#caja-reserva a{
+  color:white;
+}
+
+#overview-hotel, #galeria-hotel, #spa-overview, #servicios-hotel{
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+#noticia{
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+ #maps-hotel{
+  padding-bottom: 7rem;
+}
+
+.boton-bg{
+  /*background: transparent;*/
+  border: 2px solid #ffffff;
+  border-radius: 0px;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 12px;
+  padding: 14px 42px;
+  margin-top: 42px;
+  margin-right: 12px;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+#restaurant_hotel_slider{
+  color:white;
+ /* //padding-top: 14rem;
+  //padding-bottom: 14rem;*/
+  -webkit-backdrop-filter: blur(1px) grayscale(0.4);
+}
+#restaurant_hotel_slider .content-text{
+  height: 100%;
+  background: rgba(0,0,0,.6);
+}
+
+#plato-descripcion {
+  padding-top: 15px;
+}
+
+.full-width{
+  background-size: cover !important;
+}
+
+#intro-restaurant, #banner-servicios, #banner-lista-hoteles{
+  
+  height: 50vh;
+
+}
+
+#intro-restaurant, #banner-servicios, #banner-reserva-hab{
+  height: 40vh;
+}
+#intro-hotel{
+  height: 100vh;
+}
+
+.intro-parallax{
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+   display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+   -webkit-align-items: center;
+    -ms-flex-align: center;
+        align-items: center;
+  text-align: center;
+}
+
+#caja-reserva-restaurant{
+  /*background: #f9f9f9;*/
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.seccion-menu{
+  height: 250px;
+}
+
+.seccion-menu h3{
+  /*padding-top: 8%;*/
+  margin: auto;
+  color: rgb(255, 255, 255);
+  opacity: 1;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  font-size: 54px;
+  font-weight: 800;
+  font-style: normal;
+  text-transform: none;
+}
+
+.seccion-menu h5{
+  color: rgb(255, 255, 255);
+  opacity: 1;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  font-size: 24px;
+  font-weight: 800;
+  font-style: normal;
+  text-transform: none;
+}
+
+.plato-body{
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.plato-container{
+  padding: 0;
+  padding-top: 15px;
+  padding-right: 5px;
+}
+.seccion-restaurant{
+  padding-bottom: 5rem;
+}
+
+#recomendados{
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+  text-align: center;
+}
+#recomendados h3 {
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+
+#recomendados h6 {
+  color: #666;
+  margin-top: 4px;
+}
+
+#recomendados img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+#recomendados .col-md-3 {
+    display: block;
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+}
+#lista-lugares, #list-post-aside{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#tab-hoteles h4{
+  color: #B14932;
+}
+
+#servicios-hotel .titulo-servicio h4, #complementos-index h4{
+  color: white;
+  position: relative;
+  top: -38px;
+  padding: 4px;
+  width: 100%;
+  background: rgba(0,0,0,.6);
+}
+
+
+.thumb-container, .thumb-container .thumbnail{
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#novedades-container, .blog-thumbs-wrapper{
+  background: #f9f9f9;
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+#novedades-container .caption, .blog-thumbs-wrapper .caption{
+  background: #f9f9f9;
+}
+
+.h-blue{
+  color: #01A1DD;
+}
+
+.h-blue-bg{
+  background: #01A1DD;
+}
+
+.no-padding{
+  padding: 0;
+}
+
+.complemento-half{
+  height: 200px;
+  padding: 10px 15px;
+}
+
+#atrapame-index{
+  margin-top: 8px;
+}
+
+#eventos-index{
+  background: #222;
+  color: #ffffff;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+
+}
+
+#eventos-index .owl-controls .owl-page span{
+    background: #fff;
+}
+
+
+#eventos-carousel .owl-pagination .owl-page span{
+  color:white;
+  background: white;
+}
+
+#dates-bar{
+  margin-bottom: 1.5%;
+  padding-top: 14px;
+    padding-bottom: 5px;
+}
+
+#reservas-container #dates-bar{
+  background: #e5e5e5;
+}
+
+.section-default {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+}
+
+.section-narrow {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+}
+
+#myFooter {
+    background-color: #3c3d41;
+    color: white;
+    padding: 3.5em;
+}
+
+#myFooter .footer-copyright {
+    background-color: #333333;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+}
+
+#myFooter .navbar-brand {
+    margin-top: 45px;
+    height: 65px;
+}
+
+#myFooter .footer-copyright p {
+    margin: 10px;
+    color: #ccc;
+}
+
+#myFooter ul {
+    list-style-type: none;
+    padding-left: 0;
+    line-height: 1.7;
+}
+
+#myFooter h5 {
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+#myFooter h2 a{
+    font-size: 50px;
+    text-align: center;
+    color: #fff;
+}
+
+#myFooter a {
+    color: #d2d1d1;
+    text-decoration: none;
+}
+
+#myFooter a:hover,
+#myFooter a:focus {
+    text-decoration: none;
+    color: white;
+}
+
+#myFooter .social-networks {
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 16px;
+}
+
+#myFooter .social-networks a {
+    font-size: 32px;
+    color: #f9f9f9;
+    padding: 10px;
+    transition: 0.2s;
+}
+
+#myFooter .social-networks a:hover {
+    text-decoration: none;
+}
+
+
+#myFooter .btn {
+    color: white;
+    background-color: #d84b6b;
+    border-radius: 20px;
+    border: none;
+    width: 150px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    line-height: 25px;
+}
+
+
+    .container-img {
+        position: relative;
+        text-align: center;
+        color: white;
+    }
+
+    /* Bottom left text */
+.bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
+
+/* Top left text */
+.top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+/* Bottom right text */
+.bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.container-img a{
+    color: inherit;
+}
+.banner-half{
+  height: 50vh;
+}
+
+.gradient-section .presentation, .presentation .lead, .presentation p{
+    color: white;
+}
+.gradient-section .presentation, .presentation .gradient-text p{
+  color: white;
+}
+
+.parallax-static-page{
+    color: white;
+    background-size: contain;
+    background-position: center center;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+    margin-bottom: 7rem;
+
+}
+.custom-thumbs{
+
+     /*background: #f9f9f9;*/
+}
+
+.speakers-thumb{
+  border: 1px solid #eee;
+}
+.custom-thumbs h3 {
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+.custom-thumbs .wrapper {
+    background: #ffffff;
+    padding-bottom: 22px;
+}
+.custom-thumbs img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+#tratamientos-section{
+     background: #f9f9f9;
+     padding-top: 5rem;
+    padding-bottom: 10rem;
+}
+#tratamientos-section h2{
+     padding-bottom: 22px;     
+}
+
+/*CUSTOM BUTTONS*/
+
+.btn {
+    padding: 8px 20px;
+    border: 0 none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius:0;
+}
+ 
+.btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: 0 none;
+}
+ 
+
+ 
+.btn-primary:active, .btn-primary.active {
+    /*background: #007299;*/
+    box-shadow: none;
+}
+
+.btn-default {
+  border-color: #ccc;
+  border: 2px solid #eee;
+}
+
+#banner-reserva-hab, #banner-lista-hoteles, #banner-servicios, .banner-half{
+  background-color: #051c2d;
+}

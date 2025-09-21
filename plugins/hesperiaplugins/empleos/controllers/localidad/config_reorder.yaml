@@ -1,0 +1,4 @@
+title: Localidad
+modelClass: Hesperiaplugins\Empleos\Models\Localidad
+toolbar:
+    buttons: reorder_toolbar

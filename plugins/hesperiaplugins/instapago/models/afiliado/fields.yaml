@@ -1,0 +1,23 @@
+fields:
+    llave_publica:
+        label: 'Llave Pública'
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    llave_privada:
+        label: 'Llave Privada'
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    nombre:
+        label: Nombre
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    status:
+        label: Status
+        span: auto
+        type: switch
+    Transaccion:
+        type: partial
+        path: detalle

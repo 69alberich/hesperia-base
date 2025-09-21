@@ -1,0 +1,6 @@
+columns:
+    localidad:
+        label: Localidad
+        type: text
+        searchable: true
+        sortable: true

@@ -1,0 +1,44 @@
+title = "restaurante"
+url = "/restaurante/:slug"
+layout = "test"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[builderDetails]
+modelClass = "HesperiaPlugins\Restaurant\Models\Restaurant"
+identifierValue = "{{ :slug }}"
+modelKeyColumn = "slug"
+displayColumn = "nombre"
+notFoundMessage = "Record not found"
+==
+<?php
+function onStart(){
+  $this->addJs('assets/js/gmaps.js');
+  $this->addJs('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCZylRj0lhbpYyZuVv8grqcizQAVQyCFXQ');
+  $this->addJs('assets/js/restaurantes.js');
+}
+
+function onEnd(){
+ $this->page->title=$this["record"]->nombre;
+}
+
+?>
+==
+{% set record = builderDetails.record %}
+{% set displayColumn = builderDetails.displayColumn %}
+{% set notFoundMessage = builderDetails.notFoundMessage %}
+
+{% if record %}
+   {% partial 'vista-restaurantes/banner-restaurant' restaurant=record %}
+   {% partial 'vista-restaurantes/overview-restaurant' restaurant=record %}
+   {# {% partial 'vista-restaurantes/caja-reserva-restaurant' restaurant=record %} #}
+   {% partial 'vista-restaurantes/carousel-galeria-restaurant' restaurant=record %}
+    <div id="plato">
+      {% partial 'vista-restaurantes/menu-restaurant' restaurant=record %}
+    </div>
+   {% partial 'generales/map-section' item=record %}
+    <hr>
+{% else %}
+    {{ notFoundMessage }}
+{% endif %}

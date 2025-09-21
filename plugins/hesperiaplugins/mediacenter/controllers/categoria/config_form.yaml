@@ -1,0 +1,10 @@
+name: Categoria
+form: $/hesperiaplugins/mediacenter/models/categoria/fields.yaml
+modelClass: hesperiaplugins\Mediacenter\Models\Categoria
+defaultRedirect: hesperiaplugins/mediacenter/categoria
+create:
+    redirect: 'hesperiaplugins/mediacenter/categoria/update/:id'
+    redirectClose: hesperiaplugins/mediacenter/categoria
+update:
+    redirect: hesperiaplugins/mediacenter/categoria
+    redirectClose: hesperiaplugins/mediacenter/categoria

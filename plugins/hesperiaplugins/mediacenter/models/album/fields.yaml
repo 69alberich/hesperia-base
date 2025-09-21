@@ -1,0 +1,53 @@
+fields:
+    titulo:
+        label: Titulo
+        span: left
+        required: 1
+        type: text
+    descripcion:
+        label: Descripción
+        oc.commentPosition: ''
+        span: right
+        type: text
+    categorias:
+        label: Categorias
+        nameFrom: nombre
+        descriptionFrom: Nombre
+        span: left
+        required: 1
+        type: relation
+    archivo:
+        label: Archivo
+        span: auto
+        mode: file
+        useCaption: true
+        thumbOptions:
+            mode: crop
+            extension: auto
+        required: 1
+        type: fileupload
+    hotel:
+        label: hotel
+        oc.commentPosition: ''
+        nameFrom: nombre
+        descriptionFrom: nombre
+        span: auto
+        type: relation
+    item:
+        label: Item
+        oc.commentPosition: ''
+        prompt: 'Add new item'
+        span: auto
+        type: repeater
+        form:
+            fields:
+                titulo:
+                    label: Titulo
+                    oc.commentPosition: ''
+                    span: auto
+                    type: text
+                url:
+                    label: URL
+                    oc.commentPosition: ''
+                    span: auto
+                    type: text

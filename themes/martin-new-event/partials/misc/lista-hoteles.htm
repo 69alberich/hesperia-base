@@ -1,0 +1,47 @@
+[viewBag]
+==
+<section class="parallax-section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7 col-sm-6">
+                <a href="{{'hotel/hotel'|page({ slug: hotel.slug })  }}"><h2>{{hotel.nombre}}</h2></a>
+                <p class="lead text-justify">{{hotel.descripcion}}</p>
+               
+                
+                <div class="col-md-12">
+                
+                  {% for telf in hotel.telefonos %}
+                    <p><strong>{{telf.nombre_tlf}}:</strong> {{telf.numero_tlf}}</p>
+                  {%endfor%}
+                  
+                  {% for em in hotel.emails %}
+                    <p><strong>{{em.nombre_email}}:</strong> {{em.email}}</p>
+                  {%endfor%}
+                  
+                </div>
+                 <p class="text-center"><strong>{{hotel.direccion}}</strong></p>
+                <br>
+                <p class="text-center">
+                  <a class="btn btn-primary hidden-sm hidden-xs" href="{{ 'hotel/hotel'|page({slug: hotel.slug }) }}">Visitar</a>
+                  <a class="btn btn-default hidden-sm hidden-xs" href="{{ 'hotel/reservacion_habitacion'|page({hotel: hotel.id}) }}">Reservar</a>
+                </p>
+            </div>
+
+            <div class="col-md-5 col-sm-6">
+                <a href="{{ 'hotel/hotel'|page({slug: hotel.slug }) }}">
+                    <img src="{{hotel.foto_inicio.path}}" class="img-responsive" alt="{{hotel.nombre}}">
+                </a>
+                <br>
+                 <p class="text-center">
+                     <a class="btn btn-default visible-sm visible-xs" href="{{ 'hotel/reservacion_habitacion'|page({hotel: hotel.id}) }}">
+                     Reservar</a>
+                 </p>
+                 <p class="text-center">
+                  <a class="btn btn-primary visible-sm visible-xs" href="{{ 'hotel/hotel'|page({slug: hotel.slug }) }}">
+                  Visitar</a>
+              </p>
+            </div>
+        </div>
+        <hr>
+    </div>
+</section>

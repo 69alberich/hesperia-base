@@ -1,0 +1,151 @@
+title = "paquetes"
+url = "/paquetes"
+layout = "test"
+description = "lista de paquetes"
+meta_title = "Paquetes"
+meta_description = "Personaliza tu estadía con nuestros paquetes configurables"
+is_hidden = 0
+seo_keywords = "paquetes, isla de margarita, margarita, luna de miel, noche para dos, paquetes en valencia"
+robot_index = "index"
+robot_follow = "follow"
+
+[builderList]
+modelClass = "HesperiaPlugins\Hoteles\Models\Paquete"
+scope = "scopeIsActivo"
+scopeValue = "{{ :scope }}"
+displayColumn = "titulo"
+noRecordsMessage = "No records found"
+detailsPage = "-"
+detailsUrlParameter = "id"
+pageNumber = "{{ :page }}"
+sortColumn = "created_at"
+sortDirection = "desc"
+
+[SeoCmsPage]
+==
+{% component 'SeoCmsPage' %}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11019962787"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-11019962787');
+</script>
+<section class="full-width intro-parallax" id="banner-reserva-hab">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<!--<h3 class="wow bounceIn" data-wow-delay="0.9s">vive en grande en los mejores Hoteles del País</h3>-->
+
+				<h1 class="wow fadeInUp" data-wow-delay="1.6s">Paquetes</h1>
+				<!--  <a href="#overview" class="btn btn-lg btn-default smoothScroll wow fadeInUp hidden-xs" data-wow-delay="2.3s">LEARN MORE</a>-->
+				<!--  <a href="#register" class="btn btn-lg btn-danger smoothScroll wow fadeInUp" data-wow-delay="2.3s">REGISTER NOW</a>--></div>
+		</div>
+	</div>
+</section>
+
+
+{% set records = builderList.records %}
+{% set displayColumn = builderList.displayColumn %}
+{% set noRecordsMessage = builderList.noRecordsMessage %}
+{% set detailsPage = builderList.detailsPage %}
+{% set detailsKeyColumn = builderList.detailsKeyColumn %}
+{% set detailsUrlParameter = builderList.detailsUrlParameter %}
+
+{#
+{% partial 'misc/anuncio-reconversion' %}
+#}
+
+
+<div class="container">
+    <h2 class="text-center">
+        Personaliza tu estadía con nuestros paquetes configurables<br>
+        <small>Una experiencia inolvidable te espera con nosotros</small>
+    </h2>
+    
+    <hr>
+ 
+    {% for record in records %}
+        <div class="row">
+              <div class="col-sm-12 col-md-12">
+                <div class="thumbnail col-md-8 container-img">
+                    <a href="{{ 'hotel/paquete'|page ({ slug: record.slug }) }}">
+                    <img src="{{record.banner.path}}" class="img-responsive">
+                     <h3 class="centered">{{ record.titulo }}</h3>
+                     {% if record.porcentaje > 0 %}
+                         <p class="top-right">
+                             <span class="btn btn-success">
+                              <i class="fa fa-check-circle fa-lg"></i> {{record.porcentaje}}% dcto. en alojamiento</span>
+                         </p>
+                     {% endif %}
+                     </a>
+                </div>
+                <div class="col-md-4">
+                      <div class="caption">
+                        <h4>{{record.hotel.nombre}}</h4>
+                        <p>{{ html_strip(record.descripcion|raw) }}</p>
+                        <ul>
+                            <li><strong>Alojamiento configurable</strong></li>
+                            {% for upselling in record.upsellings %}
+                                {% if upselling.pivot.obligatorio == 1 %}
+                                    {% set boton = "...<a href='#' data-toggle='modal' data-target='#modal-ups-"~upselling.id~"'>
+											Mas info +
+									</a>" %}
+                                    <li><strong>{{upselling.titulo}}</strong><br>
+                                      <em>-{{ str_words(html_strip(upselling.descripcion|raw), 25, boton) }}</em>
+                                     </li>
+									 <div class="modal fade" id="modal-ups-{{upselling.id}}" tabindex="-1" role="dialog">
+									    <div class="modal-dialog" role="document">
+										    <div class="modal-content">
+											    <div class="modal-header">
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													<h4 class="modal-title">{{upselling.titulo}}</h4>
+												</div>
+    											<div class="modal-body">
+    											    {{ upselling.descripcion|raw }}
+    											</div>
+    											<div class="modal-footer">
+    											    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    												<a href="{{ 'hotel/paquete'|page ({ slug: record.slug }) }}" class="btn btn-primary">Me has convecido, ¡Lo quiero!</a>
+    											</div>
+										    </div>
+									    </div>
+									</div>
+                                {% endif %}
+                            {% endfor %}
+                           
+                        </ul>
+                         <p class="text-center">
+                            <a class="btn btn-primary" href="{{ 'hotel/paquete'|page ({ slug: record.slug }) }}">¡Lo Quiero!</a>
+                        </p>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <hr>
+    {% else %}
+        <li class="no-data">{{ noRecordsMessage }}</li>
+        
+    
+    {% endfor %}
+</div>
+
+{% if records.lastPage > 1 %}
+    <ul class="pagination">
+        {% if records.currentPage > 1 %}
+            <li><a href="{{ this.page.baseFileName|page({ (pageParam): (records.currentPage-1) }) }}">&larr; Prev</a></li>
+        {% endif %}
+
+        {% for page in 1..records.lastPage %}
+            <li class="{{ records.currentPage == page ? 'active' : null }}">
+                <a href="{{ this.page.baseFileName|page({ (pageParam): page }) }}">{{ page }}</a>
+            </li>
+        {% endfor %}
+
+        {% if records.lastPage > records.currentPage %}
+            <li><a href="{{ this.page.baseFileName|page({ (pageParam): (records.currentPage+1) }) }}">Next &rarr;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}

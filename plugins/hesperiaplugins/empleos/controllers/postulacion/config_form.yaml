@@ -1,0 +1,11 @@
+name: Postulacion
+modelClass: Hesperiaplugins\Empleos\Models\Postulacion
+form: $/hesperiaplugins/empleos/models/postulacion/fields.yaml
+defaultRedirect: hesperiaplugins/empleos/postulacion
+create:
+    redirect: 'hesperiaplugins/empleos/postulacion/update/:id'
+    redirectClose: hesperiaplugins/empleos/postulacion
+update:
+    redirect: hesperiaplugins/empleos/postulacion
+    redirectClose: hesperiaplugins/empleos/postulacion
+preview: {  }

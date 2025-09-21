@@ -1,0 +1,73 @@
+tabs:
+    fields:
+        titulo:
+            label: Titulo
+            span: auto
+            type: text
+            tab: General
+        slug:
+            label: Slug
+            span: auto
+            preset:
+                field: titulo
+                type: slug
+            type: text
+            tab: General
+        descripcion:
+            label: Descripcion
+            size: large
+            span: full
+            type: richeditor
+            tab: General
+        ind_activo:
+            label: Activo
+            span: left
+            type: switch
+            tab: General
+        requisitos:
+            label: Requisitos
+            prompt: Nuevo
+            span: full
+            type: repeater
+            tab: General
+            form:
+                fields:
+                    r_titulo:
+                        label: Titulo
+                        span: auto
+                        type: text
+                    r_descripcion:
+                        label: Descripcion
+                        span: auto
+                        type: text
+        ofertable_type:
+            label: Sección
+            emptyOption: 'Seleccione la seccion'
+            span: left
+            type: dropdown
+            tab: Configuración
+        ofertable_id:
+            label: 'Hotel / Restaurante'
+            span: right
+            dependsOn:
+                - ofertable_type
+            type: dropdown
+            tab: Configuración
+        localidad:
+            label: Localidad
+            nameFrom: localidad
+            descriptionFrom: localidad
+            span: left
+            type: relation
+            tab: Configuración
+        categorias:
+            label: Categorias
+            nameFrom: nombre
+            descriptionFrom: description
+            span: right
+            type: relation
+            tab: Configuración
+        postulaciones:
+            type: partial
+            path: $/hesperiaplugins/empleos/controllers/postulacion/_postulaciones_field.htm
+            tab: Postulaciones

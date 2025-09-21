@@ -1,0 +1,23 @@
+title = "Categoria"
+url = "/empleo/categoria/:slug"
+layout = "layout-blank"
+description = "listado de empleos por categorias"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[listaempleos]
+slug = "{{ :slug }}"
+filter = 1
+==
+{% content 'banner-paginas/empleos-banner' %}
+
+<div class="container">
+   <div class="row">
+	 <div class="col-md-12">
+	   <br>
+	    {% content 'generales/empleo-header' %}
+	  </div>
+	 	{% component 'listaempleos' %}
+   </div>
+</div>

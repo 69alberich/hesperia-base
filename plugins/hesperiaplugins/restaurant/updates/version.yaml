@@ -1,0 +1,29 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table hesperiaplugins_restaurant_info'
+    - builder_table_create_hesperiaplugins_restaurant_info.php
+1.0.3:
+    - 'Created table hesperiaplugins_restaurant_secciones'
+    - builder_table_create_hesperiaplugins_restaurant_secciones.php
+1.0.4:
+    - 'Updated table hesperiaplugins_restaurant_secciones'
+    - builder_table_update_hesperiaplugins_restaurant_secciones.php
+1.0.5:
+    - 'Updated table hesperiaplugins_restaurant_info'
+    - builder_table_update_hesperiaplugins_restaurant_info.php
+1.0.6:
+    - 'Updated table hesperiaplugins_restaurant_secciones'
+    - builder_table_update_hesperiaplugins_restaurant_secciones_2.php
+1.0.7:
+    - 'Updated table hesperiaplugins_restaurant_info'
+    - builder_table_update_hesperiaplugins_restaurant_info_2.php
+1.0.8:
+    - 'Created table hesperiaplugins_restaurant_platos'
+    - builder_table_create_hesperiaplugins_restaurant_platos.php
+1.0.9:
+    - 'Updated table hesperiaplugins_restaurant_info'
+    - builder_table_update_hesperiaplugins_restaurant_info_3.php
+1.0.10:
+    - 'Updated table hesperiaplugins_restaurant_info'
+    - builder_table_update_hesperiaplugins_restaurant_info_4.php

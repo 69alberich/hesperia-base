@@ -1,0 +1,31 @@
+fields:
+    nombre:
+        label: Nombre
+        oc.commentPosition: ''
+        span: left
+        type: text
+    descripcion:
+        label: Descripcion
+        oc.commentPosition: ''
+        span: right
+        type: text
+    restaurant:
+        label: Restaurant
+        oc.commentPosition: ''
+        nameFrom: nombre
+        span: auto
+        required: 1
+        descriptionFrom: description
+        type: relation
+    banner:
+        label: Banner
+        oc.commentPosition: ''
+        mode: image
+        imageWidth: '200'
+        imageHeight: '150'
+        useCaption: true
+        thumbOptions:
+            mode: crop
+            extension: auto
+        span: auto
+        type: fileupload

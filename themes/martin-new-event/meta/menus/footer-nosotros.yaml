@@ -1,0 +1,28 @@
+name: 'Footer - Nosotros'
+items:
+    -
+        title: 'Responsabilidad Social'
+        nesting: '0'
+        type: static-page
+        url: ''
+        code: ''
+        reference: responsabilidad-social
+        cmsPage: ''
+        replace: '0'
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Trabaja con nosotros'
+        nesting: null
+        type: cms-page
+        url: null
+        code: ''
+        reference: empleo/empleos
+        cmsPage: null
+        replace: null
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'

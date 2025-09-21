@@ -1,0 +1,243 @@
+title = "Pre-checkin Online"
+url = "/pre-checkin-online/:reserva_id"
+layout = "test"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[PrechekinHandler]
+reserva_id = "{{ :reserva_id }}"
+==
+<?php
+function onInit(){
+  $this->addJs('assets/js/jquery.validate.min.js');
+  $this->addJs('assets/js/moment.js');
+  $this->addJs('assets/js/bootstrap-datetimepicker.js');
+  
+  $this->addCss('assets/css/bootstrap-datetimepicker.min.css');
+  
+  if($this->param('reserva_id')){
+    use HesperiaPlugins\Hoteles\Models\Reservacion;
+    $reservacion = Reservacion::where("codigo", $this->param('reserva_id'))->first();
+    $id_decrypt = null;
+    if($reservacion == null){
+      try {
+        $id_decrypt = Crypt::decrypt($this->param("reserva_id"));
+      }
+      catch (DecryptException $ex) {
+          //
+      }
+    }else{
+      $this["reserva"] = $reservacion;
+    }
+    
+    if($id_decrypt){
+      $this["reserva"] = Reservacion::find($id_decrypt);
+    }
+    //$this["reserva"] = Reservacion::find($id_decrypt);    
+  }
+
+  }
+
+  function onEnd(){
+    $this->addJs('assets/js/pre-checkin.js');
+  }
+?>
+==
+{% content 'banner-paginas/banner-prechekin'%}
+
+{% set reserva = PrechekinHandler.reserva %}
+
+
+<div class="container">
+  
+{% if reserva %}
+<form class="form-horizontal" id="pre-checkin-form"  data-request-files data-request-validate>
+    
+  <div class="panel panel-default">
+    
+    <div class="panel-body text-center">
+      <h4>Reserva en {{reserva.hotel.nombre}} N° {{reserva.id}}</h4>
+      {% set resumen = reserva.getResumen() %}
+
+      <p>Del {{resumen.checkin}} al {{resumen.checkout}}</p>
+      <p>Completa los datos a continuación <strong>de cada huesped</strong> para cada habitación</p></div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="checkin-time" class="col-sm-2 control-label">Hora de llegada (Aprox.)</label>
+          <div class="col-sm-10">
+            <div class="form-group">
+              <div class='input-group date' id='checkin-time'>
+                  <input type='text' class="form-control hora" name="info_adicional[hora_checkin]" />
+                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-time"></span>
+                  </span>
+              </div>
+              <em class="help-block">(obligatorio)</em>
+          </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="billing-type" class="col-sm-3 control-label">Tipo de Facturación</label>
+          <div class="col-sm-9">
+            <div class="radio">
+              <label class=>
+                <input type="radio" name="info_adicional[facturacion]" id="radio1" value="f-personal" checked>
+                Factura Personal
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="info_adicional[facturacion]" id="radio2" value="f-juridica">
+                Factura Jurídica
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="info_adicional[facturacion]" id="radio3" value="a-comercial">
+                Aliado Comercial
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  {% for detalle in reserva.detalles %}
+  <div class="panel panel-default">
+    <h5 class="text-center">
+      {{detalle.habitacion.nombre}} - {{detalle.getTextoOcupacion()}}
+    </h5>
+    <div class="panel-body">
+ 
+      {% set arOcupacion = detalle.getOcupacionCodes() %}
+      <div class="container">
+        <span class="label label-default">Adultos</span>
+      </div>
+      <br>
+      {% for i in 1..arOcupacion.adultos %}
+ 
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Nombre y apellido</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control nombre" name="d-{{loop.index}}-{{detalle.id}}[huespedes][nombre]">
+                <em class="help-block">(obligatorio)</em>
+              </div>
+              
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Documento</label>
+              <div class="col-sm-9">
+                <input type="file" class="form-control documento dropify" 
+                data-max-file-size="3M" data-height="150" data-allowed-file-extensions="pdf png jpg"
+                 name="d-{{loop.index}}-{{detalle.id}}[huespedes][documento]">
+                <em class="help-block">(obligatorio)</em>
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+        
+      {% endfor %}
+     
+ 
+      {% if arOcupacion.ninos > 0 %}
+      <hr>
+      <div class="container">
+        <span class="label label-default">Niños</span>
+      </div>
+      <br>
+        {% for i in 1..arOcupacion.ninos %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Nombre y apellido</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control nombre" name="d-{{loop.index + 100 }}-{{detalle.id}}[huespedes][nombre]">
+                <em class="help-block">(obligatorio)</em>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Documento</label>
+              <div class="col-sm-9">
+                <input type="file" data-ign="1" class="form-control documento dropify kid" 
+                data-height="150" data-max-file-size="3M" data-allowed-file-extensions="pdf png jpg"
+                 name="d-{{loop.index + 100}}-{{detalle.id}}[huespedes][documento]">
+                 <em class="help-block">(opcional)</em>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+      <div class="col-md-12 well well-sm">
+        <div class="form-group">
+          <div class="text-center">
+            <label class="checkbox-inline">
+              <input type="checkbox" value="1" name="d-{{loop.index}}-{{detalle.id}}[info_adicional][hab_comunicante]"> <strong>Habitacion comunicante</strong> 
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" value="1" name="d-{{loop.index}}-{{detalle.id}}[info_adicional][cama_extra]"> <strong>Cama adicional</strong>
+            </label>
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <p class="text-center">
+        <button class="btn btn-primary">Enviar</button>
+      </p>
+    </div>
+      <input type="hidden" name="codigo" value="{{reserva.codigo}}">
+
+  </div>
+</form>
+{% else %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<br>
+			<div class="jumbotron">
+
+				<h3 class="text-center">¡Gracias por completar tu pre-checkin online!</h3>
+
+        <p class="lead">Acabas de realizar una gran colaboración ANTI-COVID19 para que
+           podamos minimizar el tiempo de espera y el contacto en la recepción. 
+           Recuerda que a tu llegada tomaremos tu temperatura con un sistema eletrónico,
+           deberás respetar las distancias de seguridad marcadas en el piso y te ofreceremos
+           gel antibacterial y mascarilla. ¡Disfruta tu estancia!</p>
+
+        <p class="text-center">
+          <a class="btn btn-primary" href="https://hoteleshesperia.com.ve">Página Principal</a> 
+        </p>
+      </div>
+        
+		</div>
+	</div>
+</div>
+{% endif %}
+  
+</div>

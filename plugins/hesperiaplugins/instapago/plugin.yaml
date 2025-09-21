@@ -1,0 +1,17 @@
+plugin:
+    name: 'hesperiaplugins.instapago::lang.plugin.name'
+    description: 'Este es un plugins de integración con pasarela de pago Venezolana Instapago de Banesco'
+    author: 'Maria Cristovao'
+    icon: oc-icon-credit-card
+    homepage: 'https://instapago.com/'
+navigation:
+    instapago:
+        label: Instapago
+        url: hesperiaplugins/instapago/Afiliado
+        icon: icon-credit-card
+        permissions:
+            - gestion_general_instapago
+permissions:
+    gestion_general_instapago:
+        tab: Instapago
+        label: 'Gestión General'

@@ -1,0 +1,22 @@
+upsellings:
+    label: Upsellings
+    view:
+        list: $/hesperiaplugins/hoteles/models/upselling/columns.yaml
+        toolbarButtons: 'add|remove'
+        showCheckboxes: true
+    pivot:
+        form: $/hesperiaplugins/hoteles/models/upselling/paquete_pivot_fields.yaml
+        recordsPerPage: 10
+    manage:
+        scope: disponibleEnPaquete
+
+habitaciones:
+    label: Habitaciones
+    view:
+        list: $/hesperiaplugins/hoteles/models/habitacion/columns.yaml
+        toolbarButtons: 'add|remove'
+        showCheckboxes: true
+    manage:
+        form: $/hesperiaplugins/hoteles/models/habitacion/fields.yaml
+        recordsPerPage: 10
+        scope: disponibleEnPaquete

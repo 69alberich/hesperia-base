@@ -1,0 +1,4 @@
+title: Postulacion
+modelClass: Hesperiaplugins\Empleos\Models\Postulacion
+toolbar:
+    buttons: reorder_toolbar

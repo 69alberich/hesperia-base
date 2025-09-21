@@ -1,0 +1,60 @@
+plugin:
+    name: 'hesperiaplugins.empleos::lang.plugin.name'
+    description: 'hesperiaplugins.empleos::lang.plugin.description'
+    author: 'Jesus Castillo'
+    icon: oc-icon-briefcase
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: 'Ofertas Empleos'
+        url: hesperiaplugins/empleos/oferta
+        icon: icon-briefcase
+        permissions:
+            - gestion_empleos
+        sideMenu:
+            side-menu-item5:
+                label: Ofertas
+                url: hesperiaplugins/empleos/oferta
+                icon: icon-briefcase
+                permissions:
+                    - gestion_empleos
+            side-menu-item:
+                label: 'Categorias Ofertas'
+                url: hesperiaplugins/empleos/categoriaoferta
+                icon: icon-tags
+                permissions:
+                    - gestion_categorias
+            side-menu-item2:
+                label: Postulaciones
+                url: hesperiaplugins/empleos/postulacion
+                icon: icon-archive
+                permissions:
+                    - gestion_postulaciones
+            side-menu-item3:
+                label: Paises
+                url: hesperiaplugins/empleos/pais
+                icon: icon-globe
+                permissions:
+                    - gestion_paises
+            side-menu-item4:
+                label: Localidades
+                url: hesperiaplugins/empleos/localidad
+                icon: icon-location-arrow
+                permissions:
+                    - gestion_localidades
+permissions:
+    gestion_empleos:
+        tab: Empleos
+        label: 'Ver menu Empleos'
+    gestion_categorias:
+        tab: Empleos
+        label: 'Agregar, Modificar, y Eliminar informacion de Categorias de Empleos'
+    gestion_postulaciones:
+        tab: Empleos
+        label: 'Agregar, Modificar, y Eliminar informacion de Postulaciones a Ofertas de Empleos'
+    gestion_paises:
+        tab: Empleos
+        label: 'Agregar, Modificar, y Eliminar informacion de Paises en los que se ofertan los Empleos'
+    gestion_localidades:
+        tab: Empleos
+        label: 'Agregar, Modificar, y Eliminar informacion de Localidades en los que se ofertan los Empleos'

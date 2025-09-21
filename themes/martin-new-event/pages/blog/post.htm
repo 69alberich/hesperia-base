@@ -1,0 +1,176 @@
+title = "post"
+url = "/blog/post/:slug"
+layout = "blog-layout"
+description = "pagina principal del blog"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[blogPost]
+slug = "{{ :slug }}"
+categoryPage = "blog/blog"
+
+[blogPosts]
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+categoryPage = "blog/category"
+postPage = "blog/post"
+==
+<?php
+function onStart(){
+    use RainLab\Blog\Models\Post;
+  //$this->addJs('assets/js/gmaps.js');
+  //$this->addJs('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCZylRj0lhbpYyZuVv8grqcizQAVQyCFXQ');
+  $this->addJs('assets/js/post.js');
+  $post = Post::where("slug", "=", $this->param("slug"))->first();
+  
+  if($post){
+    $image ="";
+      if (isset($post->featured_images[0])) {
+       $image = $post->featured_images[0]->getPath();
+      }
+      $seo_props =  array(
+        "titulo" => $post->title,
+        "descripcion" => $post->summary,
+        "type" => "article",
+        "imagen" => $image,
+        "url" => "https://hoteleshesperia.com.ve/blog/post/".$post->slug,
+        "robots" => "index,follow"
+    );
+    
+      $this["seo_props"] = $seo_props;
+  }else{
+      
+      return Redirect::to("404");
+  
+  }
+
+}
+?>
+==
+{% content 'banner-paginas/blog-banner' %}
+<hr>
+<div class="container" id="post-container">
+  <br>
+  <h2>{{post.title}}</h2>
+  <p class="text-justify">
+      Publicado
+      {% if post.categories.count %} en
+          {% for category in post.categories %}
+              <a href="{{ category.url }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
+          {% endfor %}
+      {% endif %}
+      - {{ post.published_at|date('M d, Y') }}
+  </p>
+{% set post = blogPost.post %}
+
+<div class="col-md-12">
+  
+  <img data-src="{{ image.filename }}" src="{{ post.featured_images[0].path }}"
+    alt="{{ image.description }}"
+    style="width: 100%" />
+    
+  <div class="col-md-12 text-center" style="font-size: 20px">
+     
+      {% partial "misc/social-share" %}
+  </div>
+{{ post.content_html|raw }}
+  
+ {% if post.featured_images.count > 1 %}
+     <hr>
+      <h2>Galeria</h2>
+        <div class="col-md-12">
+          <div id="owl-galeria-noticia" class="owl-carousel carousel-con-modal">
+          {% for img in post.featured_images %}
+            {% if loop.index > 1 %}
+            <div class="item" data-index='{{loop.index}}'>
+              <img class="lazyOwl img-responsive"
+              data-src="{{img.thumb(300, 200, {'mode':'crop'})}}" alt="{{ img.description }}">
+            </div>
+            {% endif %}
+            
+        {% endfor %}
+
+          </div>
+       </div>
+      <div class="modal fade" role="dialog" id="modal-owl-galeria">
+         <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div id="owl-galeria-noticia-modal" class="owl-carousel">
+            {% for imagen2 in post.featured_images %}
+                {% if loop.index > 1 %}
+                <div class="item"><img class="lazyOwl img-responsive"
+                   src="{{imagen2.path}}" alt="Lazy Owl Image">
+                </div>
+                {% endif %}
+            {% endfor %}
+    
+            </div>
+            <a class="left carousel-control" href="#" role="button" data-slide="prev">
+              <span class="fa glyphicon glyphicon-chevron-left fa-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#" role="button" data-slide="next">
+              <span class="fa glyphicon glyphicon-chevron-right fa-chevron-right"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+{% endif %}
+<hr>
+</div>
+
+  {% set posts = blogPosts.posts %}
+  
+  <div class="col-md-12">
+    <h3>Te puede interesar</h3>
+    
+    <div class="slider-2-items">
+      {% for post_recomendado in posts %}
+          <div class="item">
+            <div class="col-xs-12 col-sm-12 col-md-12 item thumb-container">
+              <div class="thumbnail">
+                <img src="{{ post_recomendado.featured_images[0].path }}" alt="">
+                  <div class="caption">
+                    <a href="{{ 'blog/post'|page({slug:post_recomendado.slug }, false) }}"><h4 class="text-center">{{post_recomendado.title}}</h4></a>
+                    <p class="text-center">{{ html_strip(str_words(post_recomendado.summary|raw, 15)) }}</p>
+                    <p class="text-center">
+                    
+                     <a href="{{ 'blog/post'|page({slug:post_recomendado.slug }, false) }}"
+                      class="btn btn-primary  
+                       " >
+                      Leer noticia
+                    </a>
+                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+      {% else %}
+          <li class="no-data">{{ noPostsMessage }}</li>
+      {% endfor %}
+  </div>
+
+  <hr>
+    {# <ul class="post-list" id="list-post-aside">
+        {% for post_recomendado in posts %}
+          {%if post.id != post_recomendado.id and loop.index <3 %}
+            <li class="col-md-12">{{ 'post'|page({ post_id: 10 }) }}
+                <img class="img-responsive" src="{{ post_recomendado.featured_images[0].path }}" alt="{{post_recomendado.title}}">
+                <h3><a href="{{ 'blog/post'|page ({slug: post_recomendado.slug}) }}">{{ post_recomendado.title }}</a></h3>
+                <p class="excerpt">{{ post_recomendado.summary }}</p>
+            </li>
+            {%endif%}
+          {% endfor%}
+          <p class="text-center">
+              <a href="{{ 'blog/blog'|page }}"
+                 class="btn btn-lg btn-default smoothScroll wow
+                 fadeInUp" data-wow-delay="2.3s">
+                 Volver al Blog
+             </a>
+          </p>
+    </ul>
+    #}
+  </div>
+</div>

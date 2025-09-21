@@ -1,0 +1,88 @@
+title = "Mi reserva"
+url = "/mi-reserva"
+layout = "test"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[SeoCmsPage]
+==
+<?php
+use HesperiaPlugins\Hoteles\Models\Reservacion;
+
+function onReserva(){
+  $form = Input::get();
+  $email = Input::get('email');
+  $codigo = Input::get('codigo');
+
+  $rules =['email'=>'required|email',
+           'codigo'=>'required|numeric'];
+  $messages = [
+      'required' => 'El campo :attribute es requerido',
+      'email'=> 'Ingrese un correo electronico valido',
+      'numeric'=>'Ingrese un codigo de reserva valido'
+  ];
+  $validator = Validator::make($form, $rules, $messages);
+  if ($validator->fails()) {
+   throw new ValidationException($validator);
+  }
+  $reservacion = Reservacion::find($codigo);
+
+  if(!empty($reservacion)){
+
+    if($reservacion->usuario->email == "$email"){
+        return Redirect::to('pago-de-reserva/'.$reservacion->getIdEncriptado());
+    }else{
+      Flash::error("El email no corresponde con el codigo de reserva ingresado");
+    }
+    
+  }else {
+    Flash::error("No hemos encontrado una reservación");
+  }
+}
+?>
+==
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+
+<section class="full-width intro-parallax" id="banner-reserva-hab">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<h1 class="wow fadeInUp" data-wow-delay="1.6s">Web Check-in</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="container">
+	<div class="row">
+   
+     
+        <h5 class="text-center">Ingresa tu Código de reserva y Email para hacer tu check-in ¡online!</h5>
+
+	</div>
+  <hr>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3 col-xs-12">
+		    <form data-request="onReserva" class="well">
+    			<label for="correo">Email</label>
+          <div class="form-group">
+            <input type="text" class="form-control" name="email" placeholder="Email">
+          </div>
+          <label for="hotel">Código de reserva</label>
+          <div class="form-group">
+            <input type="text" class="form-control" name="codigo" placeholder="Código de reserva">
+          </div>
+          
+        
+          <div class="row text-center" style="margin-top:10px;">
+            <div class="form-group">
+                <button id="buscar" type="submit" class="btn btn btn-primary">Enviar</button>
+            </div>
+          </div>
+         
+        </form>
+    </div>
+	</div>
+</section>

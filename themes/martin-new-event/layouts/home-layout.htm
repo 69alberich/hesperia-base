@@ -1,0 +1,128 @@
+description = "Home Layout"
+
+[staticPage]
+useContent = 1
+default = 0
+
+[CajaReservas]
+moneda = 2
+redirect = "reservar-habitacion"
+
+[SeoStaticPage]
+
+[googleTracker]
+
+[TawkTo]
+apikey = "5fa1dedd520b4b7986a10f2a"
+widgetname = "default"
+==
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% component 'SeoStaticPage' %}
+
+    <meta name="facebook-domain-verification" content="4jhgnyx8334m2x14qv2dwu1k7c4vxh" />
+<!--
+New Event
+http://www.templatemo.com/tm-486-new-event
+-->
+<meta name="google-site-verification" content="A6lLGMWBW9E6C0UxDvMop9aBKLw3rkf0JoCyq32nqmg" />
+    <link href='https://fonts.googleapis.com/css?family=Poppins:400,500,600' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="{{ 'favicon.ico'|media }}"/>
+    <link href="{{ [
+        'assets/css/bootstrap.min.css',
+        'assets/css/animate.css',
+        'assets/css/fontawesome.min.css',
+        'assets/css/all.min.css',
+        'assets/css/owl.theme.css',
+        'assets/css/owl.carousel.css',
+        'assets/css/style.css',
+        'assets/css/principal.css',
+        'assets/css/sweetalert2.min.css',
+        'assets/css/custom-style.css',
+    ]|theme }}" rel="stylesheet">
+    {% styles %}
+
+    <script src="{{ [
+        'assets/js/jquery.js',
+        'assets/js/bootstrap.min.js',
+        'assets/js/jquery.parallax.js',
+        'assets/js/owl.carousel.min.js',
+        'assets/js/smoothscroll.js',
+        'assets/js/wow.min.js',
+        'assets/js/custom.js',
+        'assets/js/principal.js',
+        'assets/jQuery.countdown-master/dist/jquery.countdown.js',
+        'assets/js/sweetalert2.min.js',
+        ]|theme }}"></script>
+    {% scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    
+    <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-PD2S8P2');</script>
+        <!-- End Google Tag Manager -->
+        
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11019962787"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-11019962787');
+</script>
+</head>
+
+<body data-spy="scroll" data-offset="50" data-target=".navbar-collapse">
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PD2S8P2"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+{% component 'googleTracker' %}
+
+{% component 'TawkTo' %}
+
+    {% framework extras %}
+
+    {% partial 'generales/menu-principal' %}
+
+    {% page %}
+
+    <div class='container-fuild' id="caja-reserva">
+      <h2 class="text-center">Reserva Online</h2>
+      <h4 class="text-center">Mejor precio garantizado <i class="fa fa-check-circle-o" aria-hidden="true"></i></h4>
+      {% component 'CajaReservas' %}
+    </div>
+    <br>
+    
+    {% partial 'carousel-hoteles' %}
+    
+    {% content 'home/detail-index'%}
+
+    {% placeholder paquetes title="Paquetes" %}
+        {%content 'home/paquetes-index' %}
+    {#{%content 'home/atramape' %}#}
+
+    {% placeholder ultimopost title="ultimo-post" %}
+
+    {% placeholder eventos title="Eventos" %}
+          
+    {% partial 'generales/footer-principal' %}
+
+{# {% if this.theme.settings_gotop %}
+    <a href="#back-top" class="go-top"><i class="fa fa-angle-up"></i></a>
+{% endif %} #}
+
+
+
+</body>
+
+
+
+</html>

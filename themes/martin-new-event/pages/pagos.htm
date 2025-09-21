@@ -1,0 +1,287 @@
+title = "Pagos"
+url = "/pagos/:id?"
+layout = "layout-blank"
+meta_title = "Pagos"
+meta_description = "Paga facil y rápido nuestros productos y servicios"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[Compra]
+id = "{{ :id }}"
+formato = "normal"
+
+[pasarela]
+year = 2018
+
+[form]
+
+[SeoCmsPage]
+==
+<?php
+function onInit(){
+	
+	$this->addJs('assets/js/jquery.validate.min.js');
+  $this->addJs('assets/js/additional-methods.min.js');
+  $this->addJs('assets/js/pagos-tienda.js');
+
+	
+	if($this->param('id')){
+
+		use HesperiaPlugins\Hoteles\Models\Compra;
+		use HesperiaPlugins\Hoteles\Models\Pago;
+		use Crypt;
+		$id_decrypt = null;
+
+		$compra = Compra::select("total","status_id", "id", "moneda_id", "pago_insite")->with("status", "upgrades")
+			->where("codigo", $this->param('id'))->first();
+
+		if($compra == null){
+			try {
+				$id_decrypt = Crypt::decrypt($this->param('id'));
+			} catch (DecryptException $ex) {
+				trace_log($ex);
+				$id_decrypt = null;
+			}
+
+			$compra = Compra::select("total","status_id", "id", "moneda_id", "pago_insite")->with("status", "upgrades")
+			->where("id", $id_decrypt)->first();
+		}
+		
+		
+		if($compra){
+			$this["compra"] = $compra;
+			$this["items"] = $items = $compra->upgrades;
+			$this["hotel"] =  $items[0]->upselling->hotel;
+		}
+		
+		
+	}
+ }
+
+ function onEnd(){
+	 if($this["compra"] && $this["hotel"]){
+		 $hotel = $this["hotel"];
+		 if($hotel->id == 1){
+			 $this["afiliado"] = 1;
+		 }else if($hotel->id == 2){
+			 $this["afiliado"] = 2;
+		 }else if($hotel->id == 5){
+			 $this["afiliado"] = 3;
+		 }else if($hotel->id == 4){
+			 $this["afiliado"] = 4;
+		 }
+		 $this["monto"] = $this["compra"]->getMontoEncriptado();
+	 }
+ }
+
+ function onAprobarCompra(){
+
+	
+	 $compra = Compra::find($this["compra"]["id"]); ;
+
+	 $data = Input::get();
+    //return json_encode($data);
+    //PASO 1, AÑADIR EL PAGO A LA RESERVACION
+    if ($data["pasarela"]=="instapago") {
+      $transaccion = Transaccion::find($data["transaccion"]);
+      $tipo_pago = 1;
+      $pago = new Pago([
+        "referencia" => $transaccion->id,
+        "pagable_type" => "HesperiaPlugins\Hoteles\Models\Compra",
+        "tipo_pago_id" => $tipo_pago,
+        "pagable_id" => $compra->id,
+        "comprobante_e" => $transaccion->voucher
+      ]);
+      $pago->save();
+    }elseif($data["pasarela"]=="stripe"){
+      $tipo_pago = 3;
+      $pago = new Pago([
+        "referencia" => $data["transaccion"],
+        "pagable_type" => "HesperiaPlugins\Hoteles\Models\Compra",
+        "tipo_pago_id" => $tipo_pago,
+        "pagable_id" => $compra->id
+      ]);
+      $pago->save();
+    }
+	 $compra->restarInventarios(); //RESTA LA OCUPACION
+    if($compra->aprobar()) {
+			 return "success";
+    }else{
+			return "error";
+		}
+ }
+?>
+==
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11019962787"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-11019962787');
+</script>
+<section class="full-width intro-parallax banner-half">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<!--<h3 class="wow bounceIn" data-wow-delay="0.9s">vive en grande en los mejores Hoteles del País</h3>-->
+
+				<h1 class="wow fadeInUp" data-wow-delay="1.6s">Pagos</h1>
+				<!--  <a href="#overview" class="btn btn-lg btn-default smoothScroll wow fadeInUp hidden-xs" data-wow-delay="2.3s">LEARN MORE</a>-->
+				<!--  <a href="#register" class="btn btn-lg btn-danger smoothScroll wow fadeInUp" data-wow-delay="2.3s">REGISTER NOW</a>--></div>
+		</div>
+	</div>
+</section>
+
+<div class="container-fluid">
+<br>
+	<div class="col-md-12">
+	{% component 'Compra' %}
+
+	{% if hotel.datosBancarios.count > 0 %}
+		{% set tiene_datos_b = true %}
+	{% else %}
+		{% set tiene_datos_b = false %}
+	{% endif %}
+	{% if compra.status_id == 2 %}
+
+		<div class="col-md-6">
+			<div class="col-md-12 col-sm-12">
+				<div class="section-title">
+					<h2 class="text-center">Métodos de Pago</h2>
+				</div>
+			</div>
+			{% partial 'pagos/metodos' item = compra tipo = 'compra' %}
+			
+			{#
+				<div class="col-md-12 col-sm-12">
+				<ul class="nav nav-tabs" role="tablist">
+		      {% if hotel.id != 3 %}
+		        <li class="active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Tarj. de Crédito</a></li>
+		      {% endif %}
+
+		       {% if (tiene_datos_b and compra.moneda_id == 1) or tiene_datos_b and compra.moneda_id == 3 %}
+
+		        <li><a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">Trans. Bancaria</a></li>
+
+		      {% endif %}
+		    </ul>
+
+				<div class="tab-content">
+		      {% if hotel.id != 3 %}
+
+		           <div role="tabpanel" class="tab-pane active" id="tab1">
+		              {% if compra.moneda_id == 1 or compra.moneda_id == 3 %}
+
+		                {% component 'pasarela' %}
+
+		                {% else %}
+		                <div class="col-md-12 text-center">
+							<h4>¿Por qué es seguro pagar con TDC en Hesperia?</h4>
+								<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-12 col-lg-6 col-sm-6">
+												<h5> 
+														<span class="fa-stack fa-lg">
+														<i class="fa fa-square-o fa-stack-2x"></i>
+														<i class="fa fa-rocket fa-stack-1x"></i>
+														</span>
+													Rapidez y Efectividad<br>
+													<small>¡Una vez rellenes tus datos correctamente recibiras respuesta en pocos segundos!</small>
+											</h5>
+												
+											</div>
+											<div class="col-md-12 col-lg-6 col-sm-6">
+												<h5>
+												<span class="fa-stack fa-lg">
+														<i class="fa fa-square-o fa-stack-2x"></i>
+														<i class="fa fa-lock fa-stack-1x"></i>
+														</span>
+												Privacidad y Seguridad<br>
+												<small>¡Nos preocupamos por tu seguridad! por eso no guardamos en nuestra base de
+														datos ninguna información sensible de tu TDC. </small>
+												</h5>
+												
+											</div>
+										</div>
+								</div>
+										
+								{% component 'form' mount = compra.total description = hotel.nombre type = 'Compra' ref = compra.id %}
+										<p class="alert alert-warning">
+											<i class="fa fa-expeditedssl fa-lg" aria-hidden="true"></i> Certificado <strong>SSL</strong> en todas nuestras transacciones
+										</p>
+	
+						</div>
+		                {% endif %}
+		            </div><!-- FIN DEL PANEL 1 -->
+		      {% else %}
+		          {% set active = "active" %}
+		      {% endif %}
+
+
+		    {% if (tiene_datos_b and compra.moneda_id == 1) or (tiene_datos_b and compra.moneda_id == 3) %}
+		      <div role="tabpanel" class="tab-pane {{active}}" id="tab2">
+		        <div class="col-md-12">
+		          <div class="well">
+		            <strong>¡Saludos!</strong>
+		            Una vez hayas realizado tu transferencia introduce el número de referencia de la misma y
+		            adjunta el comprobante, cuando validemos tu pago recibirás un email con la confirmación
+		            de tu reserva. Si deseas hacer el pago más tarde puedes hacerlo a través del link
+		            de pago que acabas de recibir en tu correo. Recuerda que tienes 24 horas para cancelar
+		          </div>
+		          {% set cuentas = hotel.datosBancarios  %}
+		          <div class="col-md-12">
+		            <ul class="list-group">
+		            {% if compra.moneda_id == 1 or compra.moneda_id == 3 %}
+		              {% set nacional = 1 %}
+		              {% for cuenta in cuentas if cuenta.nacional == 1 %}
+		              <li class="list-group-item">
+		                <p><strong>Banco:</strong> {{cuenta.banco}}</p>
+		                <p><Strong>Beneficiario:</strong> {{cuenta.beneficiario}} | <strong>Rif</strong> {{cuenta.rif}}</p>
+		                <p><strong>Cuenta:</strong> {{cuenta.cuenta}}</p>
+		              </li>
+		              {% endfor %}
+		            {% else %}
+		              {% set nacional = 0 %}
+		              {% for cuenta in cuentas if cuenta.nacional != 1 %}
+		              <li class="list-group-item">
+		                <p><strong>Banco:</strong> {{cuenta.banco}}</p>
+		                <p><Strong>Beneficiario:</strong> {{cuenta.beneficiario}} | <strong>Swift</strong> {{cuenta.swift}}</p>
+		                <p><strong>Cuenta:</strong> {{cuenta.cuenta}}</p>
+		              </li>
+		              {% endfor %}
+		            {% endif %}
+		            </ul>
+		          </div>
+		          <form class="form col-md-12 text-center" id="form-transferencia"
+							 data-request-files data-request-validate
+							 data-request-flash data-request="Compra::onAddComprobante">
+		              <div class="row">
+		                 <div class="form-group col-md-6">
+		                    <label for="localizador">Número de Transferencia</label>
+		                    <input type="text" class="form-control"
+		                      name="localizador" id="localizador">
+		                  </div>
+		                  <div class="form-group col-md-6">
+		                    <label for="exampleInputEmail2">Comprobante</label>
+		                    <input type="file" class="form-control"
+		                      name="archivo2" id="archivo">
+		                  </div>
+		              </div>
+		             <!-- <input type="hidden" name="_handler" value="onAddComprobante">-->
+		              <input type="hidden" name="compra_id" value="{{compra.id}}">
+		              <button type="submit" class="btn btn-default" data-attach-loading>¡Enviar!</button>
+		               <p class="help-block">Sólo se permiten archivos de imagen o PDF, ambos con un peso no mayor a 2MB</p>
+		          </form>
+		        </div>
+		      </div><!--FIN PANEL 2 -->
+
+		    {% endif %}
+		    </div>
+			</div> #}
+		</div>
+	{% endif %}
+	</div>
+</div>

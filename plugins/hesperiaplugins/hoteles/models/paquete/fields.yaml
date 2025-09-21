@@ -1,0 +1,66 @@
+fields:
+    titulo:
+        label: Titulo
+        span: auto
+        type: text
+    slug:
+        label: Slug
+        span: auto
+        preset:
+            field: titulo
+            type: slug
+        type: text
+    hotel:
+        label: Hotel
+        oc.commentPosition: ''
+        nameFrom: nombre
+        span: auto
+        required: 1
+        descriptionFrom: description
+        type: relation
+    porcentaje:
+        label: Porcentaje
+        span: auto
+        type: text
+    min_noches:
+        label: 'Min. Noches'
+        span: auto
+        type: text
+    max_noches:
+        label: 'Max. Noches'
+        span: auto
+        type: text
+    fecha_desde:
+        label: Desde
+        mode: date
+        span: auto
+        type: datepicker
+    fecha_hasta:
+        label: Hasta
+        mode: date
+        span: auto
+        type: datepicker
+    ind_activo:
+        label: Activo
+        span: left
+        type: switch
+    ind_destacado:
+        label: Destacado
+        span: right
+        type: switch
+    banner:
+        label: Banner
+        mode: image
+        imageWidth: '200'
+        imageHeight: '100'
+        useCaption: true
+        thumbOptions:
+            mode: crop
+            extension: auto
+        span: full
+        type: fileupload
+    descripcion:
+        label: Descripcion
+        span: full
+        size: ''
+        type: richeditor

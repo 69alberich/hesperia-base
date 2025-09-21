@@ -1,0 +1,39 @@
+description = "Ultimo post publicado"
+
+[viewBag]
+==
+<?php
+use RainLab\Blog\Models\Post;
+function onStart()
+{
+    $this["post"] = Post::isPublished()->orderBy('id', 'desc')->first();
+}
+
+?>
+==
+<section id="noticia" class="parallax-section">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="wow fadeInUp col-md-6 col-sm-10" data-wow-delay="1.3s">
+        <h2>Noticias</h2>
+        <h3>{{post.title}}</h3>
+        <p class="hidden-xs">{{post.excerpt}}
+        </p>
+        <p>
+          <a href="{{ 'blog/blog'|page }}" class="btn btn-lg btn-default smoothScroll wow fadeInUp hidden-xs" data-wow-delay="2.3s">Visitar Blog</a>
+          <a href="{{ 'blog/post'|page({ slug: post.slug }) }}" class="btn btn-lg btn-primary smoothScroll wow fadeInUp hidden-xs" data-wow-delay="2.3s">Leer noticia</a>
+        </p>
+      </div>
+      <div class="wow fadeInUp col-md-6 col-sm-6" data-wow-delay="0.9s">
+        <img src="{{post.featured_images[0].path}}" class="img-responsive" alt="Overview">
+      </div>
+
+    </div>
+    <p class="text-center">
+      <br>
+      <a href="#" class="btn btn-primary smoothScroll wow fadeInUp visible-xs" data-wow-delay="2.3s">Leer noticia</a>
+    </p>
+
+  </div>
+</section>

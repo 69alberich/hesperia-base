@@ -1,0 +1,10 @@
+name: Transaccion
+form: $/hesperiaplugins/instapago/models/transaccion/fields.yaml
+modelClass: hesperiaplugins\Instapago\Models\Transaccion
+defaultRedirect: hesperiaplugins/instapago/transaccion
+create:
+    redirect: 'hesperiaplugins/instapago/transaccion/update/:id'
+    redirectClose: hesperiaplugins/instapago/transaccion
+update:
+    redirect: hesperiaplugins/instapago/transaccion
+    redirectClose: hesperiaplugins/instapago/transaccion

@@ -1,0 +1,10 @@
+fields:
+    id:
+        label: ID
+        span: auto
+        type: text
+    response:
+        label: Response
+        size: small
+        span: auto
+        type: textarea

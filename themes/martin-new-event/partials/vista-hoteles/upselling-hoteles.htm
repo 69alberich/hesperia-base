@@ -1,0 +1,40 @@
+[ListaUpselling]
+moneda = 3
+
+[viewBag]
+==
+{% if hotel.id == 100  %}
+
+{% set upsellings = ListaUpselling.getUpsellingFromArray("176, 177, 180, 178") %}
+
+{% endif %}
+
+
+{% if upsellings is not empty %}
+<div class="container-fluid">
+
+    <div class="section-title">
+        <h2>Experiencias Unicas</h2>
+
+    </div>
+    <div class="col-md-12">
+        <div class="slider-3-items">
+          {% for upselling in upsellings %}
+          <div class="item col-md-12 custom-thumbs">
+            <div class="wrapper"><img src="{{upselling.imagen.path}}" class="img-responsive">
+              <div class="speakers-thumb text-center">
+    
+                <h3 >{{ upselling.titulo }}</h3>
+                <p ><small>{{upselling.hotel.nombre}}</small></p>
+                <p>
+                  <a class="btn btn-default" href="{{ 'tienda/tienda'|page({ slug: upselling.slug }) }}">LO QUIERO</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+    </div>
+</div>
+
+  {% endif %}

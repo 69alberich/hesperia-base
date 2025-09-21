@@ -1,0 +1,28 @@
+name: 'Footer - Recursos'
+items:
+    -
+        title: 'Media Center'
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: media
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Zona Clientes'
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: mi-reserva
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'

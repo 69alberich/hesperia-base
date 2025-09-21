@@ -1,0 +1,10 @@
+name: Rol
+form: $/hesperiaplugins/perfil/models/rol/fields.yaml
+modelClass: hesperiaplugins\Perfil\Models\Rol
+defaultRedirect: hesperiaplugins/perfil/rol
+create:
+    redirect: 'hesperiaplugins/perfil/rol/update/:id'
+    redirectClose: hesperiaplugins/perfil/rol
+update:
+    redirect: hesperiaplugins/perfil/rol
+    redirectClose: hesperiaplugins/perfil/rol

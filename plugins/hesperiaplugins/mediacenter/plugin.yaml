@@ -1,0 +1,30 @@
+plugin:
+    name: 'hesperiaplugins.mediacenter::lang.plugin.name'
+    description: 'hesperiaplugins.mediacenter::lang.plugin.description'
+    author: 'Jesus Castillo'
+    icon: oc-icon-file-image-o
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: Albumes
+        url: hesperiaplugins/mediacenter/album
+        icon: icon-image
+        permissions:
+            - gestion-album
+        sideMenu:
+            side-menu-item2:
+                label: Albumes
+                url: hesperiaplugins/mediacenter/album
+                icon: icon-image
+                permissions:
+                    - gestion-album
+            side-menu-item:
+                label: Categorias
+                url: hesperiaplugins/mediacenter/categoria
+                icon: icon-files-o
+                permissions:
+                    - gestion-album
+permissions:
+    gestion-album:
+        tab: Albumes
+        label: 'Añadir, modificar y eliminar albumes'

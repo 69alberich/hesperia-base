@@ -1,0 +1,11 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table hesperiaplugins_instapago_afiliado'
+    - builder_table_create_hesperiaplugins_instapago_afiliado.php
+1.0.3:
+    - 'Created table hesperiaplugins_instapago_transaccion'
+    - builder_table_create_hesperiaplugins_instapago_transaccion.php
+1.0.4:
+    - 'Updated table hesperiaplugins_instapago_afiliado'
+    - builder_table_update_hesperiaplugins_instapago_afiliado.php

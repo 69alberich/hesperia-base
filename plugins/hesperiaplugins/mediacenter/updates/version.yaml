@@ -1,0 +1,41 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table hesperiaplugins_mediacenter_albumes'
+    - builder_table_create_hesperiaplugins_mediacenter_albumes.php
+1.0.3:
+    - 'Created table hesperiaplugins_mediacenter_categorias'
+    - builder_table_create_hesperiaplugins_mediacenter_categorias.php
+1.0.4:
+    - 'Updated table hesperiaplugins_mediacenter_albumes'
+    - builder_table_update_hesperiaplugins_mediacenter_albumes.php
+1.0.5:
+    - 'Created table hesperiaplugins_mediacenter_album_categoria'
+    - builder_table_create_hesperiaplugins_mediacenter_album_categoria.php
+1.0.6:
+    - 'Updated table hesperiaplugins_mediacenter_categorias'
+    - builder_table_update_hesperiaplugins_mediacenter_categoria.php
+1.0.7:
+    - 'Updated table hesperiaplugins_mediacenter_albumes'
+    - builder_table_update_hesperiaplugins_mediacenter_album.php
+1.0.8:
+    - 'Updated table hesperiaplugins_mediacenter_album'
+    - builder_table_update_hesperiaplugins_mediacenter_album_2.php
+1.0.9:
+    - 'Updated table hesperiaplugins_mediacenter_album'
+    - builder_table_update_hesperiaplugins_mediacenter_album_3.php
+1.0.10:
+    - 'Updated table hesperiaplugins_mediacenter_album'
+    - builder_table_update_hesperiaplugins_mediacenter_album_4.php
+1.0.11:
+    - 'Updated table hesperiaplugins_mediacenter_album'
+    - builder_table_update_hesperiaplugins_mediacenter_album_5.php
+1.0.12:
+    - 'Updated table hesperiaplugins_mediacenter_album'
+    - builder_table_update_hesperiaplugins_mediacenter_album_6.php
+1.0.13:
+    - 'Updated table hesperiaplugins_mediacenter_categoria'
+    - builder_table_update_hesperiaplugins_mediacenter_categoria_2.php
+1.0.14:
+    - 'Updated table hesperiaplugins_mediacenter_categoria'
+    - builder_table_update_hesperiaplugins_mediacenter_categoria_3.php

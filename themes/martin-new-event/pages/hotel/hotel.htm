@@ -1,0 +1,88 @@
+title = "Hotel"
+url = "/hotel/:slug"
+layout = "test"
+description = "Pagina individual de un hotel"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+==
+<?php
+function onStart(){
+  $this->addJs('assets/js/gmaps.js');
+  $this->addJs('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCZylRj0lhbpYyZuVv8grqcizQAVQyCFXQ');
+
+  use Rainlab\Blog\Models\Post;
+  use HesperiaPlugins\Hoteles\Models\Hotel;
+  $hotel = Hotel::with("banner", "foto_inicio",
+  "habitaciones.foto_portada", "servicios.banner", "habitaciones.atributos",
+  "habitaciones.galeria")
+  ->where("slug", $this->param("slug"))->take(1)->get();
+
+
+  //var_dump($hotel[0]->nombre);
+  if (count($hotel)>0) {
+    $this["record"] = $hotel[0];
+    $posts = Post::with("featured_images", "categories")->whereHas('categories', function ($query) use ($hotel){
+    $query->where('name', '=', $hotel[0]->nombre);
+  })->isPublished()->orderBy('published_at', 'desc')->take(10)->get();
+    $actividades = array();
+    foreach ($posts as $key => $post) {
+      $flag = false;
+      foreach ($post->categories  as $categoria) {
+        if ($categoria->name == "Actividades" && count($actividades)<=5) {
+          array_push($actividades, $post);
+          $flag = true;
+        }
+      }
+      if ($flag) {
+        unset($posts["$key"]);
+      }
+    }
+    $this["actividades"] = $actividades;
+    $this["posts"] = $posts->take(5);
+  }
+
+}
+
+function onEnd(){
+  if($this["record"]){
+      $seo_props =  array(
+        "titulo" => $this["record"]->nombre,
+        "descripcion" => $this["record"]->descripcion,
+        "type" => "article",
+        "imagen" => $this["record"]->foto_inicio->getPath(),
+        "url" => "https://hoteleshesperia.com.ve/hotel/".$this["record"]->slug,
+        "robots" => "index,follow"
+    );
+
+      $this["seo_props"] = $seo_props;
+  }
+  //$this->page->description = $this["record"]->descripcion;
+ //$this->page->meta_description = $this["record"]->descripcion;
+ //$this->addJs('assets/js/principal.js');
+ $this->addJs('assets/js/hoteles.js');
+}
+?>
+==
+
+{% if record %}
+    {% partial 'vista-hoteles/banner-hotel' hotel=record %}
+    {% partial 'vista-hoteles/overview-hotel' hotel=record %}
+    {% partial 'vista-hoteles/tabs-hotel' hotel=record %}
+    {% partial 'vista-hoteles/carousel-galeria' hotel=record %}
+    {# {% partial 'vista-hoteles/novedades-hotel' hotel=record %} #}
+    {% partial 'vista-hoteles/actividades-hotel' hotel=record %}
+    {% partial 'vista-hoteles/testimonials' hotel=record %}
+    {% partial 'vista-hoteles/servicios-hotel' hotel=record %}
+    {% partial 'vista-hoteles/posts-hotel' hotel=record %}
+    {% partial 'vista-hoteles/upselling-hoteles' hotel=record %}
+    {#{% partial 'vista-hoteles/restaurant-banner-hotel' hotel=record %} #}
+    {% partial 'generales/map-section' item=record %}
+{% else %}
+
+{% partial "misc/banner-default" titulo="404" %}
+{% partial "misc/mensaje-404" %}
+
+{% endif %}
+<hr>

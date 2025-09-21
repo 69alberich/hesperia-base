@@ -1,0 +1,23 @@
+plugin:
+    name: 'hesperiaplugins.perfil::lang.plugin.name'
+    description: 'hesperiaplugins.perfil::lang.plugin.description'
+    author: hesperiaplugins
+    icon: oc-icon-user-plus
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: Roles
+        url: hesperiaplugins/perfil/rol
+        icon: icon-users
+        permissions:
+            - gestion_general_perfil
+    main-menu-item2:
+        label: Contrato
+        url: hesperiaplugins/perfil/contrato
+        icon: icon-briefcase
+        permissions:
+            - gestion_general
+permissions:
+    gestion_general_perfil:
+        tab: Perfil
+        label: 'Gestión General'

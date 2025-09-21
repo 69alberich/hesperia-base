@@ -8,7 +8,14 @@
         "php": "^8.2",
         "october/rain": "^4.0",
         "laravel/framework": "^12.0",
-        "october/all": "^4.0"
+        "october/all": "^4.0",
+        "rainlab/user-plugin": "^3.2",
+        "rainlab/blog-plugin": "^1.7",
+        "rainlab/pages-plugin": "^2.2",
+        "anandpatel/seoextension-plugin": "^1.0",
+        "romanov/clearcachewidget-plugin": "^1.3",
+        "rainlab/builder-plugin": "^3.0",
+        "peterhegman/slickslider-plugin": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5|^9.0",

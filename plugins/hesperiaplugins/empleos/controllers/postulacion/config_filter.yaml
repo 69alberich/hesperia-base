@@ -1,0 +1,6 @@
+scopes:
+  categorias:
+      label: Categoria
+      modelClass: Hesperiaplugins\Empleos\Models\CategoriaOferta
+      nameFrom: nombre
+      scope: categorias

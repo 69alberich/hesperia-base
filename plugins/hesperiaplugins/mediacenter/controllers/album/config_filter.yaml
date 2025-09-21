@@ -1,0 +1,11 @@
+scopes:
+   hotel:
+        label: Hotel
+        modelClass: HesperiaPlugins\Hoteles\Models\Hotel
+        conditions: hotel_id in (:filtered)
+        nameFrom: nombre
+   categorias:
+      label: Categoria
+      modelClass: HesperiaPlugins\Mediacenter\Models\Categoria
+      conditions: id in (select album_id from hesperiaplugins_mediacenter_album_categoria where categoria_id in (:filtered))
+      nameFrom: nombre

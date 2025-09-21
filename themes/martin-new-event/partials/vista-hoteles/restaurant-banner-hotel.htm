@@ -1,0 +1,17 @@
+<div id="restaurant_hotel_slider" class=" owl-carousel">
+  {%for restaurant in hotel.restaurantes %}
+  <div class="item full-width" style="background-image:url('{{restaurant.banner.path}}'); height:450px; background-position:center
+  ;background-repeat:no-repeat;">
+  <!--  <div class="col-md-12" style="height:300px;">-->
+    <div class="container-fluid content-text" style="padding-top: 10rem; padding-bottom: 10rem;">
+      <div class="container col-md-8">
+        <h2>{{restaurant.nombre}}</h2>
+        <h5 class="text-justify">{{restaurant.descripcion}}</h5>
+        <strong>{{restaurant.direccion}}</strong>
+        <p class="text-left"><a class="btn btn-danger" href="{{ 'restaurante'|page({ slug: restaurant.slug }) }}">Visitar</a></p>
+      </div>
+    <!--</div>-->
+    </div>
+  </div>
+  {%endfor%}
+</div>

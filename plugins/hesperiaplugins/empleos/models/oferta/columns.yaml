@@ -1,0 +1,23 @@
+columns:
+    titulo:
+        label: Titulo
+        type: text
+        searchable: true
+        sortable: true
+    categorias:
+        label: Categoria
+        type: text
+        searchable: true
+        sortable: true
+        select: nombre
+        relation: categorias
+    localidad_id:
+        label: Localidad
+        type: text
+        searchable: true
+        sortable: true
+        select: localidad
+        relation: localidad
+    ofertable:
+        label: 'Hotel / Restaurante'
+        type: tipo

@@ -1,0 +1,20 @@
+<div class="container-fluid" id="novedades-container">
+    <h2>Novedades</h2>
+    <p>Entérate de lo más reciente que Hoteles Hesperia tiene preparado para ti</p>
+  <div id="novedades-carousel">
+    {% for novedad in hotel.novedades%}
+        <div class="col-xs-12 col-sm-12 col-md-12 thumb-container item">
+          <div class="thumbnail">
+            <img src="{{novedad.foto.path}}" alt="">
+              <div class="caption">
+                <h4 class="text-center">{{novedad.titulo}}</h4>
+                <p class="text-center">{{novedad.subtitulo}}</p>
+                <p class="text-center">
+                  <a href="{{novedad.url}}" class="btn btn-primary" role="button">Leer Más</a>
+                </p>
+            </div>
+          </div>
+        </div>
+   {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,40 @@
+title = "Servicio"
+url = "/servicio/:slug"
+layout = "test"
+description = "vista individual de los servicios"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[builderDetails]
+modelClass = "HesperiaPlugins\Hoteles\Models\Servicio"
+identifierValue = "{{ :slug }}"
+modelKeyColumn = "slug"
+displayColumn = "titulo"
+notFoundMessage = "Record not found"
+==
+<?php
+function onStart(){
+  //$this->addJs('assets/js/gmaps.js');
+  //$this->addJs('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCZylRj0lhbpYyZuVv8grqcizQAVQyCFXQ');
+  $this->addJs('assets/js/servicios.js');
+  //$this->page->meta_title = 'A different page title';
+}
+function onEnd(){
+ //$this->page->title=$this["record"]->nombre;
+ //$this->page->meta_description = $this["record"]->descripcion;
+   //$this->page->meta_title = 'A different page title';
+
+}
+?>
+==
+{% set record = builderDetails.record %}
+{% set displayColumn = builderDetails.displayColumn %}
+{% set notFoundMessage = builderDetails.notFoundMessage %}
+
+{% if record %}
+    {% partial 'servicios/banner-servicio-wtc' titulo = record.titulo %}
+    {% partial 'vista-servicios/cuerpo-servicio' servicio=record %}
+{% else %}
+    {{ notFoundMessage }}
+{% endif %}
