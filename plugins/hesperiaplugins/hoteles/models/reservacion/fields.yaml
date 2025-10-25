@@ -23,8 +23,7 @@ fields:
         nameFrom: moneda
         descriptionFrom: moneda
         type: relation
-        defaultSort: 'id, desc'
-        scope: isActiva
+        defaultSort: 'id'
     huesped:
         type: text
         label: Huesped
@@ -83,7 +82,6 @@ fields:
         nameFrom: status
         descriptionFrom: status
         type: relation
-        context: create
         default: 2
     dias_vigencia:
         label: Dias de vigencia
@@ -95,6 +93,7 @@ fields:
             5: '5 Días'
             7: '7 Días'
             10: '10 Días'
+        context: create
             
     info_adicional:
         label: Adicional
@@ -115,3 +114,9 @@ fields:
                         f-juridica: 'Factura Jurídica'
                         a-comercial: 'Aliado Comercial'
                     type: balloon-selector
+    fecha_vigencia:
+        label: Fecha Vigencia
+        type: datepicker
+        mode: date
+        format: d-m-yy
+        context: preview

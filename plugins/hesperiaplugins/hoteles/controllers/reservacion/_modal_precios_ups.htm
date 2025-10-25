@@ -1,32 +1,44 @@
-
-<form class="form-elements" role="form" id="form-precio-upselling-sec">
-  <div class="row">
-
-    <?= $widget->renderField("fecha_disfrute"); ?>
-    <?= $widget->renderField("precio"); ?>
-    <?= $widget->renderField("cantidad"); ?>
-    <?= $widget->renderField("id"); ?>
-
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
   </div>
-  <div class="row">
-    <div class="callout fade in callout-success">
-        <div class="content">
-            <p><strong>Precio:</strong> <span class="spanPrecio">0</span> </p>
+   <div class="modal-body">
+      <form role="container" id="form-precio-upselling-sec">
+        <div class="row mt-2">
+
+          <?= $widget->renderField("fecha_disfrute"); ?>
+          <?= $widget->renderField("precio"); ?>
+          <?= $widget->renderField("cantidad"); ?>
+          <?= $widget->renderField("id"); ?>
+
         </div>
-    </div>
-  </div>
+        <div class="row mt-2">
+          <div class="callout in callout-success">
+              <div class="alert alert-success">
+                  <strong>Precio:</strong> <span class="spanPrecio">0</span>
+              </div>
+          </div>
+        </div>
 
-    <div class="loading-indicator-container">
-      <p class="text-right">
-      <button type="submit" class="btn btn-primary"
-          data-load-indicator="Espere..."
-          data-attach-loading
-          data-request="onAddUpsellingSec"
-          data-request-complete="$('#content-precios-upsellings-sec').modal('hide');"
-          >
-          Añadir
-       </button>
-       </p>
-    </div>
+        
 
-</form>
+          <div class="loading-indicator-container">
+            <p class="text-right">
+            <button type="submit" class="btn btn-primary"
+                data-load-indicator="Espere..."
+                data-attach-loading
+                data-request="onAddUpsellingSec"
+                data-request-complete="$('#content-precios-upsellings-sec').modal('hide');"
+                >
+                Añadir
+            </button>
+            </p>
+          </div>
+
+      </form>
+
+   </div>
+  
+</div>
+
+

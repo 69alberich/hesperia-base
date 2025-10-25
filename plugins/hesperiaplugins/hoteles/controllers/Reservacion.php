@@ -79,7 +79,7 @@ class Reservacion extends Controller
       $this->addJs('/plugins/hesperiaplugins/hoteles/assets/js/fecha/hotel-datepicker.js');
       $this->addJs('/plugins/hesperiaplugins/hoteles/assets/js/reservas_backend.js');
       $this->bodyClass = 'compact-container';
-      Session::forget(["seleccion", "busqueda"]);
+      //Session::forget(["seleccion"]); 
       BackendMenu::setContext('', '');
       
       $user = BackendAuth::getUser();
@@ -103,8 +103,8 @@ class Reservacion extends Controller
         "hoteles"=> $hoteles->toArray(),
         "monedas" => $monedas->toArray()
       );
-      Session::put("var_iniciales", $var_iniciales);
-      Session::forget(["seleccion", "busqueda"]);
+      Session::put(["var_iniciales"=>$var_iniciales]);
+      //Session::forget(["seleccion"]); //ESTE SESSION FORGET ESTÁ DAÑADO EL ONVERPRECIOS!!
       return $this->asExtension('FormController')->create();
     }
 
@@ -197,11 +197,17 @@ class Reservacion extends Controller
            'ups' => $ups_disponibles
          );
          $session = Session::all();
+         
          if (isset($session["seleccion"])) {
+          trace_log("tengo seleccion");
+
+          trace_log($session["seleccion"]);
+
            $seleccion = $session["seleccion"];
            array_push($seleccion, $det);
            Session::put("seleccion", $seleccion);
          }else{
+          trace_log("no tengo nada");
            $seleccion = array();
            array_push($seleccion, $det);
            Session::put("seleccion", $seleccion);
@@ -273,7 +279,6 @@ class Reservacion extends Controller
     }
     public function onAprobar($id){
       $form = Input::get();
-      //trace_log($form);
       $pago_insite = false;
       if(isset($form["insite"])){
         $pago_insite = $form["insite"];
@@ -360,6 +365,9 @@ class Reservacion extends Controller
         $this->vars['props'] = $data;
         $resultado = $fecha->buscarDisponibilidad($data);
         $this->vars['habitaciones_disponibles'] = $resultado;
+
+        //TODO BORRAR TODO LO DE UPSELLINGS
+
         $upsellings = Upselling::select(["id", "titulo","cantidad_min", "cantidad_max", "tipo_inventario",
          "sumable", "disponible", "ind_calendario", "aplica_impuestos"])->
         whereHas("categorias", function($query){
@@ -406,11 +414,9 @@ class Reservacion extends Controller
 
         //GUARDO LA SESSION PARA USAR EN OTRAS FUNCIONES
         Session::put('busqueda', $fechas_estadia);
+        Session::save();
         return [
             '#partialContents' => $this->makePartial('tabla_habs'),
-            '#contentUpsellingsHabs' => $this->makePartial('lista_upsellings',
-              ["upsellings" => $upsellings_habs, "prefix" => "hab",
-              "busqueda" => $fechas_estadia]),
             '#contentFechasEstadia' => $this->makePartial('fechas_estadia',
               ["propiedades" => $fechas_estadia ]),
             '#contentUpsellingsSecundarios' => $this->makePartial('lista_upsellings',
@@ -428,17 +434,13 @@ class Reservacion extends Controller
       $data = Input::get();
 
       $busqueda = Session::get("busqueda");
-      
+
       $id = $data["hab"];
 
 
       $checkin = new Carbon($busqueda["checkin"]);
-
       $checkout = new Carbon($busqueda["checkout"]);
-      //$checkout = $aux_checkout->subDays(1);
 
-
-      //$props = $data["Reservacion"];
       $descuento = null;
 
       $habitacion = Habitacion::find($id);
@@ -447,8 +449,6 @@ class Reservacion extends Controller
       $busqueda["moneda"]);
 
       $impuestos = $habitacion->hotel->getImpuestos($busqueda["moneda"]);
-
-      //$cantidad_disponible = $habitacion->getCantidadDisponible($props);
 
       if (isset($data["checkbox"])) {
         $descuento = array("porcentaje" => $data["porcentaje"],
@@ -468,16 +468,37 @@ class Reservacion extends Controller
       if(isset($data["ocupacion"])){
         $anteriorOcupacion = $data["ocupacion"];
       }
+
+       $upsellings = Upselling::select(["id", "titulo","cantidad_min", "cantidad_max", "tipo_inventario",
+         "sumable", "disponible", "ind_calendario", "aplica_impuestos"])->
+        whereHas("categorias", function($query){
+          $query->where("id", "=", 1);
+        })->where("hotel_id", $busqueda["hotel"])->get();
+
+        $available_upsellings = array();
+
+        foreach ($upsellings as $upselling) {
+          //echo "hola";
+          $precio_neto = $upselling->isDisponible($busqueda);
+          $precio = $upselling->getPrecioConImpuestos($precio_neto, $impuestos);
+          if($precio>0){
+            $upselling->precio = $precio;
+            array_push($available_upsellings, $upselling);
+          }
+        }
+
       return [
           '#contentPreciosModal' => $this->makePartial('precios_hab', [
             'habitacion' => $habitacion, 'precios' => $precios,
             'impuestos' => $impuestos,
             'busqueda' => $busqueda,
             'anterior_ocupacion' => $anteriorOcupacion
-          ])
+          ]),
+           '#contentUpsellingsHabs' => $this->makePartial('lista_upsellings',
+              ["upsellings" => $available_upsellings, "prefix" => "hab",
+              "busqueda" => $busqueda])
       ];
-    /*  return $this->makePartial('modal_precios_hab',['habitacion'=> $habitacion, 'precios' => $precios,
-      'impuestos' => $impuestos]);*/
+      
     }
 
     public function onMostrarPreciosUps(){
@@ -557,7 +578,7 @@ class Reservacion extends Controller
       $widget = $this->makeWidget('Backend\Widgets\Form', $config);
       $widget->bindToController();
       return [
-          '#formContentPreciosUps' => $this->makePartial('modal_precios_ups',
+          '#contentUpsellingsHabs' => $this->makePartial('modal_precios_ups',
           ["widget" => $widget, "busqueda" => $session])
       ];
 
@@ -591,10 +612,11 @@ class Reservacion extends Controller
       return json_encode($precio_disponible);
     }
     public function onGuardarReservacion(){
-
+      trace_log(Input::get());
+      trace_log($this->model);
       $agente = $this->user;
 
-      $post = post();
+      $post = Input::all();
       $data = $post["Reservacion"];
       $session = Session::all();
 
@@ -679,25 +701,28 @@ class Reservacion extends Controller
           $origen = 3;
         }else{
           if($data["status"] != 2){
-            $origen = 3;
+            //se comenta para volver a preguntar sobre esto.
+           // $origen = 3;
           }
         }
         $fechaAhora = Carbon::now();
-        $fechaVigencia = $fechaAhora->addDays($data["dias_vigencia"]);
+        $fechaVigencia = $fechaAhora->addDays((int)$data["dias_vigencia"]);
         $code = uniqid();
+
+        $busqueda = Session::get("busqueda");
 
         $reservacion = ReservaModel::create([
           'huesped' => $data["huesped"],
           'checkin' => $begin->format("Y-m-d"),
           'checkout' => $end->format("Y-m-d"),
-          'moneda_id' => $session["busqueda"]["moneda"],
+          'moneda_id' => $busqueda["moneda"],
           'usuario_id' => $user->id,
           'status' => $data["status"],
           'total' => $total,
           'identificacion' => $data["identificacion"],
           'contacto' => $data["contacto"],
           'comentarios' => $data["comentarios"],
-          'hotel_id' => $data["hotel"],
+          'hotel_id' => $busqueda["hotel"],
           'fecha_vigencia' => $fechaVigencia,
           'origen_id' => $origen,
           'pago_insite' => $data["pago_insite"],
@@ -881,7 +906,9 @@ class Reservacion extends Controller
     function onReenviarCotizacion($id){
 
       $reservacion = ReservaModel::find($id);
-      //  trace_log($reservacion->getResumen());
+
+      //esa funcion ver resumen hay que refactorizarla, es un peligro
+      //trace_log($reservacion->getResumen());
       try{
 
         /*
@@ -966,6 +993,12 @@ class Reservacion extends Controller
                 ["seleccion" => $seleccion_actual, "busqueda" => $busqueda])
           ];
     }
+
+    public function loadRoomUpsellings($busqueda){
+
+     
+    }
+
     public function reporte_reservas(){
       $config = $this->makeConfig('$/hesperiaplugins/hoteles/models/reservacion/reporte_fields.yaml');
       $config->model = new \HesperiaPlugins\Hoteles\Models\Reservacion;

@@ -1,0 +1,26 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="form-elements" role="form"> <!-- antes era un form -->
+        
+
+            <?= $this->formRenderField("status") ?>
+            <label>Motivo</label>
+            <input type="text" name="descripcion" value="" class="form-control" />
+            <p class="help-block">Se creará una observación para hacer seguimiento a esta reservacion</p>
+
+        </div> <!-- antes era un form -->
+    </div>
+
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary"
+        data-request="onCambiarStatus"
+        data-attach-loading>
+            Cambiar
+        </button>
+    </div>
+
+</div>

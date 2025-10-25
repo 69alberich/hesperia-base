@@ -1,0 +1,37 @@
+<script>
+    var input = document.getElementById('input-id');
+    var datepicker = new HotelDatepicker(input,{
+      format: 'DD-MM-YYYY',
+      separator:' | '
+    });
+</script> 
+ 
+ <div class="modal-content" id="modal-content-form">
+<?= Form::open() ?>
+    <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+        <div class="form-group col-12">
+            <label>check-in / check-out</label>
+            <input type="text" name="fechas" id="input-id" class="form-control" onkeypress="return false" />
+        </div>
+        </div>
+        <div class="row">
+        <?= $this->formRenderField('hotel') ?>
+        <?= $this->formRenderField('moneda') ?>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="loading-indicator-container">
+        <button class="btn btn-primary"
+            data-request="onCheck"
+            data-request-flash
+            data-load-indicator="Buscando...">
+            Consultar
+        </button>
+        </div>
+    </div>
+<?= Form::close() ?>
+</div>

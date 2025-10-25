@@ -104,6 +104,10 @@ navigation:
         permissions:
             - gestion_reservas
         sideMenu:
+            side-menu-item8:
+                label: Reservaciones
+                url: hesperiaplugins/hoteles/reservacion
+                icon: icon-suitcase
             side-menu-item:
                 label: Paquetes
                 url: hesperiaplugins/hoteles/paquete

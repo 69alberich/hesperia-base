@@ -1,12 +1,12 @@
 (function($) {
   $(document).ready(function(){
 
-    var input = document.getElementById('input-id');
+    /*var input = document.getElementById('input-id');
     var datepicker = new HotelDatepicker(input,{
       format: 'DD-MM-YYYY',
       separator:' | '
     });
-
+    */
     $('#contentPreciosModal').on('change', '.selector-modal', function(e){
       var habitacion = $(this).data("hab");
       var ocupacion = $("#ocupacion-select").val();
@@ -47,11 +47,11 @@
       actualizarTotalHab();
     });
 
-    $('#contentUpsellingsHabs').on('change', '.select-upselling', function(e){
+    $('#modal-content-wrapper').on('change', '.select-upselling', function(e){
       var upselling_id = $(this).data("ups-id");
       var base = $(this).data("base");
       var value = $(this).val();
-      $("#contentUpsellingsHabs #label-precio-ups-"+upselling_id).text(parseInt(base)*parseInt(value));
+      $("#modal-content-wrapper #label-precio-ups-"+upselling_id).text(parseInt(base)*parseInt(value));
       //var precio_alojamiento = $(".precio-input:not('disabled')").val();
       //alert(precio_alojamiento);
       actualizarTotalHab();
@@ -69,8 +69,9 @@
 
     });
 
-    $("#content-precios-upsellings-sec").on("change", "#DatePicker-formFechaDisfrute-date-fecha_disfrute", function(e){
-      $("#Form-field-fecha_disfrute").val($(this).val());
+    $("#modal-content-wrapper").on("change", "#DatePicker-formFechaDisfrute-date-fecha_disfrute", function(e){
+     // $("#Form-field-fecha_disfrute").val($(this).val()); //no se que hace esto.
+     alert("sirvo");
       cargarPrecioModal();
     });
 
@@ -110,7 +111,7 @@
 })(jQuery);
 
 function cargarPrecioModal(){
-  var formulario = $("#formContentPreciosUps").find("#form-precio-upselling-sec");
+  var formulario = $("#modal-content-wrapper").find("#form-precio-upselling-sec");
     //console.log(formulario.serialize());
 
     formulario.request('onCambiarFechaDisfrute', {
@@ -188,12 +189,18 @@ function actualizarTotalUpsellingsSec(){
 }
 
 function refreshForm(){
+  
   $('#form-habs-modal').trigger('reset');
   var selects = $("#form-habs-modal ").on("#contentUpsellingsHabs").find(".select-upselling");
   selects.each(function(){
     $(this).val(0).change();
     $(this).siblings(".select2-container").find(".select2-selection__rendered").text("0");
-    //$(this).trigger('change');
   });
+  
 
 }
+
+function showMainModal(){
+    var modal = new bootstrap.Modal(document.getElementById('main-modal-create'));
+    modal.show();
+  }

@@ -35,12 +35,13 @@ upgrades:
     manage:
         form: $/hesperiaplugins/hoteles/models/upgrade/fields.yaml
         recordsPerPage: 10
-status:
-    label: Status
-    view:
-        form: $/hesperiaplugins/hoteles/models/statusreserva/fields.yaml
-        toolbarButtons: link
-    manage:
-        form: $/hesperiaplugins/hoteles/models/statusreserva/fields.yaml
-        list: $/hesperiaplugins/hoteles/models/statusreserva/columns.yaml
+#status:
+#    label: Status
+#    view:
+#        form: $/hesperiaplugins/hoteles/models/statusreserva/fields.yaml
+#        toolbarButtons: link
+#    manage:
+#        form: $/hesperiaplugins/hoteles/models/statusreserva/fields.yaml
+#        list: $/hesperiaplugins/hoteles/models/statusreserva/columns.yaml
+#    context: update
    

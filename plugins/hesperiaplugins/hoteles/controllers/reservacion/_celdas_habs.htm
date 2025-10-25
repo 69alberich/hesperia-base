@@ -16,12 +16,15 @@ use HesperiaPlugins\Hoteles\models\Habitacion;
         </a>
     </td>
     <td class="column-button nolink">
-      <button
+     <button
           type="button"
+          data-request-update="{ 'modal_room_fields': '#modal-content-wrapper' }"
+          
           data-request-data="hab:<?php echo $id ?>"
           data-request="onMostrarPrecios"
-          data-request-complete="$('#content-precios').modal({show : true}); actualizarTotalHab();"
-          class="btn btn-secundary btn-sm">
+          data-request-complete="actualizarTotalHab(); showMainModal();"
+          
+          class="btn btn-primary">
           Ver Precios
       </button>
     </td>

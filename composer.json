@@ -15,7 +15,8 @@
         "anandpatel/seoextension-plugin": "^1.0",
         "romanov/clearcachewidget-plugin": "^1.3",
         "rainlab/builder-plugin": "^3.0",
-        "peterhegman/slickslider-plugin": "^1.1"
+        "peterhegman/slickslider-plugin": "^1.1",
+        "rainlab/debugbar-plugin": "^3.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5|^9.0",

@@ -1,6 +1,6 @@
 
 <div class="control-list" style="overflow:auto; max-height:300px;">
-  <table class="table data" data-control="rowlink">
+  <table class="table table-striped" data-control="rowlink">
       <thead>
           <tr>
               <th><span>Producto/Servicio</span></th>
@@ -82,8 +82,8 @@
                         type="button"
                         data-request-data="'ups_id':<?php echo $upselling['id']  ?>"
                         data-request="onMostrarPreciosUps"
-                        data-request-complete="$('#content-precios-upsellings-sec').modal({show : true});"
-                        class="btn btn-secundary btn-sm">
+                        data-request-complete="showMainModal();"
+                        class="btn btn-primary">
                         Ver Precios
                     </button>
                   </td>

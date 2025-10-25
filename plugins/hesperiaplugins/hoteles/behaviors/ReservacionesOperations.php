@@ -112,46 +112,6 @@ class ReservacionesOperations extends \October\Rain\Extension\ExtensionBase
         }
 
       }
-      //PROCESO EN ELOQUENT CASI LISTO, LOS QUERYS PRINCIPALES FUNCIONAN
-      /*$ups_paq = Db::table("hesperiaplugins_hoteles_upgrades as a")
-      ->select("d.id as upselling_id",  "a.upgradable_id", "a.upgradable_type",
-      "a.cantidad as cant", "a.fecha_disfrute", "d.titulo", "d.tipo_inventario", "d.sumable")
-
-      ->join("hesperiaplugins_hoteles_detalle_reservacion as b", function($join){
-        $join->on("a.upgradable_id", "=", "b.id")
-        ->where("a.upgradable_type", "=", "HesperiaPlugins\\Hoteles\\Models\\DetalleReservacion");
-      })->join("hesperiaplugins_hoteles_upselling as d", "a.upselling_id", "=", "d.id")
-      ->where("b.reservacion_id", "=", $reservacion->id)
-      ->groupBy("fecha_disfrute");
-
-      $ups_detalles = Db::table("hesperiaplugins_hoteles_reservacion as a")
-      ->select("d.id as upselling_id", "b.upgradable_id", "b.upgradable_type",
-       "b.cantidad as cant", "b.fecha_disfrute", "d.titulo", "d.tipo_inventario", "d.sumable")
-      ->join("hesperiaplugins_hoteles_upgrades as b", function($join){
-        $join->on("a.id", "=", "b.upgradable_id")
-        ->where("b.upgradable_type", "=", "HesperiaPlugins\\Hoteles\\Models\\Reservacion");
-      })->join("hesperiaplugins_hoteles_upselling as d", "b.upselling_id", "=", "d.id")
-      ->where("a.id", "=", $reservacion->id)
-      ->union($ups_paq)
-      ->groupBy("fecha_disfrute");
-
-      $res = Db::table(Db::raw("({$ups_detalles->toRawSql()})as sub"))->get();
-      trace_log($res);*/
-
-    //QUERY BUENOO!
-    /*
-    select vista.upselling_id, sum(vista.cantidad), vista.fecha_disfrute, vista.tipo_inventario from (select d.id as upselling_id, b.upgradable_id, b.upgradable_type, b.cantidad, b.fecha_disfrute, d.titulo, d.tipo_inventario, d.sumable  from hesperiaplugins_hoteles_reservacion as a
-INNER join hesperiaplugins_hoteles_upgrades as b on (a.id = b.upgradable_id and b.upgradable_type = "HesperiaPlugins\\Hoteles\\Models\\Reservacion")
-inner join hesperiaplugins_hoteles_upselling as d on (b.upselling_id = d.id)
-where a.id = 3303
-UNION
-select d.id as upselling_id,  a.upgradable_id, a.upgradable_type, a.cantidad, a.fecha_disfrute, d.titulo, d.tipo_inventario, d.sumable from hesperiaplugins_hoteles_upgrades as a
-inner join hesperiaplugins_hoteles_detalle_reservacion as b on (a.upgradable_id = b.id and a.upgradable_type =
-"HesperiaPlugins\\Hoteles\\Models\\DetalleReservacion")
-inner join hesperiaplugins_hoteles_upselling as d on (a.upselling_id = d.id)
-where b.reservacion_id = 3303)as vista GROUP by fecha_disfrute, upselling_id
-    */
-    //FIN QUERY BUENOO!
 
     $res = Db::table(Db::raw("
     (select d.id as upselling_id, b.upgradable_id, b.upgradable_type, b.cantidad,
@@ -167,7 +127,7 @@ where b.reservacion_id = 3303)as vista GROUP by fecha_disfrute, upselling_id
     INNER JOIN hesperiaplugins_hoteles_detalle_reservacion as b on
     (a.upgradable_id = b.id and a.upgradable_type = 'HesperiaPlugins\\\Hoteles\\\Models\\\DetalleReservacion')
     INNER JOIN hesperiaplugins_hoteles_upselling as d on (a.upselling_id = d.id)
-    where b.reservacion_id = ".$reservacion->id.") as vista GROUP by fecha_disfrute, upselling_id"))
+    where b.reservacion_id = ".$reservacion->id.") as vista GROUP by fecha_disfrute, upselling_id, vista.tipo_inventario, vista.sumable"))
     ->select("vista.upselling_id", Db::raw("sum(vista.cantidad) as cantidad"), "vista.fecha_disfrute",
      "vista.tipo_inventario", "vista.sumable")->get();
 

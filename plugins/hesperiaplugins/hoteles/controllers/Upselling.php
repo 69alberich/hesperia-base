@@ -54,14 +54,25 @@ class Upselling extends Controller
     public function update_onSave($recordId, $context=NULL){
       $data = Input::all();
       $upselling =  UpsellingModel::find($recordId);
+
+      if($upselling->disponible!=null){
+        $data["Upselling"]["disponible"] = $upselling->disponible;
+      }else{
+        $data["Upselling"]["disponible"]=0;
+        $upselling->disponible = 0;
+      }
+     
+      $upselling->fill($data['Upselling']);
+
+      
       $upselling->tipo_inventario = $data["Upselling"]["tipo_inventario"];
       $config = $this->makeConfig("$/hesperiaplugins/hoteles/models/upselling/tarifa_fields.yaml");
+
       $config->model = $upselling;
       $widget = $this->makeWidget("Backend\Widgets\Form", $config);
       $widget->bindToController();
       //$this->vars["modal_form"] = $widget;
 
-      $upselling2 =  new UpsellingModel;
       $config2 = $this->makeConfig("$/hesperiaplugins/hoteles/models/upselling/disponibilidad_fields.yaml");
       $config2->model = $upselling;
       $widget2 = $this->makeWidget("Backend\Widgets\Form", $config2);

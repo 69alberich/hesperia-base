@@ -39,6 +39,22 @@ class Upselling extends Model
     public $attachOne = [
       'imagen'=> 'System\Models\File'
     ];
+
+    protected $fillable = [
+        "titulo",
+        "descripcion",
+        "hotel_id",
+        "cantidad_min",
+        "cantidad_max",
+        "sumable",
+        "destacado",
+        "slug",
+        "ind_calendario",
+        "tipo_inventario",
+        "aplica_impuestos"
+
+    ];
+
     private $precio_estadia;
     protected $with = ['hotel']; //Carga por defecto la relacion hotel, y evito el problema N +1
 
