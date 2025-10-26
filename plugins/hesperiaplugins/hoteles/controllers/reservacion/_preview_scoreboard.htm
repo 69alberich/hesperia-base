@@ -1,3 +1,11 @@
+<?php
+    use Cms\Classes\Page;
+
+    $id = $formModel->codigo !="" ? $formModel->codigo : $formModel->getIdEncriptado();
+
+    $frontendUrl = Page::url('hotel/pago-de-reserva', ['reserva_id' => $id]);
+?>
+
 <div class="scoreboard-item title-value">
     <h4>Huesped</h4>
     <?php if ($formModel->huesped): ?>
@@ -18,13 +26,10 @@
     <h4>Status</h4>
     <p><?php  echo $formModel->status->status ?></p>
     <p class="description">
-      <?php if ($formModel->codigo != ""): ?>
-      <a href="https://hoteleshesperia.com.ve/pago-de-reserva/<?php  echo $formModel->codigo ?>"
+     
+      <a href="<?php  echo $frontendUrl ?>"
         target="_blank" rel="noopener noreferrer">Enlace público</a>
-      <?php else: ?>
-      <a href="https://hoteleshesperia.com.ve/pago-de-reserva/<?php  echo $formModel->getIdEncriptado() ?>"
-        target="_blank" rel="noopener noreferrer">Enlace público</a>
-      <?php endif ?>
+    
 
       
     </p>

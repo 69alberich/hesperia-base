@@ -578,7 +578,7 @@ class Reservacion extends Controller
       $widget = $this->makeWidget('Backend\Widgets\Form', $config);
       $widget->bindToController();
       return [
-          '#contentUpsellingsHabs' => $this->makePartial('modal_precios_ups',
+          '#modal-content-wrapper' => $this->makePartial('modal_precios_ups',
           ["widget" => $widget, "busqueda" => $session])
       ];
 
@@ -612,8 +612,7 @@ class Reservacion extends Controller
       return json_encode($precio_disponible);
     }
     public function onGuardarReservacion(){
-      trace_log(Input::get());
-      trace_log($this->model);
+
       $agente = $this->user;
 
       $post = Input::all();
@@ -654,7 +653,8 @@ class Reservacion extends Controller
         $group = UserGroup::find(3);
 
         $user = Auth::register([
-          'name' => '',
+          'name' => $data["huesped"],
+          "first_name" => $data["huesped"],
           'email' => $data["usuario"],
           'password' => $pass,
           'password_confirmation' => $pass,
@@ -831,7 +831,7 @@ class Reservacion extends Controller
       }else{
         //creo una compra
         $fechaAhora = Carbon::now();
-        $fechaVigencia = $fechaAhora->addDays($data["dias_vigencia"]);
+        $fechaVigencia = $fechaAhora->addDays((int)$data["dias_vigencia"]);
         $code = uniqid();
 
         $compra = new Compra ([
@@ -929,21 +929,14 @@ class Reservacion extends Controller
     function onCambiarStatus($id){
       $form = Input::get();
 
-      //var_dump($form);
-
-      $data = array(
-        "motivo" => $form["descripcion"],
-      );
-
       $messages = [
-          'required' => ' :attribute es requerido.',
+          'motivo.required' => ' motivo es requerido.',
       ];
 
       $validator = Validator::make(
-          $data,
+          $form["Reservacion"],
           [
             'motivo' => 'required',
-
           ],
           $messages
       );
@@ -954,21 +947,21 @@ class Reservacion extends Controller
 
       $reservacion = ReservaModel::find($id);
 
-      //$reservacion->status = $form["status"];
+      $reservacion->status = $form["Reservacion"]["status"];
 
       $usuario = $this->user;
 
-      //$reservacion->save();
+      $reservacion->save();
 
 
-      $observacion = Observacion::create(['descripcion' => $form["descripcion"], 'usable_type' => 'Backend\Models\User',
+      $observacion = Observacion::create(['descripcion' => $form["Reservacion"]["motivo"], 'usable_type' => 'Backend\Models\User',
       'usable_id' => $usuario->id, 'observable_id'=> $reservacion->id, 'observable_type' => 'HesperiaPlugins\Hoteles\Models\Reservacion']);
 
       $observacion->save();
 
       Flash::success("Proceso Completado");
 
-      return Redirect::refresh();
+      return Redirect::to('admin/hesperiaplugins/hoteles/reservacion/preview/'.$reservacion->id);
 
     }
 

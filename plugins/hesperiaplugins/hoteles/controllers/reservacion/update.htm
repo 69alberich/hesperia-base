@@ -3,14 +3,24 @@
         <li><a href="<?= Backend::url('hesperiaplugins/hoteles/reservacion') ?>">Reservacion</a></li>
         <li><?= e($this->pageTitle) ?></li>
     </ul>
+
 <?php Block::endPut() ?>
 
 <?php if (!$this->fatalError): ?>
 
     <?= Form::open(['class' => 'layout']) ?>
 
+        <div class="scoreboard">
+            <div data-control="toolbar">
+                <?= $this->makePartial('update_actions') ?>
+            </div>
+        </div>
+
         <div class="layout-row">
-            <?= $this->formRender() ?>
+            <?= $this->formRenderField('huesped') ?>
+            <?= $this->formRenderField('identificacion') ?>
+            <?= $this->formRenderField('contacto') ?>
+            <?= $this->formRenderField('comentarios') ?>
         </div>
 
         <div class="form-buttons">
@@ -52,3 +62,9 @@
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
     <p><a href="<?= Backend::url('hesperiaplugins/hoteles/reservacion') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
 <?php endif ?>
+
+<div class="modal fade" id="main-modal-update" role="dialog">
+        <div class="modal-dialog" id="modal-content-wrapper">
+            
+        </div>
+    </div>

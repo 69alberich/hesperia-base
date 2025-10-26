@@ -71,7 +71,6 @@
 
     $("#modal-content-wrapper").on("change", "#DatePicker-formFechaDisfrute-date-fecha_disfrute", function(e){
      // $("#Form-field-fecha_disfrute").val($(this).val()); //no se que hace esto.
-     alert("sirvo");
       cargarPrecioModal();
     });
 

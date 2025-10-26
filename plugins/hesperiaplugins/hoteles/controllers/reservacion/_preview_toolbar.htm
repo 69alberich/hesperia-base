@@ -5,13 +5,9 @@
     Volver a la lista de Reservaciones
 </a>
 
-<a class="btn btn-primary"
-        data-toggle="modal"
-        href="#main-modal-preview"
-        data-request="onAjax"
-        data-request-update="{ 'modal_change_status': '#modal-content-wrapper' }"
-        data-bs-target="#main-modal-preview">
-        Cambiar Status
+<a class="btn btn-warning oc-icon-pencil"
+      href="<?= Backend::url('hesperiaplugins/hoteles/reservacion/update/'.$formModel->id) ?>">
+      Modificar
 </a>
 
 <?php if ($formModel->status_id == 3 || $formModel->status_id == 6): ?>
@@ -25,7 +21,7 @@
     </a>
   <?php elseif($formModel->status_id == 1): ?>
     <!--TODAVIA FALTA PROBAR-->
-    <a class="btn btn-warning oc-icon-envelope-o"
+    <a class="btn btn-warning"
         data-toggle="modal"
         href="#main-modal-preview"
         data-request="onAjax"
@@ -34,12 +30,7 @@
           Reenviar confirmación
       </a>
   <?php elseif($formModel->status_id == 2): ?>
-    <a class="btn btn-warning oc-icon-envelope-o oc-icon-pencil"
-      href="<?= Backend::url('hesperiaplugins/hoteles/reservacion/update/'.$formModel->id) ?>">
-      Modificar
-    </a>
-
-    <a class="btn btn-success oc-icon-envelope-o"
+    <a class="btn btn-success"
        data-toggle="modal"
         href="#main-modal-preview"
         data-request="onAjax"

@@ -28,7 +28,7 @@ fields:
         type: text
         label: Huesped
         span: left
-        context: create
+        context: [create,update]
     usuario:
         type: text
         label: Email
@@ -120,3 +120,4 @@ fields:
         mode: date
         format: d-m-yy
         context: preview
+

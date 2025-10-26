@@ -18,7 +18,6 @@ fields:
         label: Comentarios
         type: textarea
         size: small
-        span: full
     moneda:
         label: Moneda
         span: right

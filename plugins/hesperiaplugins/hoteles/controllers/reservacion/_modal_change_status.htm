@@ -1,17 +1,24 @@
+
 <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     </div>
+    <?= Form::open() ?>
     <div class="modal-body">
-        <div class="form-elements" role="form"> <!-- antes era un form -->
         
+        <div class="form-elements" role="form"> <!-- antes era un form -->
+            
 
             <?= $this->formRenderField("status") ?>
-            <label>Motivo</label>
-            <input type="text" name="descripcion" value="" class="form-control" />
-            <p class="help-block">Se creará una observación para hacer seguimiento a esta reservacion</p>
 
-        </div> <!-- antes era un form -->
+            <div class="form-group  text-field span-left">
+                <label class="form-label">Motivo</label>
+                <input type="text" name="Reservacion[motivo]" autocomplete="false" value="" class="form-control" />
+            </div>
+            
+
+        </div>
+        <p class="help-block">Se creará una observación para hacer seguimiento a esta reservacion</p>
     </div>
 
 
@@ -22,5 +29,5 @@
             Cambiar
         </button>
     </div>
-
+    <?= Form::close() ?>
 </div>
