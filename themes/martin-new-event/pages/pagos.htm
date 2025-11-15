@@ -30,7 +30,6 @@ function onInit(){
 
 		use HesperiaPlugins\Hoteles\Models\Compra;
 		use HesperiaPlugins\Hoteles\Models\Pago;
-		use Crypt;
 		$id_decrypt = null;
 
 		$compra = Compra::select("total","status_id", "id", "moneda_id", "pago_insite")->with("status", "upgrades")

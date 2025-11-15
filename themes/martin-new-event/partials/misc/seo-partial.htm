@@ -1,30 +1,8 @@
-description = "partial para el seo"
-
-[viewBag]
-==
-<?php
-function onStart(){
-    /*$seo_props =  array(
-        "titulo" => "este titulo",
-        "descripcion" => "esta descripcion",
-        "type" => "article",
-        "imagen" => "esta imagen",
-        "url" => "url"
-    );
-
-
-
-    $this["seo_props"] = $seo_props;*/
-}
-?>
-==
 {% if seo_props  %}
     <title>{{seo_props.titulo}}</title>
 
     <meta name="description" content="{{html_strip(seo_props.descripcion)}}">
-
     <link rel="canonical" href="{{seo_props.url}}" />
-
     <meta name="robots" content="{{seo_props.robots}}">
 
     <meta property="og:url" content="{{seo_props.url}}" />
@@ -32,11 +10,5 @@ function onStart(){
     <meta property="og:title" content="{{seo_props.titulo}}" />
     <meta property="og:description" content="{{html_strip(seo_props.descripcion)}}" />
     <meta property="og:image" content="{{seo_props.imagen}}" />
-
-{% else %}
-    <!--<title>Contenido no encontrado</title>
-    <meta name="description" content="Contenido no encontrado">-->
-
-
 
 {% endif %}

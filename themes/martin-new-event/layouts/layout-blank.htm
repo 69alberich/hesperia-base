@@ -9,10 +9,6 @@ default = 0
 [googleTracker]
 
 [SeoStaticPage]
-
-[TawkTo]
-apikey = "5fa1dedd520b4b7986a10f2a"
-widgetname = "default"
 ==
 <!DOCTYPE html>
 <html lang="es">
@@ -25,7 +21,7 @@ widgetname = "default"
     
     <link rel="shortcut icon" type="image/png" href="{{ 'favicon.ico'|media }}"/>
     
-    {% component 'SeoCmsPage' %}
+    {% component "SeoCmsPage" %}
     {% partial "misc/seo-partial" %}
 <!--
 New Event
@@ -85,12 +81,14 @@ http://www.templatemo.com/tm-486-new-event
         <!-- End Google Tag Manager (noscript) -->
         
 {% component 'googleTracker' %}
-    {% component 'TawkTo' %}
+
     {% framework extras %}
 
     {% partial 'generales/menu-principal' %}
     
     {% page %}
+
+    {% partial 'whatsapp-floating' %}
 
     {% partial 'generales/footer-principal' %}
 

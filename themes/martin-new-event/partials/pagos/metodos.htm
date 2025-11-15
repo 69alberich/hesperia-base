@@ -26,14 +26,14 @@
             {% if metodo.id == 3 %}
 
                 <li class="{{active}}">
-                    <a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">Tarj. de Crédito</a>
+                    <a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">{{metodo.nombre}}</a>
                 </li>
                 {% set active = "" %}
             {% endif %}
 
             {% if metodo.id == 4 or metodo.id == 6 %}
                 <li class="{{active}}">
-                    <a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">Transferencias</a>
+                    <a href="#tab{{metodo.id}}"  role="tab" data-toggle="tab">{{metodo.nombre}}</a>
                 </li>
                 {% set active = "" %}
             {% endif %}
@@ -133,15 +133,17 @@
                         <div class="col-md-12">
                             <ul class="list-group">
                             
-                                {% for cuenta in cuentas if cuenta.nacional != 1 %}
-                                <li class="list-group-item">
-                                <p><strong>{{cuenta.banco}}</strong> </p>
-                                <p><Strong>Beneficiario:</strong> {{cuenta.beneficiario}}</p>
-                                <p><strong>Cuenta:</strong> {{cuenta.cuenta}}</p>
-                                {% if cuenta.email !="" %}
-                                    <p><strong>Email:</strong> {{cuenta.email}}</p>
+                                {% for cuenta in cuentas %}
+                                    {% if cuenta.nacional != 1  %}
+                                        <li class="list-group-item">
+                                        <p><strong>{{cuenta.banco}}</strong> </p>
+                                        <p><Strong>Beneficiario:</strong> {{cuenta.beneficiario}}</p>
+                                        <p><strong>Cuenta:</strong> {{cuenta.cuenta}}</p>
+                                        {% if cuenta.email !="" %}
+                                            <p><strong>Email:</strong> {{cuenta.email}}</p>
+                                            {% endif %}
+                                        </li>
                                     {% endif %}
-                                </li>
                                 {% endfor %}
                         
                             </ul>
@@ -218,13 +220,15 @@
                             <div class="col-md-12">
                                 <ul class="list-group">
                                 
-                                    {% for cuenta in cuentas if cuenta.nacional == 1 %}
-                                    <li class="list-group-item">
-                                    <p><strong>Banco:</strong> {{cuenta.banco}}</p>
-                                    <p><Strong>Beneficiario:</strong> {{cuenta.beneficiario}}</p>
-                                    <p><strong>Cuenta:</strong> {{cuenta.cuenta}}</p>
-                                    
-                                    </li>
+                                    {% for cuenta in cuentas  %}
+                                        {% if cuenta.nacional == 1 %}
+                                            <li class="list-group-item">
+                                            <p><strong>Banco:</strong> {{cuenta.banco}}</p>
+                                            <p><Strong>Beneficiario:</strong> {{cuenta.beneficiario}}</p>
+                                            <p><strong>Cuenta:</strong> {{cuenta.cuenta}}</p>
+                                            
+                                            </li>
+                                        {% endif %}
                                     {% endfor %}
                             
                                 </ul>
