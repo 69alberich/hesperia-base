@@ -12,6 +12,12 @@ navigation:
         permissions:
             - gestion_general_hoteles
         sideMenu:
+            side-menu-item2:
+                label: Hoteles
+                url: hesperiaplugins/hoteles/hotel
+                icon: icon-building-o
+                permissions:
+                    - gestion_general_hoteles
             side-menu-item:
                 label: Habitaciones
                 url: hesperiaplugins/hoteles/habitaciones

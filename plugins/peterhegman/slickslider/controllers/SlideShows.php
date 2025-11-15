@@ -19,7 +19,7 @@ class SlideShows extends Controller
     {
         $backendUser = BackendAuth::getUser();
         $isSuperUser = $backendUser->is_superuser;
-        $fieldsToRemove = $this->formGetWidget()
+        /*$fieldsToRemove = $this->formGetWidget()
         ->getTab('primary')
         ->fields['peterhegman.slickslider::lang.slickslider.settings'];
         //dd($fieldsToRemove);
@@ -30,6 +30,7 @@ class SlideShows extends Controller
                 $form->removeField($fieldToRemove->fieldName);
             }
         }
+            */
     }
 
     public function __construct()

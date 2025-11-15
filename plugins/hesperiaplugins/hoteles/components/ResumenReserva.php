@@ -211,6 +211,7 @@ class ResumenReserva extends ComponentBase{
 
           $user = Auth::register([
             'name' => '',
+            "first_name" => $data["nombre"],
             'email' => $data["email"],
             'password' => $pass,
             'password_confirmation' => $pass,

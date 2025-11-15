@@ -149,13 +149,13 @@ class Habitacion extends Model
 
       foreach ($seleccion as $habitacion) {
         $next = Db::table('hesperiaplugins_hoteles_fechas as a')
-        ->select("e.id as habitacion_id", "b.ocupacion", "d.acronimo", "d.id as moneda_id", "b.regimen_id", "b.precio",
+        ->select("e.id as habitacion_id", "b.ocupacion", "d.acronimo", "d.id as moneda_id", "b.regimen_id",
         "e.nombre", "c.nombre as regimen", Db::raw('sum(b.precio) as precio'))
         ->join("hesperiaplugins_hoteles_precios_fechas as b", "a.id", "=", "b.fecha_id" )
         ->join("hesperiaplugins_hoteles_regimen as c", "b.regimen_id", "=", "c.id" )
         ->join("hesperiaplugins_hoteles_moneda as d", "b.moneda_id", "=", "d.id")
         ->join("hesperiaplugins_hoteles_habitaciones as e", "e.id", "=", "a.habitacion_id")
-        ->groupBy('b.ocupacion', 'b.regimen_id')
+        ->groupBy('e.id', 'b.ocupacion', 'd.acronimo', 'd.id', 'b.regimen_id', 'e.nombre', 'c.nombre')
         ->whereBetween('a.fecha', [$begin->format("Y-m-d"), $end->format("Y-m-d")])
         ->where('a.habitacion_id', "=", $habitacion["habitacion_id"])
         ->where('c.status', "=", 1)

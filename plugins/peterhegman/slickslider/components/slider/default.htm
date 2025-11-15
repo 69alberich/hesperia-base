@@ -1,4 +1,4 @@
-{% if not(slider.slides.slideShows is same as ('no_slider')) %}
+{% if slider.slides() !=null and not(slider.slides().slideShows is same as ('no_slider')) %}
 {% put scripts %}
     <script>
 		$(document).ready(function(){
@@ -116,4 +116,8 @@
         {% endif %}
     {% endfor %}
 </div>
+
+{% else %}
+
+<h4>estoy vacio</h4>
 {% endif %}

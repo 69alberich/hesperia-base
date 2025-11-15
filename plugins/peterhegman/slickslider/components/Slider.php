@@ -63,7 +63,8 @@ class Slider extends \Cms\Classes\ComponentBase
         $slideShowId = $this->property('slide_show_id');
         $slideShows = SlideShows::where('id', '=', $slideShowId)->first();
         if ($slideShows !== null) {
-            $breakpoints = json_decode($slideShows->attributes['responsive']);
+            $breakpoints = json_decode($slideShows->responsive ?? '[]');
+
             //Create Responsive Array
             $breakpointArray = array();
             $i = 0;
