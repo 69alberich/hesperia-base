@@ -442,7 +442,6 @@ class CajaReservas extends ComponentBase{
   public function onCargarPrecios(){
     $data = post();
     $sesion = Session::all();
-    trace_log($sesion);
     
     if (isset($sesion["propiedades"])) {
       $propiedades = $sesion["propiedades"];

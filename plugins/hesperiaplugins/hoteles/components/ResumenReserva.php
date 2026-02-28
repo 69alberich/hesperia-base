@@ -393,7 +393,6 @@ class ResumenReserva extends ComponentBase{
     $data = Input::get();
     $reserva =  Reservacion::find($data["reserva_id"]);
     $file = Input::file("archivo2");
-    //trace_log($file);
 
     if ($reserva->status_id==2) {
       $data["archivo"] = Input::file("archivo2");
@@ -434,10 +433,7 @@ class ResumenReserva extends ComponentBase{
         $fileToUpload->save();
 
         $pago->archivo()->add($fileToUpload);
-        
-        //$pago->archivo = Input::file("archivo2");
-        //trace_log($pago);
-        
+                
         if ($pago->save()) {
           $reserva->status_id = 3;
           $reserva->save();

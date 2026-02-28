@@ -78,10 +78,7 @@ class Upselling extends ComponentBase{
     $upselling = $upselling->first();
     if ($upselling != null) {
       $propiedades["hotel"] = $upselling->hotel_id;
-      //$upselling->precios = $upselling->isDisponible($propiedades);
       $fechas_disp = $upselling->getFechasDisponibles();
-      //trace_log($fechas_disp);
-      //$upselling->fechas_disponibles = $fechas_disp;
 
       $first = new Carbon (current($fechas_disp));
       $last = new Carbon (end($fechas_disp));
@@ -152,25 +149,19 @@ class Upselling extends ComponentBase{
             'upselling' => $upselling
           ])
       ];
-      //trace_log($upselling->precios);
     } catch (\Exception $e) {
       trace_log($e->getMessage());
     }
 
-    //trace_log($data);
-    //return true;
   }
 
   public function setFechasNoDisponibles($fechas_disp){
-    //trace_log($fechas_disp);
     if(isset($fechas_disp[0])){
       $first = $fechas_disp[0];
       $last = end($fechas_disp);
 
-      //trace_log($fechas_disp);
 
       $period = CarbonPeriod::create($first, $last);
-      //trace_log($period);
       foreach ($period as $date) {
         if (!in_array($date->format('Y-m-d'), $fechas_disp)) {
           $this->fechas_no_disponibles .= $date->format('d-m-Y').",";

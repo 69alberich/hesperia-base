@@ -54,7 +54,6 @@ class UtilityFunctions extends \October\Rain\Extension\ExtensionBase
         ];
         return $oVal;
       }
-      trace_log($decoded);
       */
       if ((isset($decoded->response->status) && $decoded->response->status == 'ERROR')|| $decoded == null)  {
           $defaultResponse = new \stdClass();

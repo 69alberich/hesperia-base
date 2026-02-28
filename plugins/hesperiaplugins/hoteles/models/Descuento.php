@@ -64,7 +64,6 @@ class Descuento extends Model
     }
 
     public function aplicaMinimoNoches($propiedades){
-        //trace_log("minimo noches:".$this->minimo_noches." - noches:".$propiedades["numero_noches"]);
         if($propiedades["numero_noches"] >= $this->minimo_noches){
             return true;       
         }else{
@@ -75,9 +74,7 @@ class Descuento extends Model
     public function aplicaNochesAntelacion($propiedades){
         $checkin = new Carbon($propiedades["checkin"]);
         $hoy = new Carbon();
-       
-        //trace_log("noches antelacion:".$this->noches_antelacion." - diferencia:".$hoy->diffInDays($checkin));
-        
+               
         if($hoy->diffInDays($checkin) >= $this->noches_antelacion){
             return true;
         }else{

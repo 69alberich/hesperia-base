@@ -51,7 +51,6 @@ class Compra extends Controller
     function onReenviarCotizacion($id){
 
       $compra = CompraModel::find($id);
-      //trace_log($compra->getResumen());
       /*
       Mail::send("hesperiaplugins.hoteles::mail.pre_compra",
         $compra->getResumen(), function($message) use ($compra) {

@@ -97,7 +97,6 @@ class Compra extends Model
           }
         }
       }
-      //trace_log($diferencia);
       if ($diferencia == null) {
         return true;
       }else{
@@ -197,7 +196,6 @@ class Compra extends Model
         "fecha_vigencia" => $fecha_vigencia->format("d-m-Y")
 
       ];
-      //trace_log($resumen);
       return $resumen;
     }
 

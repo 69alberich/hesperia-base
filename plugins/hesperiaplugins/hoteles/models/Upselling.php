@@ -424,7 +424,6 @@ class Upselling extends Model
       }
 
       $return = $first->orderBy("fecha")->get();
-      //trace_log($return);
       return($return);
     }
 

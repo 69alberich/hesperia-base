@@ -111,9 +111,6 @@ class Form extends ComponentBase{
     $retorno["ref_backend"] = $payment->id;
 
     $response = json_encode($retorno);
-    
-    //trace_log($payment);
-    //
     return $response;//RETORNO QUE SIEMPRE HEMOS USADO
     //var_dump($charge);
   }

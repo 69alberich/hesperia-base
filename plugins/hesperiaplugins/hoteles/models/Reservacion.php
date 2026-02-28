@@ -297,7 +297,6 @@ class Reservacion extends Model
       $reservacion = $this;
       $this->status_id = 1;
       $this->save();
-      //trace_log("tengo:", $pago_insite);
       try {
         /*
         $resumen = $this->getResumen();
@@ -349,7 +348,6 @@ class Reservacion extends Model
         foreach ($user->hoteles as $hotel) {
           array_push($arHotelesIds, $hotel->id);
         }
-        //trace_log($arHotelesIds);
         $hotel = Db::table('hesperiaplugins_hoteles_hotel as a')->whereIn("id", $arHotelesIds)->lists('a.nombre', 'a.id');
         //$hoteles = Hotel::select("nombre", "id")->with("impuestos")->whereIn("id", $arHotelesIds)->get();
       }else{

@@ -59,7 +59,6 @@ class PreCheckinHandler extends ComponentBase{
         }
         
 
-        //trace_log($this->reserva->id);
     }
 
 
@@ -67,7 +66,6 @@ class PreCheckinHandler extends ComponentBase{
        //$file = Input::file("archivo2");
        $data = Input::all();
        $decrypted = null;
-        trace_log($data);
 
        if (isset($data["codigo"])) {
         $reservacion = Reservacion::where("codigo", $data["codigo"])->first();
@@ -88,7 +86,6 @@ class PreCheckinHandler extends ComponentBase{
 
        Storage::makeDirectory($directory);
 
-       // trace_log($data["info_adicional"]);
 
        $reservacion->info_adicional = [$data["info_adicional"]];
 
@@ -132,10 +129,8 @@ class PreCheckinHandler extends ComponentBase{
                 } 
                 
                 if (isset($arDetallesId[$index[2]]["huespedes"])) {
-                   // trace_log("push".$index[2]);
                     array_push($arDetallesId[$index[2]]["huespedes"], $data[$key]["huespedes"]);
                 }else{
-                    //trace_log("not-push".$index[2]);
                     $arDetallesId[$index[2]]["huespedes"] = array($data[$key]["huespedes"]);
                 }
             }
@@ -146,7 +141,6 @@ class PreCheckinHandler extends ComponentBase{
            }
            
        }
-       //trace_log($arDetallesId);
 
        foreach ($arDetallesId as $key => $value) {
         $detalle = DetalleReservacion::find($key);
@@ -157,7 +151,6 @@ class PreCheckinHandler extends ComponentBase{
         $detalle->huespedes = $value["huespedes"];
         $detalle->save();
        }
-       //trace_log($arDetallesId);
        
     }
 }

@@ -70,9 +70,7 @@ class DescuentoHabitacion extends Model
       if($this->descuento != null){ //SI EL DESCUENTO ESTA VIGENTE 
 
         $descuento = $this->descuento->isVigente($propiedades)->where("id", $this->descuento_id)->first();
-        //trace_log($descuento);
         if($descuento != null){
-          //trace_log($descuento->minimo_noches."-".$descuento->concepto);
           if($descuento->minimo_noches > 0){
             if(!$descuento->aplicaMinimoNoches($propiedades)){
               return null;
@@ -83,7 +81,6 @@ class DescuentoHabitacion extends Model
               return null;
             }
           }
-          //trace_log($descuento);
         }
         
       }

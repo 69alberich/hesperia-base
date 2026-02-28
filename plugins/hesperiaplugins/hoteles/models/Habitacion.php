@@ -131,7 +131,6 @@ class Habitacion extends Model
           $ocup_regimen_array[$index]["total"] = -1;
         }
       }
-      //trace_log($ocup_regimen_array);
       return $ocup_regimen_array;
     }
 
@@ -209,7 +208,7 @@ class Habitacion extends Model
           }
         }
 
-        /*trace_log($precios_noches_gratis);
+        /*
         if($precios_noches_gratis!=null){
             $indice = $item["ocupacion"].$item["regimen"];
             $precioFinal = $precios_noches_gratis[$indice]["precio"] - (precioAntes - precioPorcentaje) %}
@@ -283,7 +282,6 @@ class Habitacion extends Model
             $i++;
           }
         }
-        //trace_log($array);
       }
 
     }
@@ -358,7 +356,6 @@ class Habitacion extends Model
       foreach ($descuentos as $key => $value) {
         
         if ($key == "porcentaje"){
-          //trace_log($value);
           $descuento = 0;
           if(is_numeric($value)){
             $descuento = $value;
@@ -368,7 +365,6 @@ class Habitacion extends Model
           $precioFull =  $precioFull - (($precio)*($descuento))/100;
 
         }else if(isset($value["porcentaje"])){
-          //trace_log("paso por 2");
           $descuento = 0;
           if(is_numeric($value["porcentaje"])){
             $descuento = $value["porcentaje"];
@@ -434,15 +430,12 @@ class Habitacion extends Model
 
       foreach ($descuentosHab as $key => $value) {
 
-        //trace_log($value->descuento_id);
         $descuento = $value->getDescuentoDisponible($propiedades);
         if ($descuento != null) {
           array_push($arrayDescuestosAplicables, $descuento);
         }
       }
       
-      //trace_log(count($arrayDescuestosAplicables));
-
       return $arrayDescuestosAplicables;
     }
 

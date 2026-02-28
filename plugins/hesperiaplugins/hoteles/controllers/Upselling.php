@@ -182,7 +182,6 @@ class Upselling extends Controller
           if ($calendario) {
             //SI TENGO CALENDARIO C/S FECHAS
             $mensaje.="tengo calendario";
-            //trace_log($calendario);
             if ($calendario->fechas) {
               $flag=false; //BANDERA PARA SABER SI EXISTE LA FECHA
               $id_fecha = null;

@@ -89,14 +89,12 @@ class Reservacion extends Controller
         foreach ($user->hoteles as $hotel) {
           array_push($arHotelesIds, $hotel->id);
         }
-        //trace_log($arHotelesIds);
 
         $hoteles = Hotel::select("nombre", "id")->with("impuestos")->whereIn("id", $arHotelesIds)->get();
       }else{
         $hoteles = Hotel::select("nombre", "id")->with("impuestos")->get();
       }
 
-      //trace_log($hoteles);
 
       $monedas = Moneda::select("moneda", "id", "acronimo")->where("ind_activo", 1)->orderBy("id", "DESC")->get();
       $var_iniciales = array(
@@ -199,15 +197,11 @@ class Reservacion extends Controller
          $session = Session::all();
          
          if (isset($session["seleccion"])) {
-          trace_log("tengo seleccion");
-
-          trace_log($session["seleccion"]);
 
            $seleccion = $session["seleccion"];
            array_push($seleccion, $det);
            Session::put("seleccion", $seleccion);
          }else{
-          trace_log("no tengo nada");
            $seleccion = array();
            array_push($seleccion, $det);
            Session::put("seleccion", $seleccion);
@@ -216,7 +210,6 @@ class Reservacion extends Controller
              '#contentSeleccion' => $this->makePartial('seleccion',
                ["seleccion" => $seleccion, "busqueda" => $busqueda])
          ];
-        //return json_encode($det, JSON_UNESCAPED_UNICODE);
     }
 
     public function onAddUpsellingSec(){
@@ -285,7 +278,6 @@ class Reservacion extends Controller
       }
 
       $reservacion = ReservaModel::find($id);
-      //trace_log($reservacion->getResumen());
 
       if($reservacion->status_id != 1){
         $reservacion->restarInventarios(); //RESTA LA OCUPACION
@@ -387,7 +379,6 @@ class Reservacion extends Controller
             //$impuestos = $hotel["impuestos"];
           }
         }
-        //trace_log($impuestos);
         foreach ($upsellings as $upselling) {
           //echo "hola";
           $precio_neto = $upselling->isDisponible($data);
@@ -529,7 +520,6 @@ class Reservacion extends Controller
         $first_date = new Carbon($session["checkin"]);
 
         $result = $upselling->getPrecioDisponibilidad($session["moneda"], $first_date);
-        //trace_log($result);
 
         $precio_disponible = head($result->toArray());
         $upselling->fecha_disfrute = $first_date;
@@ -908,7 +898,6 @@ class Reservacion extends Controller
       $reservacion = ReservaModel::find($id);
 
       //esa funcion ver resumen hay que refactorizarla, es un peligro
-      //trace_log($reservacion->getResumen());
       try{
 
         /*
