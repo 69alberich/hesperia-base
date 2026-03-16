@@ -102,7 +102,7 @@
 			var codigo_ocupacion = $(this).find("select[name=ocupacion]").val();
 			var codigo_regimen = $(this).find("select[name=regimen_id]").val();
 			var precio = $(this).find("#preciototal-"+codigo_ocupacion+"-"+codigo_regimen).val();
-
+			console.log("precio es:"+precio);
 			if (precio!=null && precio > 0 ) {
 				$(this).request('onAddSeleccion', {
 					data:{
@@ -122,11 +122,14 @@
 						}else{
 							this.success(data);
 							$('.hab-modal').modal('hide');
-							$('#go-bottom').show();
+							
+							setTimeout(function() {
+								$("body #go-bottom").css("display", "block");
+							}, 250); // 250ms es suficiente para que el navegador respire
 						}
 					},
 					complete: function(){
-
+						
 					},
 					error: function(data){
 						swal("Disculpa","Esto es embarazoso, pero ha ocurrido un error inesperado, intenta nuevamente", "error");
@@ -255,9 +258,11 @@
 					  autoHeight : true,
 					  navigationText : ["<",">"]
 				  });
-					actualizar_total();
-          $('#modal-hab-precios').modal('show');
-          //$('#modal-content-form').modal('show');
+
+		  $('#modal-hab-precios').one('shown.bs.modal', function () {
+				actualizar_total();
+			}).modal('show');
+
         },
         error: function(data){
           //alert("Hubo un problema, no fue tu culpa... Lo estamos resolviendo");
@@ -274,53 +279,53 @@
 			actualizar_total();
     });
 
-		function actualizar_total(){
-      var total_ups = 0;
-      var total_full = 0;
+	function actualizar_total(){
+
+		setTimeout(function() {
+			var total_ups = 0;
+			var total_full = 0;
 
 			var ocupacion = $("#ocupacion_selector").val();
 			var regimen = $("#regimen_selector").val();
-      var selects = $("#upsellings-content").find(".select-upselling");
-      var checks = $("#upsellings-content").find(".sumables-paq");
-      var alojamiento = $("#preciototal-"+ocupacion+"-"+regimen).val();
-			var acronimo = $("#modal-hab-precios").find("#acronimo");
-      selects.each(function(){
-        var valor = $(this).data("base");
-        var cantidad = $(this).val();
-        total_ups = total_ups+(valor*cantidad);
-      });
-
-      checks.each(function(){
-        if(this.checked){
-          var valor = $(this).data("base");
-          total_ups = total_ups+(valor);
-        }
-      });
-
-			total_full = parseFloat(alojamiento) + parseFloat(total_ups);
-      
-			var currency = acronimo.val();
-
-			if(currency.toString() == "VES" || currency.toString() == "VEF" ){
-				//alert("tengo ves");
-				var minimumFractionDigits = 0;
-			}else{
-				var minimumFractionDigits = 2;
-			}
-
-			
-			var formatter = new Intl.NumberFormat('de-DE', {
-        style: 'decimal',
-        currency: currency.toString(),
-        minimumFractionDigits: minimumFractionDigits,
+			var selects = $("#upsellings-content").find(".select-upselling");
+			var checks = $("#upsellings-content").find(".sumables-paq");
+			var alojamiento = $("#preciototal-"+ocupacion+"-"+regimen).val();
+					var acronimo = $("#modal-hab-precios").find("#acronimo");
+			selects.each(function(){
+				var valor = $(this).data("base");
+				var cantidad = $(this).val();
+				total_ups = total_ups+(valor*cantidad);
 			});
 
+			checks.each(function(){
+				if(this.checked){
+				var valor = $(this).data("base");
+				total_ups = total_ups+(valor);
+				}
+			});
 
+					total_full = parseFloat(alojamiento) + parseFloat(total_ups);
 			
-			//alert(formatter.format(total_full));
-      //$("#precio-ups-total").text(retorno_ups);
-      $("#total-upselling-resumen").text(formatter.format(total_ups));
-      $("#total-full-hab-modal").text(formatter.format(total_full));
+					var currency = acronimo.val();
+
+					if(currency.toString() == "VES" || currency.toString() == "VEF" ){
+						//alert("tengo ves");
+						var minimumFractionDigits = 0;
+					}else{
+						var minimumFractionDigits = 2;
+					}
+
+					
+				var formatter = new Intl.NumberFormat('de-DE', {
+					style: 'decimal',
+					currency: currency.toString(),
+					minimumFractionDigits: minimumFractionDigits,
+				});
+
+			$("#total-upselling-resumen").text(formatter.format(total_ups));
+			$("#total-full-hab-modal").text(formatter.format(total_full));
+		}, 250);
+      
     }
 		//FIN NUEVO
 

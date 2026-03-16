@@ -443,15 +443,19 @@ class CajaReservas extends ComponentBase{
     $data = post();
     $sesion = Session::all();
     
+    
     if (isset($sesion["propiedades"])) {
       $propiedades = $sesion["propiedades"];
       $habitacion = Habitacion::find($data["habitacion"]);
       $impuestos = $habitacion->hotel->getImpuestos($propiedades["moneda"]);
       $descuentos = $habitacion->getDescuentos($propiedades);
       $precios = $habitacion->getPrecios($propiedades["checkin"], $propiedades["checkout"], $propiedades["moneda"]);
+
       $upsellings = Upselling::whereHas("categorias", function($query){
         $query->where("categoria_id", 1);
-      })->where("hotel_id", $propiedades["hotel"])->get();
+      })->where("hotel_id", $propiedades["hotel"])->orderBy("id", "desc")->take(10)->get(); 
+          //se debe refactorizar la parte de upsellings, se toman solo 10 de momento
+
         return [
             '#modal-hab-precios' => $this->renderPartial('@modal_precios.htm', [
               'habitacion' => $habitacion,
@@ -463,7 +467,7 @@ class CajaReservas extends ComponentBase{
             ])
         ];
     }else{
-      Flash::error("Ha ocurrido algo inesperado, vuelve a consultar la disponibilidad para reservar");
+        trace_log("no se han cargado propiedades de busqueda");
     }
   }
 

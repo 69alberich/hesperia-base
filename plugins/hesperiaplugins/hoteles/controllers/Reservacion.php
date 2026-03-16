@@ -364,7 +364,7 @@ class Reservacion extends Controller
          "sumable", "disponible", "ind_calendario", "aplica_impuestos"])->
         whereHas("categorias", function($query){
           $query->where("id", ">", 0);
-        })->where("hotel_id", $data["hotel"])->get();
+        })->where("hotel_id", $data["hotel"])->orderBy("id", "desc")->take(10)->get();
         $upsellings_habs =  array(); //DISPONIBLE EN HABITACIONES
         $upsellings_secundarios =  array(); //PAQUETES Y UNITARIOS
 

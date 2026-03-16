@@ -5,6 +5,13 @@ use System\Classes\PluginBase;
 class Plugin extends PluginBase
 {
 
+    public function boot()
+    {
+        if (!class_exists(\Cms\Twig\GetAttrNode::class) && class_exists(GetAttrExpression::class)) {
+            class_alias(GetAttrExpression::class, \Cms\Twig\GetAttrNode::class);
+        }
+    }
+    
     public function registerComponents()
     {
         return [

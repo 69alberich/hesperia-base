@@ -382,12 +382,14 @@ class Habitacion extends Model
       $propiedades = Session::get("propiedades");
       $nochesGratis = 0;
       $precios = null;
-
-      foreach ($descuentos as $key => $value) {
-        if($value["noches_gratis"] > 0){
-          $nochesGratis = $nochesGratis + $value["noches_gratis"];
-        } 
+      if($descuentos!=null){
+        foreach ($descuentos as $key => $value) {
+          if($value["noches_gratis"] > 0){
+            $nochesGratis = $nochesGratis + $value["noches_gratis"];
+          } 
+        }
       }
+      
 
       if($nochesGratis >0 ){//SI HAY NOCHES GRATIS
         $firstDate = new Carbon($propiedades["checkin"]);
