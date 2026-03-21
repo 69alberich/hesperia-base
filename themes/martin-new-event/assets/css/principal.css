@@ -535,3 +535,10 @@
 .whatsapp-button{
 	margin-top:16px;
 }
+
+.slide-content p {
+  font-size: 18px;
+  letter-spacing: 0px;
+  color: white;
+  font-weight: bolder;
+}

@@ -7,7 +7,7 @@
       separator:' | '
     });
     */
-    $('#contentPreciosModal').on('change', '.selector-modal', function(e){
+    $('#main-modal-create').on('change', '.selector-modal', function(e){
       var habitacion = $(this).data("hab");
       var ocupacion = $("#ocupacion-select").val();
       var regimen = $("#regimen-select").val();
@@ -29,7 +29,7 @@
         //muestro el letrero de no hay precio disponible
         $("#no-price-"+habitacion).removeClass("hidden");
 
-        $("#contentPreciosModal").find('.precio-input').prop("disabled", "disabled");
+        $("#main-modal-create").find('.precio-input').prop("disabled", "disabled");
       }
       actualizarTotalHab();
     });
