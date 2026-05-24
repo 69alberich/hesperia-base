@@ -10,58 +10,66 @@ code = "footer-hoteles"
 code = "footer-recursos"
 ==
 <footer id="myFooter">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3 col-md-3">
-                    <h2 class="logo">
-                        <a href="https://www.hoteleshesperia.com.ve/">
-                            
-                            <img src="{{'icons/h-logo2.png'|media}}" class="img-responsive center-block">
+    <div class="footer-bg-elipse">
+        <img src="{{'assets-v4/elipse-1.png'|media}}" alt="elipse">
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 col-md-3">
+                <h2 class="logo">
+                    <a href="https://www.hoteleshesperia.com.ve/">
+
+                        <img src="{{'icons/h-logo2.png'|media}}" class="img-responsive center-block">
+                    </a>
+                </h2>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <h5>Sobre Nosotros</h5>
+                {% if staticMenu.menuItems %}
+                <ul>
+                    {% partial staticMenu ~ "::items" items=staticMenu.menuItems %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <h5>Nuestros Hoteles</h5>
+                {% if staticMenu2.menuItems %}
+                <ul>
+                    {% partial staticMenu2 ~ "::items" items=staticMenu2.menuItems %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <h5>Recursos</h5>
+                {% if staticMenu3.menuItems %}
+                <ul>
+                    {% partial staticMenu3 ~ "::items" items=staticMenu3.menuItems %}
+                </ul>
+                {% endif %}
+            </div>
+            <div style="padding-top: 30px;" class="col-sm-3 col-md-3">
+                <div class="social-networks">
+                    <a href="https://twitter.com/hesperiave/" target="_blank" class="twitter"><i
+                            class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com/HesperiaVe/" target="_blank" class="facebook"><i
+                            class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/hesperiave/" target="_blank" class="google"><i
+                            class="fab fa-instagram"></i></a>
+                </div>
+                <div class="logo-c" style="display: flex;">
+                    <div class="tripadvisor" style="width:100%">
+                        <a href="https://www.tripadvisor.com" target="_blank">
+                            <img class="img-responsive" src="{{'contents/logo-tripadvisor6.png'|media}}"
+                                style="margin:0 auto;">
                         </a>
-                    </h2>
-                </div>
-                <div class="col-sm-2 col-md-2">
-                    <h5>Sobre Nosotros</h5>
-                    {% if staticMenu.menuItems %}
-                        <ul>
-                            {% partial staticMenu ~ "::items" items=staticMenu.menuItems %}
-                        </ul>
-                    {% endif %}
-                </div>
-                <div class="col-sm-4 col-md-2">
-                    <h5>Nuestros Hoteles</h5>
-                    {% if staticMenu2.menuItems %}
-                        <ul>
-                            {% partial staticMenu2 ~ "::items" items=staticMenu2.menuItems %}
-                        </ul>
-                    {% endif %}
-                </div>
-                <div class="col-sm-2 col-md-2">
-                    <h5>Recursos</h5>
-                    {% if staticMenu3.menuItems %}
-                        <ul>
-                            {% partial staticMenu3 ~ "::items" items=staticMenu3.menuItems %}
-                        </ul>
-                    {% endif %}
-                </div>
-                   <div style="padding-top: 30px;" class="col-sm-3 col-md-3">
-                    <div class="social-networks">
-                        <a  href="https://twitter.com/hesperiave/" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.facebook.com/HesperiaVe/" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="https://www.instagram.com/hesperiave/" target="_blank" class="google"><i class="fab fa-instagram"></i></a>
                     </div>
-                    <div class="logo-c" style="display: flex;">
-                        <div class="tripadvisor" style="width:100%">
-                            <a href="https://www.tripadvisor.com" target="_blank">
-                                <img class="img-responsive" src="{{'contents/logo-tripadvisor6.png'|media}}" style="margin:0 auto;">
-                            </a>
-                        </div>
-                        <!-- 
+                    <!-- 
                         <div class="instapago">
                             <a href="https://instapago.com/" target="_blank"><img class="img-responsive" src="{{'contents/logo-instapago9.png'|media}}"></a>
                         </div>-->
-                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>

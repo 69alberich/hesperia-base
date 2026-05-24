@@ -26,3 +26,14 @@ items:
             isHidden: '0'
             cssClass: ''
             isExternal: '0'
+    -
+        title: 'Términos y Condiciones'
+        nesting: 0
+        type: static-page
+        code: ''
+        reference: terminos-y-condiciones
+        replace: 0
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
