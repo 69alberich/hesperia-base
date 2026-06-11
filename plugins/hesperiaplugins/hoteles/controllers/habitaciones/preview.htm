@@ -5,6 +5,8 @@
     </ul>
 <?php Block::endPut() ?>
 
+<?= $this->makePartial('preview_toolbar') ?>
+
 <?php if (!$this->fatalError): ?>
 
     <div class="form-preview">
@@ -15,8 +17,3 @@
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
 <?php endif ?>
 
-<p>
-    <a href="<?= Backend::url('hesperiaplugins/hoteles/habitaciones') ?>" class="btn btn-default oc-icon-chevron-left">
-        <?= e(trans('backend::lang.form.return_to_list')) ?>
-    </a>
-</p>

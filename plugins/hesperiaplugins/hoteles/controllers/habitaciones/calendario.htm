@@ -1,0 +1,407 @@
+<?php Block::put('breadcrumb') ?>
+<ul>
+    <li><a href="<?= Backend::url('hesperiaplugins/hoteles/habitaciones') ?>">Habitaciones</a></li>
+    <li><a href="<?= Backend::url('hesperiaplugins/hoteles/habitaciones/preview/' . $roomId) ?>">
+            <?= e($roomName) ?>
+        </a></li>
+    <li>Calendario</li>
+</ul>
+<?php Block::endPut() ?>
+
+<style>
+    #room-calendar-wrapper {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        padding: 20px;
+    }
+
+    .calendar-controls {
+        display: flex;
+        align-items: flex-start;
+        gap: 32px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #eee;
+        flex-wrap: wrap;
+    }
+
+    .calendar-controls label.control-label {
+        font-weight: 600;
+        font-size: 0.82em;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #777;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .occupancy-checks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+    }
+
+    #room-calendar {
+        width: 100%;
+    }
+
+    /* Strip FullCalendar's default event chrome — the card handles its own style */
+    .fc-daygrid-event {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 2px;
+    }
+
+    .fc-event-main {
+        padding: 0;
+        color: inherit;
+    }
+
+    /* Day card */
+    .fc-day-card {
+        background: rgba(255, 255, 255, 0.88);
+        border-radius: 4px;
+        padding: 4px 6px 5px;
+        margin: 1px 0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
+        font-size: 0.72em;
+        line-height: 1.45;
+        color: #333;
+    }
+
+    /* Availability badge */
+    .fc-day-avail {
+        display: flex;
+        align-items: baseline;
+        gap: 3px;
+        margin-bottom: 4px;
+        padding-bottom: 3px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .fc-day-avail-num {
+        font-size: 1.15em;
+        font-weight: 700;
+        color: #1a1a2e;
+    }
+
+    .fc-day-avail-label {
+        font-size: 0.9em;
+        color: #888;
+        font-weight: 400;
+    }
+
+    /* Price rows */
+    .fc-day-price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 6px;
+        padding: 1px 0;
+        border-bottom: 1px dotted rgba(0, 0, 0, 0.06);
+    }
+
+    .fc-day-price-row:last-child {
+        border-bottom: none;
+    }
+
+    .fc-day-occ {
+        color: #666;
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .fc-day-amt {
+        font-weight: 600;
+        color: #1a1a2e;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .calendar-legend {
+        display: flex;
+        gap: 20px;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #eee;
+        font-size: 0.85em;
+        color: #666;
+        flex-wrap: wrap;
+    }
+
+    .legend-dot {
+        display: inline-block;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    #no-prices-alert {
+        margin-top: 12px;
+    }
+</style>
+
+<div class="layout">
+    <div class="layout-row">
+        <div class="layout-cell padded-container">
+
+            <div id="room-calendar-wrapper">
+
+                <!-- Controls -->
+                <div class="calendar-controls">
+
+                    <?php if (!empty($currencies)): ?>
+                    <div>
+                        <label class="control-label">Moneda</label>
+                        <select id="currency-select" class="form-control" style="width:auto;min-width:160px;">
+                            <?php foreach ($currencies as $c): ?>
+                            <option value="<?= (int) $c['id'] ?>" data-acronym="<?= e($c['acronym']) ?>" <?=(int)
+                                $c['id']===(int) $defaultCurrencyId ? 'selected' : '' ?>>
+                                <?= e($c['name']) ?> (
+                                <?= e($c['acronym']) ?>)
+                            </option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <?php endif ?>
+
+                    <?php if (!empty($occupancies)): ?>
+                    <div>
+                        <label class="control-label">Ocupación</label>
+                        <div class="occupancy-checks">
+                            <?php foreach ($occupancies as $i => $occ): ?>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" class="occupancy-check" value="<?= e($occ['value']) ?>"
+                                        <?=$i===0 ? 'checked' : '' ?>>
+                                    <?= e($occ['label']) ?>
+                                </label>
+                            </div>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+                    <?php endif ?>
+
+                </div>
+
+                <!-- No-prices notice -->
+                <div id="no-prices-alert" class="alert alert-warning" style="display:none;">
+                    Sin precios configurados para <strong id="no-prices-currency"></strong> en el período visible.
+                </div>
+
+                <!-- Calendar -->
+                <div id="room-calendar"></div>
+
+                <!-- Legend -->
+                <div class="calendar-legend">
+                    <span><span class="legend-dot" style="background:#8fdf82;"></span> Available</span>
+                    <span><span class="legend-dot" style="background:#ffc107;"></span> Low stock (1–2 units)</span>
+                    <span><span class="legend-dot" style="background:#dc3545;"></span> Fully booked</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<?php
+$jsAvailUrl  = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_events/'  . $roomId);
+$jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_prices/' . $roomId);
+?>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var calendarEl = document.getElementById('room-calendar');
+        var availUrl   = <?= json_encode($jsAvailUrl) ?>;
+        var pricesUrl  = <?= json_encode($jsPricesUrl) ?>;
+        var noAlert = document.getElementById('no-prices-alert');
+        var noAlertLabel = document.getElementById('no-prices-currency');
+        var currencySelect = document.getElementById('currency-select');
+
+        // State
+        var allPriceEvents    = [];   // Full response from server (all occupancies)
+        var currentViewInfo   = null; // Last datesSet info — needed for currency-change re-fetch
+        var priceEventSource  = null; // FullCalendar event source handle for price events
+
+        // Cache checkbox references once — avoids repeated querySelectorAll on every toggle
+        var occupancyChecks = Array.from(document.querySelectorAll('.occupancy-check'));
+
+        // ---------------------------------------------------------------
+        // Helpers
+        // ---------------------------------------------------------------
+
+        function checkedOccupancies() {
+            // Use a Set for O(1) lookup when filtering
+            return new Set(
+                occupancyChecks
+                    .filter(function (el) { return el.checked; })
+                    .map(function (el) { return el.value; })
+            );
+        }
+
+        function selectedCurrencyAcronym() {
+            if (!currencySelect) return '';
+            var opt = currencySelect.options[currencySelect.selectedIndex];
+            return opt ? (opt.getAttribute('data-acronym') || '') : '';
+        }
+
+        // Replace the price event source in two re-renders (remove + add).
+        // Each day event contains ALL occupancy prices; we filter the prices array
+        // per event here so eventContent always receives only the active occupancies.
+        function applyPriceEvents() {
+            // 1 re-render: drop the entire previous source at once
+            if (priceEventSource) {
+                priceEventSource.remove();
+                priceEventSource = null;
+            }
+
+            // Show/hide the no-prices notice
+            if (allPriceEvents.length === 0) {
+                noAlertLabel.textContent = selectedCurrencyAcronym();
+                noAlert.style.display = '';
+                return;
+            }
+            noAlert.style.display = 'none';
+
+            var active = checkedOccupancies();
+
+            // For each day event, keep only the prices whose occupancy is checked.
+            // Days where no occupancy survives the filter are dropped entirely.
+            var filtered = allPriceEvents
+                .map(function (dayEvent) {
+                    var visiblePrices = dayEvent.extendedProps.prices.filter(function (p) {
+                        return active.has(p.occupancy);
+                    });
+                    if (visiblePrices.length === 0) return null;
+
+                    return {
+                        start:           dayEvent.start,
+                        allDay:          true,
+                        backgroundColor: 'transparent',
+                        borderColor:     'transparent',
+                        extendedProps: {
+                            availability: dayEvent.extendedProps.availability,
+                            prices:       visiblePrices,
+                        },
+                    };
+                })
+                .filter(Boolean);
+
+            // 1 re-render: add all filtered day events as a single source
+            if (filtered.length > 0) {
+                priceEventSource = calendar.addEventSource(filtered);
+            }
+        }
+
+        // Fetch prices from the server for the current view and selected currency
+        function fetchPrices(viewInfo) {
+            if (!currencySelect) return;
+            var currencyId = currencySelect.value;
+
+            fetch(
+                pricesUrl
+                + '?currency_id=' + encodeURIComponent(currencyId)
+                + '&start=' + encodeURIComponent(viewInfo.startStr)
+                + '&end=' + encodeURIComponent(viewInfo.endStr),
+                { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
+            )
+                .then(function (r) { return r.json(); })
+                .then(function (events) {
+                    allPriceEvents = events;
+                    applyPriceEvents();
+                })
+                .catch(function () {
+                    allPriceEvents = [];
+                    applyPriceEvents();
+                });
+        }
+
+        // ---------------------------------------------------------------
+        // FullCalendar init
+        // ---------------------------------------------------------------
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'es',
+            height: 'auto',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+
+            // Availability colors — URL-based event source (FullCalendar manages re-fetch on navigation)
+            events: function (info, successCallback, failureCallback) {
+                fetch(
+                    availUrl
+                    + '?start=' + encodeURIComponent(info.startStr)
+                    + '&end=' + encodeURIComponent(info.endStr),
+                    { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
+                )
+                    .then(function (r) { return r.json(); })
+                    .then(successCallback)
+                    .catch(failureCallback);
+            },
+
+            // Custom card rendered inside each day cell for price events.
+            // Background events (availability colors) are skipped — FullCalendar
+            // handles those internally and never calls eventContent for them.
+            eventContent: function (info) {
+                var props = info.event.extendedProps;
+
+                // Guard: only render cards for our price events
+                if (!props || !Array.isArray(props.prices)) return;
+
+                var priceRows = props.prices.map(function (p) {
+                    return '<div class="fc-day-price-row">'
+                        + '<span class="fc-day-occ">' + p.label + '</span>'
+                        + '<span class="fc-day-amt">' + p.currency + '&nbsp;' + p.price.toFixed(2) + '</span>'
+                        + '</div>';
+                }).join('');
+
+                return {
+                    html: '<div class="fc-day-card">'
+                        + '<div class="fc-day-avail">'
+                        +   '<span class="fc-day-avail-num">' + props.availability + '</span>'
+                        +   '<span class="fc-day-avail-label">&nbsp;disp.</span>'
+                        + '</div>'
+                        + '<div class="fc-day-prices">' + priceRows + '</div>'
+                        + '</div>',
+                };
+            },
+
+            // Fires on initial load and every time the user navigates — triggers price fetch
+            datesSet: function (info) {
+                currentViewInfo = info;
+                fetchPrices(info);
+            },
+        });
+
+        calendar.render();
+
+        // ---------------------------------------------------------------
+        // Control event listeners
+        // ---------------------------------------------------------------
+
+        // Currency change → re-fetch prices from server
+        if (currencySelect) {
+            currencySelect.addEventListener('change', function () {
+                if (currentViewInfo) fetchPrices(currentViewInfo);
+            });
+        }
+
+        // Occupancy toggle → filter in memory, no server round-trip
+        document.querySelectorAll('.occupancy-check').forEach(function (cb) {
+            cb.addEventListener('change', applyPriceEvents);
+        });
+
+    });
+</script>
