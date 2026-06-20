@@ -8,6 +8,29 @@
 </ul>
 <?php Block::endPut() ?>
 
+<?php
+// ── i18n — load calendar labels from lang file ───────────────────────────────
+// To translate: duplicate lang/es/calendar.php → lang/{locale}/calendar.php
+$i18n = [
+    'controls' => [
+        'currency'  => trans('hesperiaplugins.hoteles::calendar.controls.currency'),
+        'occupancy' => trans('hesperiaplugins.hoteles::calendar.controls.occupancy'),
+    ],
+    'badge' => [
+        'available' => trans('hesperiaplugins.hoteles::calendar.badge.available'),
+    ],
+    'legend' => [
+        'available'    => trans('hesperiaplugins.hoteles::calendar.legend.available'),
+        'low_stock'    => trans('hesperiaplugins.hoteles::calendar.legend.low_stock'),
+        'fully_booked' => trans('hesperiaplugins.hoteles::calendar.legend.fully_booked'),
+    ],
+    'alerts' => [
+        'no_prices_prefix' => trans('hesperiaplugins.hoteles::calendar.alerts.no_prices_prefix'),
+        'no_prices_suffix' => trans('hesperiaplugins.hoteles::calendar.alerts.no_prices_suffix'),
+    ],
+];
+?>
+
 <style>
     #room-calendar-wrapper {
         background: #fff;
@@ -38,8 +61,8 @@
 
     .occupancy-checks {
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px 20px;
+        flex-direction: column;
+        gap: 4px;
     }
 
     #room-calendar {
@@ -66,7 +89,7 @@
         padding: 4px 6px 5px;
         margin: 1px 0;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
-        font-size: 0.72em;
+        font-size: 0.92em;
         line-height: 1.45;
         color: #333;
     }
@@ -146,6 +169,47 @@
     #no-prices-alert {
         margin-top: 12px;
     }
+
+    /* ── A: Today marker ─────────────────────────────────────────────────── */
+    /* Remove FullCalendar's default today tint so availability color shows through */
+    .fc-day-today {
+        background: transparent !important;
+    }
+
+    /* Inset ring — no layout shift, visible over any availability color */
+    .fc-day-today .fc-daygrid-day-frame {
+        box-shadow: inset 0 0 0 3px #3788d8;
+        border-radius: 2px;
+    }
+
+    /* ── B: Availability badge ───────────────────────────────────────────── */
+    .fc-day-avail {
+        margin-bottom: 5px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .fc-day-avail-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #1a1a2e;
+        color: #fff;
+        border-radius: 20px;
+        padding: 2px 9px 2px 7px;
+        font-size: 1.1em;
+        line-height: 1.6;
+    }
+
+    .fc-day-avail-badge-num {
+        font-size: 1.15em;
+        font-weight: 700;
+    }
+
+    .fc-day-avail-badge-label {
+        font-weight: 400;
+        opacity: 0.72;
+    }
 </style>
 
 <div class="layout">
@@ -159,7 +223,7 @@
 
                     <?php if (!empty($currencies)): ?>
                     <div>
-                        <label class="control-label">Moneda</label>
+                        <label class="control-label"><?= e($i18n['controls']['currency']) ?></label>
                         <select id="currency-select" class="form-control" style="width:auto;min-width:160px;">
                             <?php foreach ($currencies as $c): ?>
                             <option value="<?= (int) $c['id'] ?>" data-acronym="<?= e($c['acronym']) ?>" <?=(int)
@@ -174,13 +238,12 @@
 
                     <?php if (!empty($occupancies)): ?>
                     <div>
-                        <label class="control-label">Ocupación</label>
+                        <label class="control-label"><?= e($i18n['controls']['occupancy']) ?></label>
                         <div class="occupancy-checks">
                             <?php foreach ($occupancies as $i => $occ): ?>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" class="occupancy-check" value="<?= e($occ['value']) ?>"
-                                        <?=$i===0 ? 'checked' : '' ?>>
+                                    <input type="checkbox" class="occupancy-check" value="<?= e($occ['value']) ?>" checked>
                                     <?= e($occ['label']) ?>
                                 </label>
                             </div>
@@ -193,7 +256,7 @@
 
                 <!-- No-prices notice -->
                 <div id="no-prices-alert" class="alert alert-warning" style="display:none;">
-                    Sin precios configurados para <strong id="no-prices-currency"></strong> en el período visible.
+                    <?= e($i18n['alerts']['no_prices_prefix']) ?> <strong id="no-prices-currency"></strong> <?= e($i18n['alerts']['no_prices_suffix']) ?>
                 </div>
 
                 <!-- Calendar -->
@@ -201,9 +264,9 @@
 
                 <!-- Legend -->
                 <div class="calendar-legend">
-                    <span><span class="legend-dot" style="background:#8fdf82;"></span> Available</span>
-                    <span><span class="legend-dot" style="background:#ffc107;"></span> Low stock (1–2 units)</span>
-                    <span><span class="legend-dot" style="background:#dc3545;"></span> Fully booked</span>
+                    <span><span class="legend-dot" style="background:#8fdf82;"></span> <?= e($i18n['legend']['available']) ?></span>
+                    <span><span class="legend-dot" style="background:#ffc107;"></span> <?= e($i18n['legend']['low_stock']) ?></span>
+                    <span><span class="legend-dot" style="background:#dc3545;"></span> <?= e($i18n['legend']['fully_booked']) ?></span>
                 </div>
 
             </div>
@@ -217,6 +280,12 @@ $jsAvailUrl  = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_eve
 $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_prices/' . $roomId);
 ?>
 <script>
+    // i18n object — labels used in JS (badge, etc.)
+    // The rest are rendered server-side via PHP.
+    var calendarI18n = <?= json_encode([
+        'badgeAvailable' => $i18n['badge']['available'],
+    ]) ?>;
+
     document.addEventListener('DOMContentLoaded', function () {
 
         var calendarEl = document.getElementById('room-calendar');
@@ -227,9 +296,30 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
         var currencySelect = document.getElementById('currency-select');
 
         // State
-        var allPriceEvents    = [];   // Full response from server (all occupancies)
-        var currentViewInfo   = null; // Last datesSet info — needed for currency-change re-fetch
-        var priceEventSource  = null; // FullCalendar event source handle for price events
+        var allPriceEvents    = [];        // Full response from server (all occupancies)
+        var currentViewInfo   = null;      // Last datesSet info — needed for currency-change re-fetch
+        var priceEventSource  = null;      // FullCalendar event source handle for price events
+
+        // C: Price cache — keyed by "currencyId:startStr:endStr", cleared on currency change
+        var priceCache        = new Map();
+
+        // ── OctoberCMS stripe loader ─────────────────────────────────────────
+        // Shows the standard backend loading indicator during price requests.
+        // Uses the oc.stripeLoadIndicator global provided by OctoberCMS v4+.
+        function showPriceLoader() {
+            if (typeof oc !== 'undefined' && oc.stripeLoadIndicator) {
+                oc.stripeLoadIndicator.show();
+            }
+        }
+        function hidePriceLoader() {
+            if (typeof oc !== 'undefined' && oc.stripeLoadIndicator) {
+                oc.stripeLoadIndicator.hide();
+            }
+        }
+
+        // D: Debounce + AbortController — prevent stale responses from rapid navigation
+        var fetchDebounceTimer      = null;
+        var fetchAbortController    = null;
 
         // Cache checkbox references once — avoids repeated querySelectorAll on every toggle
         var occupancyChecks = Array.from(document.querySelectorAll('.occupancy-check'));
@@ -301,27 +391,61 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
             }
         }
 
-        // Fetch prices from the server for the current view and selected currency
+        // Fetch prices from the server for the current view and selected currency.
+        // C: Returns cached result immediately when available (no network round-trip).
+        // D: Debounced 300ms + AbortController to cancel any in-flight request before
+        //    launching a new one — prevents stale responses from rapid prev/next clicks.
         function fetchPrices(viewInfo) {
             if (!currencySelect) return;
-            var currencyId = currencySelect.value;
 
-            fetch(
-                pricesUrl
-                + '?currency_id=' + encodeURIComponent(currencyId)
-                + '&start=' + encodeURIComponent(viewInfo.startStr)
-                + '&end=' + encodeURIComponent(viewInfo.endStr),
-                { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
-            )
-                .then(function (r) { return r.json(); })
-                .then(function (events) {
-                    allPriceEvents = events;
-                    applyPriceEvents();
-                })
-                .catch(function () {
-                    allPriceEvents = [];
-                    applyPriceEvents();
-                });
+            var currencyId = currencySelect.value;
+            var cacheKey   = currencyId + ':' + viewInfo.startStr + ':' + viewInfo.endStr;
+
+            // C: Cache hit — render instantly, no loader needed
+            if (priceCache.has(cacheKey)) {
+                allPriceEvents = priceCache.get(cacheKey);
+                applyPriceEvents();
+                return;
+            }
+
+            // A fetch is inevitable — show loader now so the user gets immediate feedback
+            showPriceLoader();
+
+            // D: Debounce — wait 300ms before firing; rapid clicks reset the timer
+            clearTimeout(fetchDebounceTimer);
+            fetchDebounceTimer = setTimeout(function () {
+
+                // D: Abort any previous in-flight request
+                if (fetchAbortController) {
+                    fetchAbortController.abort();
+                }
+                fetchAbortController = new AbortController();
+
+                fetch(
+                    pricesUrl
+                    + '?currency_id=' + encodeURIComponent(currencyId)
+                    + '&start='       + encodeURIComponent(viewInfo.startStr)
+                    + '&end='         + encodeURIComponent(viewInfo.endStr),
+                    {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                        signal: fetchAbortController.signal,
+                    }
+                )
+                    .then(function (r) { return r.json(); })
+                    .then(function (events) {
+                        hidePriceLoader();
+                        priceCache.set(cacheKey, events); // C: Store in cache
+                        allPriceEvents = events;
+                        applyPriceEvents();
+                    })
+                    .catch(function (err) {
+                        if (err.name === 'AbortError') return; // D: New fetch incoming — loader stays
+                        hidePriceLoader();
+                        allPriceEvents = [];
+                        applyPriceEvents();
+                    });
+
+            }, 300);
         }
 
         // ---------------------------------------------------------------
@@ -370,8 +494,10 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
                 return {
                     html: '<div class="fc-day-card">'
                         + '<div class="fc-day-avail">'
-                        +   '<span class="fc-day-avail-num">' + props.availability + '</span>'
-                        +   '<span class="fc-day-avail-label">&nbsp;disp.</span>'
+                        +   '<span class="fc-day-avail-badge">'
+                        +     '<span class="fc-day-avail-badge-num">' + props.availability + '</span>'
+                        +     '<span class="fc-day-avail-badge-label">' + calendarI18n.badgeAvailable + '</span>'
+                        +   '</span>'
                         + '</div>'
                         + '<div class="fc-day-prices">' + priceRows + '</div>'
                         + '</div>',
@@ -391,9 +517,10 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
         // Control event listeners
         // ---------------------------------------------------------------
 
-        // Currency change → re-fetch prices from server
+        // Currency change → invalidate cache entirely, then re-fetch for current view
         if (currencySelect) {
             currencySelect.addEventListener('change', function () {
+                priceCache.clear(); // C: New currency means all cached data is stale
                 if (currentViewInfo) fetchPrices(currentViewInfo);
             });
         }

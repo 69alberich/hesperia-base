@@ -6,6 +6,7 @@ use HesperiaPlugins\Hoteles\Dtos\DateRangeDto;
 use HesperiaPlugins\Hoteles\Dtos\DiscountDto;
 use HesperiaPlugins\Hoteles\Dtos\RateDto;
 use HesperiaPlugins\Hoteles\Dtos\RoomAvailabilityDto;
+use HesperiaPlugins\Hoteles\Helpers\OccupancyHelper;
 use HesperiaPlugins\Hoteles\Models\Habitacion;
 use HesperiaPlugins\Hoteles\Models\Moneda;
 use Illuminate\Support\Collection;
@@ -372,24 +373,35 @@ class AvailabilityService
     }
 
     /**
-     * Returns the distinct occupancy codes available for a room, derived from
-     * its price records. Each entry has the raw code (e.g. "2-1") and a human
-     * label (e.g. "2 Adults - 1 Child").
+     * Returns all valid occupancy combinations for a room, derived from its
+     * capacity via Habitacion::getPermutaOcupaciones().
+     *
+     * This replaces the previous DB-join approach, which queried distinct
+     * occupancy codes from price records. Using the model's capacity-based
+     * generator is preferable because:
+     *   - No database round-trip required.
+     *   - The result is deterministic and tied to the room definition,
+     *     not to whether price records happen to exist for each combination.
+     *   - Habitacion already owns this logic — the service should not duplicate it.
+     *
+     * Each entry carries the raw code (e.g. "2-1") and a human-readable label
+     * (e.g. "2 Adults - 1 Child") ready for the frontend checkbox list.
+     *
+     * Occupancy combinations are derived from the room's capacity via
+     * OccupancyHelper::permutations() — no price records are required.
      *
      * @return array<int, array{value: string, label: string}>
      */
     public function getRoomOccupancies(int $roomId): array
     {
-        return DB::table('hesperiaplugins_hoteles_precios_fechas as pf')
-            ->join('hesperiaplugins_hoteles_fechas as f', 'pf.fecha_id', '=', 'f.id')
-            ->where('f.habitacion_id', $roomId)
-            ->distinct()
-            ->orderBy('pf.ocupacion')
-            ->pluck('pf.ocupacion')
-            ->map(fn($occ) => [
+        $room = Habitacion::findOrFail($roomId);
+
+        return collect(OccupancyHelper::permutations((int) $room->capacidad))
+            ->map(fn(string $occ) => [
                 'value' => $occ,
                 'label' => RateDto::buildOccupancyLabel($occ),
             ])
+            ->values()
             ->toArray();
     }
 

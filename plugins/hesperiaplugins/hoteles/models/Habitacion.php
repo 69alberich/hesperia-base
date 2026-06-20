@@ -474,35 +474,16 @@ class Habitacion extends Model
 
     }
 
-    public function getPermutaOcupaciones(){
-      $array = array();
-      $kids = 0;
-      $adultos = 1;
-      while ($adultos <= $this->capacidad) {
-        $ocupacion="";
-        if ($adultos==1 && $kids == 0 ) {
-            $ocupacion = $adultos."-".$kids;
-            //echo "$ocupacion<br>";
-            array_push($array, $ocupacion);
-            $kids ++;
-            while ($adultos + $kids <= $this->capacidad) {
-              $ocupacion = $adultos."-".$kids;
-              //ES LA PRIMERA VUELTA, ALL GOOD
-              //echo "-$ocupacion-<br>";
-              array_push($array, $ocupacion);
-              $kids ++;
-            }
-        }else{
-          $adultos++;
-          $kids = 0;
-          while ($adultos + $kids <= $this->capacidad) {
-            $ocupacion = $adultos."-".$kids;
-            //echo "$ocupacion-<br>";
-            array_push($array, $ocupacion);
-            $kids ++;
-          }
-        }
+    /**
+     * @deprecated Use OccupancyHelper::permutations((int) $room->capacidad) instead.
+     *             This method will be removed in a future refactor.
+     *
+     * @see \HesperiaPlugins\Hoteles\Helpers\OccupancyHelper::permutations()
+     */
+    public function getPermutaOcupaciones(): array
+    {
+        return \HesperiaPlugins\Hoteles\Helpers\OccupancyHelper::permutations(
+            (int) $this->capacidad
+        );
     }
-    return $array;
-  }
 }
