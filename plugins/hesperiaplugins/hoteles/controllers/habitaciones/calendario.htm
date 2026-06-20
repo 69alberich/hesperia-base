@@ -300,8 +300,10 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
         var currentViewInfo   = null;      // Last datesSet info — needed for currency-change re-fetch
         var priceEventSource  = null;      // FullCalendar event source handle for price events
 
-        // C: Price cache — keyed by "currencyId:startStr:endStr", cleared on currency change
+        // C: Price cache — keyed by "currencyId:startStr:endStr", cleared on currency change.
+        // Each entry stores { events, cachedAt } and expires after CACHE_TTL_MS.
         var priceCache        = new Map();
+        var CACHE_TTL_MS      = 2 * 60 * 1000; // 2 minutes
 
         // ── OctoberCMS stripe loader ─────────────────────────────────────────
         // Shows the standard backend loading indicator during price requests.
@@ -389,6 +391,12 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
             if (filtered.length > 0) {
                 priceEventSource = calendar.addEventSource(filtered);
             }
+
+            // The remove + addEventSource pair triggers two consecutive re-renders.
+            // Between them, FullCalendar recalculates height (height:'auto'), which can
+            // cause a scrollbar to appear/disappear and leave the last column cells with
+            // wrong widths. updateSize() after the DOM settles corrects this.
+            requestAnimationFrame(function () { calendar.updateSize(); });
         }
 
         // Fetch prices from the server for the current view and selected currency.
@@ -401,11 +409,16 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
             var currencyId = currencySelect.value;
             var cacheKey   = currencyId + ':' + viewInfo.startStr + ':' + viewInfo.endStr;
 
-            // C: Cache hit — render instantly, no loader needed
+            // C: Cache hit — render instantly if entry is still within TTL
             if (priceCache.has(cacheKey)) {
-                allPriceEvents = priceCache.get(cacheKey);
-                applyPriceEvents();
-                return;
+                var entry = priceCache.get(cacheKey);
+                if (Date.now() - entry.cachedAt < CACHE_TTL_MS) {
+                    allPriceEvents = entry.events;
+                    applyPriceEvents();
+                    return;
+                }
+                // Entry expired — evict and fall through to fetch
+                priceCache.delete(cacheKey);
             }
 
             // A fetch is inevitable — show loader now so the user gets immediate feedback
@@ -434,7 +447,7 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
                     .then(function (r) { return r.json(); })
                     .then(function (events) {
                         hidePriceLoader();
-                        priceCache.set(cacheKey, events); // C: Store in cache
+                        priceCache.set(cacheKey, { events: events, cachedAt: Date.now() }); // C: Store with TTL timestamp
                         allPriceEvents = events;
                         applyPriceEvents();
                     })
