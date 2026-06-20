@@ -133,9 +133,16 @@ class AvailabilityService
         $taxes    = $room->hotel->impuestos->where('moneda_id', $currencyId);
         $currency = Moneda::findOrFail($currencyId);
 
-        // Cheapest board per (date, occupancy) — availability included to avoid a second query.
+        // Cheapest price per (date, regimen, occupancy) — availability included to avoid a second query.
         $rows = DB::table('hesperiaplugins_hoteles_fechas as f')
-            ->select('f.fecha', 'f.disponible', 'pf.ocupacion', DB::raw('MIN(pf.precio) as min_price'))
+            ->select(
+                'f.fecha',
+                'f.disponible',
+                'pf.regimen_id',
+                'r.nombre as regimen_name',
+                'pf.ocupacion',
+                DB::raw('MIN(pf.precio) as min_price')
+            )
             ->join('hesperiaplugins_hoteles_precios_fechas as pf', 'f.id', '=', 'pf.fecha_id')
             ->join('hesperiaplugins_hoteles_regimen as r', 'pf.regimen_id', '=', 'r.id')
             ->where('f.habitacion_id', $roomId)
@@ -145,12 +152,14 @@ class AvailabilityService
             ->where('pf.precio', '>', 0)
             ->whereBetween('f.fecha', [$dateRange->checkinSql(), $dateRange->lastNightSql()])
             ->whereIn('pf.regimen_id', $hotelRegimenIds)
-            ->groupBy('f.fecha', 'f.disponible', 'pf.ocupacion')
+            ->groupBy('f.fecha', 'f.disponible', 'pf.regimen_id', 'r.nombre', 'pf.ocupacion')
             ->orderBy('f.fecha')
+            ->orderBy('pf.regimen_id')
             ->orderBy('pf.ocupacion')
             ->get();
 
-        // Group rows by date so each day becomes a single FullCalendar event.
+        // Group rows by date → regimen → occupancy so each day becomes one FullCalendar
+        // event with a nested regimens[] array ready for the frontend tree UI.
         $byDate = [];
         foreach ($rows as $row) {
             $priceWithTax = $this->applyTaxes((float) $row->min_price, $taxes);
@@ -158,11 +167,19 @@ class AvailabilityService
             if (!isset($byDate[$row->fecha])) {
                 $byDate[$row->fecha] = [
                     'availability' => (int) $row->disponible,
-                    'prices'       => [],
+                    'regimens'     => [],
                 ];
             }
 
-            $byDate[$row->fecha]['prices'][] = [
+            if (!isset($byDate[$row->fecha]['regimens'][$row->regimen_id])) {
+                $byDate[$row->fecha]['regimens'][$row->regimen_id] = [
+                    'id'     => (int) $row->regimen_id,
+                    'name'   => $row->regimen_name,
+                    'prices' => [],
+                ];
+            }
+
+            $byDate[$row->fecha]['regimens'][$row->regimen_id]['prices'][] = [
                 'occupancy' => $row->ocupacion,
                 'label'     => RateDto::buildOccupancyLabel($row->ocupacion),
                 'price'     => round($priceWithTax, 2),
@@ -176,7 +193,10 @@ class AvailabilityService
                 'allDay'          => true,
                 'backgroundColor' => 'transparent',
                 'borderColor'     => 'transparent',
-                'extendedProps'   => $data,
+                'extendedProps'   => [
+                    'availability' => $data['availability'],
+                    'regimens'     => array_values($data['regimens']), // re-index for JSON array
+                ],
             ],
             array_keys($byDate),
             array_values($byDate)

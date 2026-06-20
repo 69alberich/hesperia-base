@@ -146,6 +146,30 @@ $i18n = [
         flex-shrink: 0;
     }
 
+    /* Regimen tree */
+    .fc-day-regimen-block {
+        margin-top: 2px;
+    }
+
+    .fc-day-regimen-name {
+        font-size: 0.78em;
+        font-weight: 700;
+        color: #2e75b6;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 2px;
+    }
+
+    .fc-day-regimen-divider {
+        height: 1px;
+        background: rgba(0, 0, 0, 0.09);
+        margin: 4px 0;
+    }
+
+    .fc-day-regimen-block .fc-day-price-row {
+        padding-left: 6px;
+    }
+
     .calendar-legend {
         display: flex;
         gap: 20px;
@@ -365,14 +389,21 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
 
             var active = checkedOccupancies();
 
-            // For each day event, keep only the prices whose occupancy is checked.
-            // Days where no occupancy survives the filter are dropped entirely.
+            // For each day event, filter each regimen's prices by active occupancies,
+            // drop regimens with no surviving prices, drop days with no surviving regimens.
             var filtered = allPriceEvents
                 .map(function (dayEvent) {
-                    var visiblePrices = dayEvent.extendedProps.prices.filter(function (p) {
-                        return active.has(p.occupancy);
-                    });
-                    if (visiblePrices.length === 0) return null;
+                    var visibleRegimens = dayEvent.extendedProps.regimens
+                        .map(function (reg) {
+                            var visiblePrices = reg.prices.filter(function (p) {
+                                return active.has(p.occupancy);
+                            });
+                            if (visiblePrices.length === 0) return null;
+                            return { id: reg.id, name: reg.name, prices: visiblePrices };
+                        })
+                        .filter(Boolean);
+
+                    if (visibleRegimens.length === 0) return null;
 
                     return {
                         start:           dayEvent.start,
@@ -381,7 +412,7 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
                         borderColor:     'transparent',
                         extendedProps: {
                             availability: dayEvent.extendedProps.availability,
-                            prices:       visiblePrices,
+                            regimens:     visibleRegimens,
                         },
                     };
                 })
@@ -494,13 +525,21 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
             eventContent: function (info) {
                 var props = info.event.extendedProps;
 
-                // Guard: only render cards for our price events
-                if (!props || !Array.isArray(props.prices)) return;
+                // Guard: only render cards for our price events (regimens tree structure)
+                if (!props || !Array.isArray(props.regimens)) return;
 
-                var priceRows = props.prices.map(function (p) {
-                    return '<div class="fc-day-price-row">'
-                        + '<span class="fc-day-occ">' + p.label + '</span>'
-                        + '<span class="fc-day-amt">' + p.currency + '&nbsp;' + p.price.toFixed(2) + '</span>'
+                var regimensHtml = props.regimens.map(function (reg, idx) {
+                    var priceRows = reg.prices.map(function (p) {
+                        return '<div class="fc-day-price-row">'
+                            + '<span class="fc-day-occ">' + p.label + '</span>'
+                            + '<span class="fc-day-amt">' + p.currency + '&nbsp;' + p.price.toFixed(2) + '</span>'
+                            + '</div>';
+                    }).join('');
+
+                    return (idx > 0 ? '<div class="fc-day-regimen-divider"></div>' : '')
+                        + '<div class="fc-day-regimen-block">'
+                        +   '<div class="fc-day-regimen-name">' + reg.name + '</div>'
+                        +   priceRows
                         + '</div>';
                 }).join('');
 
@@ -512,7 +551,7 @@ $jsPricesUrl = Backend::url('hesperiaplugins/hoteles/habitaciones/calendario_pri
                         +     '<span class="fc-day-avail-badge-label">' + calendarI18n.badgeAvailable + '</span>'
                         +   '</span>'
                         + '</div>'
-                        + '<div class="fc-day-prices">' + priceRows + '</div>'
+                        + regimensHtml
                         + '</div>',
                 };
             },
